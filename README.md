@@ -216,7 +216,7 @@ Colombia.
 
 # 11. Authors
 
-Jerónimo Acosta Acevedo and Luis Miguel Torres Villegas.
+Luis Miguel Torres Villegas.
 
 
 # 12. License

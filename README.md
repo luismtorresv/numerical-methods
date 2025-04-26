@@ -25,7 +25,10 @@ Web application for running numerical methods that solve:
 - [9. About this project](#9-about-this-project)
 - [10. References](#10-references)
 - [11. Authors](#11-authors)
-- [12. License](#12-license)
+- [12. Similar projects](#12-similar-projects)
+  - [12.1. Former course-takers](#121-former-course-takers)
+  - [12.2. On the Web](#122-on-the-web)
+- [13. License](#13-license)
 
 
 # 2. Methods we support
@@ -219,6 +222,30 @@ Colombia.
 Luis Miguel Torres Villegas.
 
 
-# 12. License
+# 12. Similar projects
+
+## 12.1. Former course-takers
+
+1. [nceballosp/Analisis-Numerico](https://github.com/nceballosp/Analisis-Numerico)
+
+    Python + Flask and Vite + React.
+
+2. [isabelmorar/AnalisisNumerico](https://github.com/isabelmorar/AnalisisNumerico)
+
+    Python + Django.
+
+3. [EAZ-EAFIT/Moscow-Mathematical-Papyrus](https://github.com/EAZ-EAFIT/Moscow-Mathematical-Papyrus)
+
+    Python + Streamlit.
+
+4. [alejoriosm04/NumeriSketch](https://github.com/alejoriosm04/NumeriSketch)
+
+    Python + Django.
+
+## 12.2. On the Web
+
+1. [AtoZmath.com - Numerical methods calculators](https://atozmath.com/Menu/ConmMenu.aspx)
+
+# 13. License
 
 Copyright 2025 The Authors.

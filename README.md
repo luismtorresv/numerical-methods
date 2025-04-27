@@ -16,6 +16,7 @@ Web application for running numerical methods that solve:
   - [2.2. Linear systems of equations](#22-linear-systems-of-equations)
     - [2.2.1. Direct techniques](#221-direct-techniques)
     - [2.2.2. Iterative techniques](#222-iterative-techniques)
+  - [2.3. Interpolation](#23-interpolation)
 - [3. Features](#3-features)
 - [4. Limitations](#4-limitations)
 - [5. Expected input and output formats](#5-expected-input-and-output-formats)
@@ -90,6 +91,29 @@ Web application for running numerical methods that solve:
 
 *Note:* Our program is designed to solve systems of $2 \leq n \leq 7$.
 
+
+## 2.3. Interpolation
+
+> The problem of determining a polynomial of degree one that passes through the
+> distinct points $(x_0, y_0)$ and $(x_1, y_1)$ is the same as approximating a
+> function $f$ for which $f (x_0) = y_0$ and $f (x_1) = y_1$ by means of a
+> first-degree polynomial **interpolating**, or agreeing with, the values of $f$
+> at the given points. Using this polynomial for approximation within the
+> interval given by the endpoints is called **polynomial interpolation**.
+>
+> —Burden & Faires (2011, p. 108)
+
+1. Vandermonde polynomial
+
+2. Newton's divided differences interpolation polynomial
+
+3. Lagrange polynomial
+
+4. Linear spline interpolation
+
+5. Cubic spline interpolation
+
+*Note:* Our program is designed to interpolate a maximum of 8 data points.
 
 # 3. Features
 

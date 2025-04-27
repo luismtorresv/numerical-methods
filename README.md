@@ -226,21 +226,16 @@ Luis Miguel Torres Villegas.
 
 ## 12.1. Former course-takers
 
-1. [nceballosp/Analisis-Numerico](https://github.com/nceballosp/Analisis-Numerico)
+1. [nceballosp/Analisis-Numerico](https://github.com/nceballosp/Analisis-Numerico).
+   Python + Flask and Vite + React.
 
-    Python + Flask and Vite + React.
+2. [isabelmorar/AnalisisNumerico](https://github.com/isabelmorar/AnalisisNumerico).
+   Python + Django.
 
-2. [isabelmorar/AnalisisNumerico](https://github.com/isabelmorar/AnalisisNumerico)
+3. [EAZ-EAFIT/Moscow-Mathematical-Papyrus](https://github.com/EAZ-EAFIT/Moscow-Mathematical-Papyrus).
+   Python + Streamlit.
 
-    Python + Django.
-
-3. [EAZ-EAFIT/Moscow-Mathematical-Papyrus](https://github.com/EAZ-EAFIT/Moscow-Mathematical-Papyrus)
-
-    Python + Streamlit.
-
-4. [alejoriosm04/NumeriSketch](https://github.com/alejoriosm04/NumeriSketch)
-
-    Python + Django.
+4. [alejoriosm04/NumeriSketch](https://github.com/alejoriosm04/NumeriSketch). Python + Django.
 
 ## 12.2. On the Web
 

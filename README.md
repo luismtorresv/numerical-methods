@@ -20,15 +20,17 @@ Web application for running numerical methods that solve:
 - [4. Limitations](#4-limitations)
 - [5. Expected input and output formats](#5-expected-input-and-output-formats)
 - [6. Methods comparison feature](#6-methods-comparison-feature)
-- [7. Quirks](#7-quirks)
-- [8. Run](#8-run)
-- [9. About this project](#9-about-this-project)
-- [10. References](#10-references)
-- [11. Authors](#11-authors)
-- [12. Similar projects](#12-similar-projects)
-  - [12.1. Former course-takers](#121-former-course-takers)
-  - [12.2. On the Web](#122-on-the-web)
-- [13. License](#13-license)
+- [7. Internal representation](#7-internal-representation)
+- [8. User interaction](#8-user-interaction)
+- [9. Quirks](#9-quirks)
+- [10. Run](#10-run)
+- [11. About this project](#11-about-this-project)
+- [12. References](#12-references)
+- [13. Authors](#13-authors)
+- [14. Similar projects](#14-similar-projects)
+  - [14.1. Former course-takers](#141-former-course-takers)
+  - [14.2. On the Web](#142-on-the-web)
+- [15. License](#15-license)
 
 
 # 2. Methods we support
@@ -173,8 +175,87 @@ Where SOR has three methods that correspond to three arbitrary values, chosen by
 us, the programmers, of the $\omega$ weight for SOR methods. Ideally, these
 would be close to 1.
 
+# 7. Internal representation
 
-# 7. Quirks
+```mermaid
+---
+title: Internal representation of numerical methods
+theme: neutral
+---
+
+classDiagram
+  class NumericalMethod {
+    <<abstract>>
+    +str name
+    +MethodRun method_run
+    +MethodRun run()
+  }
+
+  %% not entirely happy with the name %%
+  class MethodRun {
+    +ErrorReason error
+    +datetime run_time
+    +Result result
+    +bool has_run()
+    +bool was_successful()
+  }
+
+  class Result {
+    +ResultStatus result_status
+  }
+
+  class ResultStatus {
+    <<enumeration>>
+    NO_STATUS
+    FAILED
+    INTERRUPTED
+    IN_PROGRESS
+    SUCCESSFUL
+}
+
+  NumericalMethod --|> MethodRun
+  MethodRun --|> Result
+  Result --|> ResultStatus
+```
+
+# 8. User interaction
+
+```mermaid
+---
+title: User interaction with the website
+theme: neutral
+---
+graph TD
+  %% Let us define the nodes first %%
+  start@{ shape: manual, label: "Choose a numerical method"}
+  user_input@{shape: manual-input, label: "Input parameters"}
+  input_validation@{shape: subprocess, label: "Validate input"}
+  input_error_message["Notify of invalid input"]
+  method_run@{shape: process, label: "Run method"}
+  error_show@{shape: display, label: "Notify of error"}
+  results_show@{shape: display, label: "Show results"}
+  plot@{shape: display, label: "Show plot"}
+  comparison_feature@{shape: display, label: "Show comparison report"}
+
+  %% And now for the edges %%
+  start --> user_input
+  user_input --> input_validation
+  input_validation --> was_good_input{Valid?}
+  was_good_input --> |Yes| method_run
+  was_good_input --> |No| input_error_message
+  input_error_message -.-> user_input
+
+  method_run --> was_method_successful{Is run OK?}
+  was_method_successful --> |Yes| results_show
+  results_show -.-> plot
+  was_method_successful --> |No| error_show
+
+  plot --> wants_comparison{Comparison?}
+  wants_comparison --> |Yes| comparison_feature
+```
+
+
+# 9. Quirks
 
 > [!WARNING]
 >
@@ -183,7 +264,7 @@ would be close to 1.
 > It's meant to state any problems that we or the professor find in our project.
 
 
-# 8. Run
+# 10. Run
 
 > [!WARNING]
 >
@@ -194,14 +275,14 @@ would be close to 1.
 > etc.)
 
 
-# 9. About this project
+# 11. About this project
 
 This is the course project for the course "Análisis numérico" (ST0256) taught by
 professor Julián Esteban Rendón-Roldán at EAFIT University in Medellín,
 Colombia.
 
 
-# 10. References
+# 12. References
 
 1. Burden, Richard L., and J. Douglas Faires. Numerical Analysis. 9. ed.,
    International ed, Brooks/Cole, 2011.
@@ -217,14 +298,14 @@ Colombia.
    the basis material for the course slides.
 
 
-# 11. Authors
+# 13. Authors
 
 Luis Miguel Torres Villegas.
 
 
-# 12. Similar projects
+# 14. Similar projects
 
-## 12.1. Former course-takers
+## 14.1. Former course-takers
 
 1. [nceballosp/Analisis-Numerico](https://github.com/nceballosp/Analisis-Numerico).
    Python + Flask and Vite + React.
@@ -237,10 +318,10 @@ Luis Miguel Torres Villegas.
 
 4. [alejoriosm04/NumeriSketch](https://github.com/alejoriosm04/NumeriSketch). Python + Django.
 
-## 12.2. On the Web
+## 14.2. On the Web
 
 1. [AtoZmath.com - Numerical methods calculators](https://atozmath.com/Menu/ConmMenu.aspx)
 
-# 13. License
+# 15. License
 
 Copyright 2025 The Authors.

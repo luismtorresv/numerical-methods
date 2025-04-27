@@ -49,7 +49,7 @@ Web application for running numerical methods that solve:
 3. Newton–Raphson method
 4. Secant method
 5. The method of false position (also known as *regula falsi*)
-6. Modified Newton method for multiple roots:
+6. Modified Newton method for multiple roots (at least one of the following):
    1. Accounting for root multiplicity
    2. Using an auxiliary function
 

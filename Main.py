@@ -19,7 +19,7 @@ class Numerical_Methods:
         
         return False
     
-    def display_results(table, x, tolerancia):
+    def display_results(self,table, x, tolerancia):
         st.markdown(f"### {x} es una aproximación de una raíz con tolerancia {tolerancia}")
         st.table(table.style.format("{:7,.16f}"))
 

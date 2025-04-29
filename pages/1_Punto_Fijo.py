@@ -5,7 +5,7 @@ from Methods.Fixed_point import fixed_point
 
 
 class Punto_fijo(Numerical_Methods):
-    def __init__(self, iteraciones, function, tolerance, X0, g_function, intervalo):
+    def __init__(self, iteraciones, function, tolerance,intervalo, X0, g_function):
         super().__init__(iteraciones, function, tolerance, intervalo)
         self.X0 = X0
         self.g_funtion = g_function
@@ -79,9 +79,9 @@ def Main():
             N_iter,
             f_function,
             (tolerancia, tipo_tolerancia),
-            x_0,
-            g_function,
             intervalo,
+            x_0,
+            g_function
         )
         table, x = pf.punto_fijo()  # We can finally call the numerical method.
         if table is None:

@@ -5,7 +5,7 @@ from Methods.Newton import Nt
 
 
 class Newton(Numerical_Methods):
-    def __init__(self, iteraciones, function, tolerance, X0, intervalo, f_derivate):
+    def __init__(self, iteraciones, function, tolerance,intervalo, X0, f_derivate):
         super().__init__(iteraciones, function, tolerance, intervalo)
         self.X0 = X0
         self.f_derivate = f_derivate
@@ -26,7 +26,7 @@ def Main():
         " ### NOTA: La funcion ingresada debe de ser una funcion valida y continua. Solo ingresar el numero deseado de D.C/C.S en la tolerancia."
     )
 
-    with st.form("PF"):
+    with st.form("NT"):
         N_iter = st.slider("Numero de Iteraciones:", 0, 100)
         tolerancia = st.slider("Tolerancia: ", 0, 100)
         f_function = st.text_input("Funcion:")
@@ -80,9 +80,9 @@ def Main():
             N_iter,
             f_function,
             (tolerancia, tipo_tolerancia),
-            x_0,
             intervalo,
-            f_derivate,
+            x_0,
+            f_derivate
         )
         table, x = Nt.Newton()  # We can finally call the numerical method.
         if table is None:

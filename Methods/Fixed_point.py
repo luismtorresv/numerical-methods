@@ -1,8 +1,17 @@
 import pandas as pd
-import math
+import sympy as sp
 
 
 def fixed_point(a, b, X0, Tol, type_of_tol, Niter, Fun, Fun_g):
+    #Check the G function
+    
+    x_sym = sp.symbols("x")
+    try:
+        g_expr = sp.sympify(Fun_g.replace("^", "**"))
+    except (sp.SympifyError, SyntaxError) as e:
+        raise ValueError(f"Invalid expression: {e}")
+    g_func = sp.lambdify(x_sym, g_expr, modules=["math"])
+
     # Inicialización de listas para la tabla
     iteraciones = []
     xn = []
@@ -11,7 +20,7 @@ def fixed_point(a, b, X0, Tol, type_of_tol, Niter, Fun, Fun_g):
 
     # Primera iteración
     x = X0
-    f = eval(Fun)
+    f = Fun(x)
     c = 0
     Error = 100  # Error inicial arbitrario
 
@@ -20,7 +29,7 @@ def fixed_point(a, b, X0, Tol, type_of_tol, Niter, Fun, Fun_g):
     fn.append(f)
     errores.append(Error)
     while Error > Tol and f != 0 and c < Niter:
-        x = eval(Fun_g)  # Nueva aproximación usando g(x)
+        x = g_func(x)  # Nueva aproximación usando g(x)
 
         # Validar que la nueva aproximación esté en el intervalo [a, b]
         if x < a or x > b:
@@ -29,7 +38,7 @@ def fixed_point(a, b, X0, Tol, type_of_tol, Niter, Fun, Fun_g):
             )
             break
 
-        f = eval(Fun)  # Evaluamos f(x)
+        f = Fun(x)  # Evaluamos f(x)
 
         c += 1
         if type_of_tol == "D.C":

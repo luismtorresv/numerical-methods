@@ -1,7 +1,15 @@
 import pandas as pd
-import math
+import sympy as sp
 
-def Nt(X0,Tol,type_of_tol,Niter,Fun,df):
+def Newton(X0,Tol,type_of_tol,Niter,Fun,df):
+    #Checks the derivate of F
+    x_sym = sp.symbols("x")
+    try:
+        df = sp.sympify(df.replace("^", "**"))
+    except (sp.SympifyError, SyntaxError) as e:
+        raise ValueError(f"Invalid expression: {e}")
+    df = sp.lambdify(x_sym, df, modules=["math"])
+
     # Inicialización de listas para la tabla
     iteraciones = []
     xn_vals = []
@@ -11,8 +19,8 @@ def Nt(X0,Tol,type_of_tol,Niter,Fun,df):
 
     # Primera iteración
     x = X0
-    f = eval(Fun)
-    derivada = eval(df)
+    f = Fun(x)
+    derivada = df(x)
     c = 0
     Error = 100  # Error inicial arbitrario
 
@@ -25,8 +33,8 @@ def Nt(X0,Tol,type_of_tol,Niter,Fun,df):
     # Algoritmo del método de Newton-Raphson
     while Error > Tol and f != 0 and derivada != 0 and c < Niter:
         x = x - f / derivada  # Fórmula de Newton-Raphson
-        derivada = eval(df)  # Evaluamos la derivada en el nuevo x
-        f = eval(Fun)  # Evaluamos f(x)
+        derivada = df(x) # Evaluamos la derivada en el nuevo x
+        f = Fun(x) # Evaluamos f(x)
         
         c += 1
         if type_of_tol == "D.C":

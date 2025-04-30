@@ -7,13 +7,13 @@ class Numerical_Methods:
     def __init__(self, iteraciones, function, tolerance, intervalo):
         # The values shared between all the functions: Niter, Tol, Func, Interval
         self.N_iteraciones = iteraciones
-        self.function = function
+        self.function = self.check_function(function)
 
         # Tuple made up of: (amount of tolerance, type of tolerance). ej: (10,DC) where DC = Decimales Correctos
         self.tolerance, self.type_of_tolerance = tolerance
         self.intervalo = intervalo
 
-    def check_function(function):
+    def check_function(self,function):
         # Safely parse and convert strings into callable functions.
         # This sympy operation was taken from a GPT suggestion:
 

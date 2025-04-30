@@ -5,9 +5,9 @@ from Main import Numerical_Methods, Web_page
 from Methods.Fixed_point import fixed_point
 
 
-class Punto_fijo(Numerical_Methods):
+class Punto_fijo_page(Numerical_Methods):
     def __init__(self, iteraciones, function, tolerance, intervalo, X0, g_function):
-        super().__init__(iteraciones, Numerical_Methods.check_function(function), tolerance, intervalo)
+        super().__init__(iteraciones, function, tolerance, intervalo)
         self.X0 = X0
         self.g_funtion = g_function
 
@@ -48,7 +48,7 @@ def Main():
             st.write("Hubo un error con los datos ingresados. ¡Intenta de nuevo!")
 
         # If there are no errores with the inputs, create the class.
-        pf = Punto_fijo(
+        pf = Punto_fijo_page(
             N_iter,
             f_function,
             (tolerancia, tipo_tolerancia),

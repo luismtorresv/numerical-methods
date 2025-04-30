@@ -1,6 +1,6 @@
 import streamlit as st
 import sympy as sp
-import re
+import matplotlib.pyplot as plt
 
 
 class Numerical_Methods:
@@ -13,7 +13,7 @@ class Numerical_Methods:
         self.tolerance, self.type_of_tolerance = tolerance
         self.intervalo = intervalo
 
-    def check_function(self,function):
+    def check_function(self, function):
         # Safely parse and convert strings into callable functions.
         # This sympy operation was taken from a GPT suggestion:
 
@@ -23,7 +23,7 @@ class Numerical_Methods:
         except (sp.SympifyError, SyntaxError) as e:
             raise ValueError(f"Invalid expression: {e}")
 
-        f = sp.lambdify(x_sym, f_expr, modules=["math"])
+        f = sp.lambdify(x_sym, f_expr, modules=["numpy"])
         return f
 
     def display_results(self, table, x, tolerancia):
@@ -67,9 +67,7 @@ class Web_page:
         f_function = st.text_input("Funcion:")
 
         # Varies from method to method
-        varible_input = st.text_input(
-            f"{method_input}: "
-        )
+        varible_input = st.text_input(f"{method_input}: ")
 
         x_0 = st.text_input("Valor inicial X0:")
 
@@ -119,6 +117,22 @@ class Web_page:
         st.markdown(
             " ### NOTA: La funcion ingresada debe de ser una funcion valida y continua. Solo ingresar el numero deseado de D.C/C.S en la tolerancia."
         )
+
+    @staticmethod
+    def create_graph(x_vals,y_vals,function):
+        # Plot (Streamlit-compatible)
+        fig, ax = plt.subplots(figsize=(10, 6))
+        ax.plot(x_vals, y_vals, label=f"f(x) = {function}")
+        ax.axhline(0, color="gray", linestyle="--")
+        ax.axvline(0, color="gray", linestyle="--")
+        ax.set_xlabel("x")
+        ax.set_ylabel("f(x)")
+        ax.set_title("Graph of f(x)")
+        ax.legend()
+        ax.grid(True)
+
+        # Render in Streamlit
+        st.pyplot(fig)
 
 
 if __name__ == "__main__":

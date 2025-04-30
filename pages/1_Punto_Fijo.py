@@ -1,6 +1,6 @@
 import streamlit as st
 import sympy as sp
-import matplotlib.pyplot as plt
+import numpy as np
 from Main import Numerical_Methods, Web_page
 from Methods.Fixed_point import fixed_point
 
@@ -19,6 +19,18 @@ class Punto_fijo_page(Numerical_Methods):
         Fun = self.function
         Fun_g = self.g_funtion
         return fixed_point(a, b, X0, Tol, self.type_of_tolerance, Niter, Fun, Fun_g)
+    
+    def graph_results(self):
+        # Define symbol
+        f_np = self.function
+        # Create x and y values
+        x_vals = np.linspace(self.intervalo[0], self.intervalo[1], 1000)
+        try:
+            y_vals = f_np(x_vals)
+        except Exception as e:
+            raise RuntimeError(f"Error evaluating function: {e}")
+        
+        Web_page.create_graph(x_vals,y_vals,function=self.function)
 
 
 def Main():
@@ -68,6 +80,7 @@ def Main():
             return
         else:
             pf.display_results(table, x, pf.tolerance)
+            pf.graph_results()
 
 
 if __name__ == "__main__":

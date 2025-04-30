@@ -1,6 +1,7 @@
 import pandas as pd
 import math
 
+
 def fixed_point(a, b, X0, Tol, type_of_tol, Niter, Fun, Fun_g):
     # Inicialización de listas para la tabla
     iteraciones = []
@@ -34,7 +35,7 @@ def fixed_point(a, b, X0, Tol, type_of_tol, Niter, Fun, Fun_g):
         if type_of_tol == "D.C":
             Error = abs(x - xn[-1])  # Cálculo del error absoluto
         else:
-            Error = abs((x - xn[-1]) / xn[-1])  # Cálculo del error relativo
+            Error = abs((x - xn[-1]) / x)  # Cálculo del error relativo
 
         # Guardar valores en listas
         iteraciones.append(c)

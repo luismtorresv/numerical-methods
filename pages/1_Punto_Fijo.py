@@ -5,7 +5,7 @@ from Methods.Fixed_point import fixed_point
 
 
 class Punto_fijo(Numerical_Methods):
-    def __init__(self, iteraciones, function, tolerance,intervalo, X0, g_function):
+    def __init__(self, iteraciones, function, tolerance, intervalo, X0, g_function):
         super().__init__(iteraciones, function, tolerance, intervalo)
         self.X0 = X0
         self.g_funtion = g_function
@@ -74,14 +74,13 @@ def Main():
         st.subheader("Functions")
         st.latex(f"f({x_symbol}) = {sp.latex(f_function)}")
         st.latex(f"g({x_symbol}) = {sp.latex(g_function)}")
-        # Check if the functions are valid
         pf = Punto_fijo(
             N_iter,
             f_function,
             (tolerancia, tipo_tolerancia),
             intervalo,
             x_0,
-            g_function
+            g_function,
         )
         table, x = pf.punto_fijo()  # We can finally call the numerical method.
         if table is None:
@@ -89,7 +88,6 @@ def Main():
             return
         else:
             pf.display_results(table, x, pf.tolerance)
-
 
 
 if __name__ == "__main__":

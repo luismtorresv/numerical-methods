@@ -18,6 +18,9 @@ Web application for running numerical methods that solve:
 - [3. Features](#3-features)
 - [4. Limitations](#4-limitations)
 - [5. Expected input and output formats](#5-expected-input-and-output-formats)
+  - [5.1. Equations in one variable](#51-equations-in-one-variable)
+  - [5.2. Linear systems of equations](#52-linear-systems-of-equations)
+  - [5.3. Interpolation](#53-interpolation)
 - [6. Methods comparison feature](#6-methods-comparison-feature)
 - [7. Internal representation](#7-internal-representation)
 - [8. User interaction](#8-user-interaction)
@@ -152,6 +155,29 @@ _iterative techniques_:
 > It's supposed to talk about the inputs and outputs for each section. It should
 > also talk about input validation (specially for the section on linear
 > systems).
+
+## 5.1. Equations in one variable
+
+> [!WARNING]
+>
+> This section is pending.
+
+## 5.2. Linear systems of equations
+
+> [!WARNING]
+>
+> This section is pending.
+
+## 5.3. Interpolation
+
+> [!WARNING]
+>
+> This section is pending.
+>
+> (The little note below had to go somewhere.)
+
+Besides the data points, the user must provide an additional data point that
+will be used to calculate the error.
 
 
 # 6. Methods comparison feature

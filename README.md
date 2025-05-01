@@ -242,6 +242,7 @@ classDiagram
 
   class Result {
     +ResultStatus result_status
+    +int execution_time_ms
   }
 
   class ResultStatus {

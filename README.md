@@ -14,8 +14,6 @@ Web application for running numerical methods that solve:
 - [2. Methods we support](#2-methods-we-support)
   - [2.1. Equations in one variable](#21-equations-in-one-variable)
   - [2.2. Linear systems of equations](#22-linear-systems-of-equations)
-    - [2.2.1. Direct techniques](#221-direct-techniques)
-    - [2.2.2. Iterative techniques](#222-iterative-techniques)
   - [2.3. Interpolation](#23-interpolation)
 - [3. Features](#3-features)
 - [4. Limitations](#4-limitations)
@@ -58,8 +56,6 @@ Web application for running numerical methods that solve:
 ## 2.2. Linear systems of equations
 
 
-### 2.2.1. Direct techniques
-
 > Direct techniques are methods that theoretically give the exact solution to
 > the system in a finite number of steps. In practice, of course, the solution
 > obtained will be contaminated by the round-off error that is involved with the
@@ -67,21 +63,15 @@ Web application for running numerical methods that solve:
 >
 > —Burden & Faires (2011, p. 358)
 
-> [!WARNING]
->
-> This section is pending.
->
-> I'm not sure whether we have to do these methods or not.
-
-
-### 2.2.2. Iterative techniques
-
 > An iterative technique to solve the $n \times n$ linear system $A\bold{x} =
 > \bold{b}$ starts with an initial approximation $\bold{x}^{(0)}$ to the
 > solution $\bold{x}$ and generates a sequence of vectors
 > ${\{\bold{x}^{(k)}}\}^{\infty}_{k=0}$ that converges to $\bold{x}$.
 >
 > —Burden & Faires (2011, p. 450)
+
+Though the course covered direct techniques, this program only implements these
+_iterative techniques_:
 
 1. Jacobi iterative method
 

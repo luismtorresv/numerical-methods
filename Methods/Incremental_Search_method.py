@@ -2,7 +2,7 @@ import pandas as pd
 import math
 
 
-def incremental_search(Xi, DeltaX, Niter, Fun):
+def incremental_search_method(Xi, DeltaX, Niter, Fun):
 
     # Inicialización de listas para la tabla
     iteraciones = []

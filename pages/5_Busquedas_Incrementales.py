@@ -1,68 +1,45 @@
 import streamlit as st
 import sympy as sp
-from Main import Numerical_Methods
-from Methods.BI import incremental_search
+from Main import Numerical_Methods, Web_page
+from Methods.Incremental_Search_method import incremental_search_method
 
 
-class Incremental_Search(Numerical_Methods):
+class Incremental_Search_page(Numerical_Methods):
     def __init__(self, iteraciones, function, tolerance, intervalo, X0, deltaX):
         super().__init__(iteraciones, function, tolerance, intervalo)
         self.X0 = X0
         self.deltaX = deltaX
 
-    def BI(self):
+    def call_method(self):
         Xi = self.X0
         DeltaX = self.deltaX
         Niter = self.N_iteraciones
         Fun = self.function
-        return incremental_search(Xi, DeltaX, Niter, Fun)
+        return incremental_search_method(Xi, DeltaX, Niter, Fun)
 
 
 def Main():
-    st.set_page_config(page_title="Incremental Search")
-    st.markdown("# Incremental Search")
-    st.markdown(
-        " ### NOTA: La funcion ingresada debe de ser una funcion valida y continua. Solo ingresar el numero deseado de D.C/C.S en la tolerancia."
-    )
+    Web_page.intro("Incremental Search")
 
     with st.form("BI"):
-        N_iter = st.slider("Numero de Iteraciones:", 0, 100)
-        tolerancia = st.slider("Tolerancia: ", 0, 100)
-        f_function = st.text_input("Funcion:")
-        Delta_X = st.text_input("Delta X/Crecimiento")
-        x_0 = st.text_input("Valor inicial X0:")
-
-        tipo_tolerancia = st.selectbox(
-            "Escoge un tipo de tolerancia:",
-            ["C.S", "D.C"],
-        )
-
-        st.write("Intervalo:")
-        intervalo = (
-            st.text_input("Limite inferior (a):"),
-            st.text_input("Limite superior (b):"),
+        # Input data. The data unique to the method is passed as an arg to the method
+        N_iter, tolerancia, f_function, x_0, tipo_tolerancia, intervalo, Delta_X = (
+            Web_page.form_questions("Delta X/Crecimiento")
         )
 
         button = st.form_submit_button("Ejecutar Metodo")
     if button:
         # Check if the entered values are valid
         try:
-            a, b = intervalo
-            intervalo = (
-                float(a),
-                float(b),
+            # Check parent values
+            intervalo, tolerancia, x_0 = Web_page.check_values(
+                intervalo, tolerancia, tipo_tolerancia, x_0
             )
 
-            tolerancia = (
-                float(f"5e-{tolerancia}")
-                if tipo_tolerancia == "C.S"
-                else float(f"0.5e-{tolerancia}")
-            )
             Delta_X = float(Delta_X)
-            x_0 = float(x_0)
-            x_symbol = sp.symbols(f"x")
 
             # Evaluate leaves the function intact
+            x_symbol = sp.symbols(f"x")
             f_function = f"{sp.parse_expr(f_function,evaluate=False)}"
 
         except:
@@ -70,7 +47,7 @@ def Main():
 
         st.subheader("Functions")
         st.latex(f"f({x_symbol}) = {sp.latex(f_function)}")
-        BI = Incremental_Search(
+        IS = Incremental_Search_page(
             N_iter,
             f_function,
             (tolerancia, tipo_tolerancia),
@@ -78,13 +55,14 @@ def Main():
             x_0,
             Delta_X,
         )
-        table, x, texto = BI.BI()
+        table, x, texto = IS.call_method()
         if table is None:
             st.write(texto)
             return
         else:
             st.write(texto)
-            BI.display_results(table, x, BI.tolerance)
+            IS.display_results(table, x, IS.tolerance)
+            Web_page.create_graph(IS.function, IS.intervalo)
 
 
 if __name__ == "__main__":

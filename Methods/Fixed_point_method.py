@@ -2,7 +2,7 @@ import pandas as pd
 import sympy as sp
 
 
-def fixed_point(a, b, X0, Tol, type_of_tol, Niter, Fun, Fun_g):
+def fixed_point_method(a, b, X0, Tol, type_of_tol, Niter, Fun, Fun_g):
     #Check the G function
     
     x_sym = sp.symbols("x")

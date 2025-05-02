@@ -2,7 +2,7 @@ import pandas as pd
 import math
 
 
-def secant(x0, x1, tol, max_iter, Fun):
+def secant_method(x0, x1, tol, max_iter, Fun):
     datos = []
     for i in range(max_iter):
         x = x0

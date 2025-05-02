@@ -1,7 +1,7 @@
 import streamlit as st
 import sympy as sp
 from Main import Numerical_Methods, Web_page
-from Methods.Newton import Newton
+from Methods.Newton_method import Newton_method
 
 
 class Newton_page(Numerical_Methods):
@@ -10,13 +10,13 @@ class Newton_page(Numerical_Methods):
         self.X0 = X0
         self.f_derivate = f_derivate
 
-    def call_newton(self):
+    def call_method(self):
         X0 = self.X0
         Tol = self.tolerance
         Niter = self.N_iteraciones
         Fun = self.function
         Fun_derivate = self.f_derivate
-        return Newton(X0, Tol, self.type_of_tolerance, Niter, Fun, Fun_derivate)
+        return Newton_method(X0, Tol, self.type_of_tolerance, Niter, Fun, Fun_derivate)
 
 
 def Main():
@@ -52,7 +52,7 @@ def Main():
         st.latex(f"f'({x_symbol}) = {sp.latex(f_derivate)}")
 
         # Check if the functions are valid
-        Nt = Newton_page(
+        Newton = Newton_page(
             N_iter,
             f_function,
             (tolerancia, tipo_tolerancia),
@@ -60,12 +60,13 @@ def Main():
             x_0,
             f_derivate
         )
-        table, x = Nt.call_newton()  # We can finally call the numerical method.
+        table, x = Newton.call_method()  # We can finally call the numerical method.
         if table is None:
             st.write("Fracaso")
             return
         else:
-            Nt.display_results(table, x, Nt.tolerance)
+            Newton.display_results(table, x, Newton.tolerance)
+            Web_page.create_graph(Newton.function,Newton.intervalo)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 import pandas as pd
 import sympy as sp
 
-def Newton(X0,Tol,type_of_tol,Niter,Fun,df):
+def Newton_method(X0,Tol,type_of_tol,Niter,Fun,df):
     #Checks the derivate of F
     x_sym = sp.symbols("x")
     try:
@@ -32,7 +32,7 @@ def Newton(X0,Tol,type_of_tol,Niter,Fun,df):
 
     # Algoritmo del método de Newton-Raphson
     while Error > Tol and f != 0 and derivada != 0 and c < Niter:
-        x = x - f / derivada  # Fórmula de Newton-Raphson
+        x = x - m*f / derivada  # Fórmula de Newton-Raphson
         derivada = df(x) # Evaluamos la derivada en el nuevo x
         f = Fun(x) # Evaluamos f(x)
         
@@ -69,4 +69,3 @@ def Newton(X0,Tol,type_of_tol,Niter,Fun,df):
     else:
         #print(f"Fracaso en {Niter} iteraciones")
         return None, Niter
-

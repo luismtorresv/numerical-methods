@@ -341,7 +341,7 @@ Colombia.
 
 # 13. Authors
 
-Luis Miguel Torres Villegas.
+Jerónimo Acosta Acevedo and Luis Miguel Torres Villegas.
 
 
 # 14. Similar projects

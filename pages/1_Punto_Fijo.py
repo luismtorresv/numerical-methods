@@ -1,5 +1,6 @@
 import streamlit as st
 import sympy as sp
+
 from Main import Numerical_Methods, Web_page
 from Methods.Fixed_point_method import fixed_point_method
 
@@ -17,7 +18,9 @@ class Fixed_Point_Page(Numerical_Methods):
         Niter = self.N_iteraciones
         Fun = self.function
         Fun_g = self.g_funtion
-        return fixed_point_method(a, b, X0, Tol, self.type_of_tolerance, Niter, Fun, Fun_g)
+        return fixed_point_method(
+            a, b, X0, Tol, self.type_of_tolerance, Niter, Fun, Fun_g
+        )
 
 
 def Main():
@@ -25,12 +28,17 @@ def Main():
 
     with st.form("PF"):
         # Input data. The data unique to the method is passed as an arg to the method
-        N_iter, tolerancia, f_function, x_0, tipo_tolerancia, intervalo, g_function = (
-            Web_page.form_questions("Funcion G")
-        )
+        (
+            N_iter,
+            tolerancia,
+            f_function,
+            x_0,
+            tipo_tolerancia,
+            intervalo,
+            g_function,
+        ) = Web_page.form_questions("Funcion G")
         button = st.form_submit_button("Ejecutar Metodo")
     if button:
-
         # Check if the entered values are valid
         try:
             # Check parent values
@@ -67,7 +75,7 @@ def Main():
             return
         else:
             pf.display_results(table, x, pf.tolerance)
-            Web_page.create_graph(pf.function,pf.intervalo)
+            Web_page.create_graph(pf.function, pf.intervalo)
 
 
 if __name__ == "__main__":

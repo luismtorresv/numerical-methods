@@ -1,9 +1,9 @@
-import pandas as pd
 import math
+
+import pandas as pd
 
 
 def incremental_search_method(Xi, DeltaX, Niter, Fun):
-
     # Inicialización de listas para la tabla
     iteraciones = []
     xn_vals = []
@@ -25,7 +25,7 @@ def incremental_search_method(Xi, DeltaX, Niter, Fun):
         f_new = eval(Fun)  # Evaluamos f(x_new)
 
         if f * f_new < 0:  # Cambio de signo => hay raíz en el intervalo [x, x_new]
-            #print(f"Se detectó un cambio de signo entre {x} y {x_new}")
+            # print(f"Se detectó un cambio de signo entre {x} y {x_new}")
             break
 
         # Guardar valores en listas
@@ -48,15 +48,15 @@ def incremental_search_method(Xi, DeltaX, Niter, Fun):
         }
     )
 
-    if f_new==0:
-        s=x
+    if f_new == 0:
+        s = x
         texto = "es raiz de f(x)"
-        return tabla,s,texto
-    elif f*f_new<0:
-        s=x
-        texto = f'Existe una raiz de f(x) entre {x} y {x_new}'
-        return tabla,s,texto
+        return tabla, s, texto
+    elif f * f_new < 0:
+        s = x
+        texto = f"Existe una raiz de f(x) entre {x} y {x_new}"
+        return tabla, s, texto
     else:
-        s=x
+        s = x
         texto = f"Fracaso en {Niter} iteraciones "
-        return None,s,texto 
+        return None, s, texto

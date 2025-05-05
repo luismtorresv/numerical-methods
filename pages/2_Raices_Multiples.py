@@ -1,11 +1,13 @@
 import streamlit as st
 import sympy as sp
+
 from Main import Numerical_Methods, Web_page
-#from Methods.Multiple_Roots_method
+
+# from Methods.Multiple_Roots_method
 
 
 class Multiple_Roots_page(Numerical_Methods):
-    def __init__(self, iteraciones, function, tolerance,intervalo, X0, f_derivate):
+    def __init__(self, iteraciones, function, tolerance, intervalo, X0, f_derivate):
         super().__init__(iteraciones, function, tolerance, intervalo)
         self.X0 = X0
         self.f_derivate = f_derivate
@@ -16,21 +18,25 @@ class Multiple_Roots_page(Numerical_Methods):
         Niter = self.N_iteraciones
         Fun = self.function
         Fun_derivate = self.f_derivate
-        #return Newton_method(X0, Tol, self.type_of_tolerance, Niter, Fun, Fun_derivate)
+        # return Newton_method(X0, Tol, self.type_of_tolerance, Niter, Fun, Fun_derivate)
 
 
 def Main():
     Web_page.intro("Newton")
 
     with st.form("NT"):
-
-        N_iter, tolerancia, f_function, x_0, tipo_tolerancia, intervalo, f_derivate = (
-            Web_page.form_questions("Derivate of function F")
-        )
+        (
+            N_iter,
+            tolerancia,
+            f_function,
+            x_0,
+            tipo_tolerancia,
+            intervalo,
+            f_derivate,
+        ) = Web_page.form_questions("Derivate of function F")
 
         button = st.form_submit_button("Ejecutar Metodo")
     if button:
-
         # Check if the entered values are valid
         try:
             # Check parent values
@@ -58,7 +64,7 @@ def Main():
             (tolerancia, tipo_tolerancia),
             intervalo,
             x_0,
-            f_derivate
+            f_derivate,
         )
         table, x = Newton.call_method()  # We can finally call the numerical method.
         if table is None:
@@ -66,7 +72,7 @@ def Main():
             return
         else:
             Newton.display_results(table, x, Newton.tolerance)
-            Web_page.create_graph(Newton.function,Newton.intervalo)
+            Web_page.create_graph(Newton.function, Newton.intervalo)
 
 
 if __name__ == "__main__":

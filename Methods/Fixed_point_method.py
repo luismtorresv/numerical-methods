@@ -3,8 +3,8 @@ import sympy as sp
 
 
 def fixed_point_method(a, b, X0, Tol, type_of_tol, Niter, Fun, Fun_g):
-    #Check the G function
-    
+    # Check the G function
+
     x_sym = sp.symbols("x")
     try:
         g_expr = sp.sympify(Fun_g.replace("^", "**"))

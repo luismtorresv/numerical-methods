@@ -1,5 +1,6 @@
-import pandas as pd
 import math
+
+import pandas as pd
 
 
 def secant_method(x0, x1, tol, max_iter, Fun):

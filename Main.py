@@ -1,7 +1,7 @@
+import matplotlib.pyplot as plt
+import numpy as np
 import streamlit as st
 import sympy as sp
-import numpy as np
-import matplotlib.pyplot as plt
 
 
 class Numerical_Methods:
@@ -120,7 +120,7 @@ class Web_page:
         )
 
     @staticmethod
-    def create_graph(function,intervalo):
+    def create_graph(function, intervalo):
         # Define symbol
         f_np = function
         # Create x and y values. fill the inbetween with 1000 dots.
@@ -129,8 +129,8 @@ class Web_page:
             y_vals = f_np(x_vals)
         except Exception as e:
             raise RuntimeError(f"Error evaluating function: {e}")
-        
-        Web_page.create_graph(x_vals,y_vals,function=function)
+
+        Web_page.create_graph(x_vals, y_vals, function=function)
         # Plot (Streamlit-compatible)
         fig, ax = plt.subplots(figsize=(10, 6))
         ax.plot(x_vals, y_vals, label=f"f(x) = {function}")

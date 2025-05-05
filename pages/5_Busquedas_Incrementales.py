@@ -1,5 +1,6 @@
 import streamlit as st
 import sympy as sp
+
 from Main import Numerical_Methods, Web_page
 from Methods.Incremental_Search_method import incremental_search_method
 
@@ -23,9 +24,15 @@ def Main():
 
     with st.form("BI"):
         # Input data. The data unique to the method is passed as an arg to the method
-        N_iter, tolerancia, f_function, x_0, tipo_tolerancia, intervalo, Delta_X = (
-            Web_page.form_questions("Delta X/Crecimiento")
-        )
+        (
+            N_iter,
+            tolerancia,
+            f_function,
+            x_0,
+            tipo_tolerancia,
+            intervalo,
+            Delta_X,
+        ) = Web_page.form_questions("Delta X/Crecimiento")
 
         button = st.form_submit_button("Ejecutar Metodo")
     if button:

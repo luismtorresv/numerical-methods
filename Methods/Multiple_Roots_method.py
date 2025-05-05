@@ -1,8 +1,9 @@
 import pandas as pd
 import sympy as sp
 
-def Newton_method(X0,Tol,type_of_tol,Niter,Fun,df):
-    #Checks the derivate of F
+
+def Newton_method(X0, Tol, type_of_tol, Niter, Fun, df):
+    # Checks the derivate of F
     x_sym = sp.symbols("x")
     try:
         df = sp.sympify(df.replace("^", "**"))
@@ -32,15 +33,15 @@ def Newton_method(X0,Tol,type_of_tol,Niter,Fun,df):
 
     # Algoritmo del método de Newton-Raphson
     while Error > Tol and f != 0 and derivada != 0 and c < Niter:
-        x = x - m*f / derivada  # Fórmula de Newton-Raphson
-        derivada = df(x) # Evaluamos la derivada en el nuevo x
-        f = Fun(x) # Evaluamos f(x)
-        
+        x = x - m * f / derivada  # Fórmula de Newton-Raphson
+        derivada = df(x)  # Evaluamos la derivada en el nuevo x
+        f = Fun(x)  # Evaluamos f(x)
+
         c += 1
         if type_of_tol == "D.C":
             Error = abs(x - xn_vals[-1])  # Cálculo del error absoluto
         else:
-            Error = abs((x - xn_vals[-1])/xn_vals[-1])  # Cálculo del error relativo
+            Error = abs((x - xn_vals[-1]) / xn_vals[-1])  # Cálculo del error relativo
 
         # Guardar valores en listas
         iteraciones.append(c)
@@ -51,21 +52,22 @@ def Newton_method(X0,Tol,type_of_tol,Niter,Fun,df):
 
     # Mostrar resultados finales
     # Crear y mostrar la tabla de iteraciones
-    tabla = pd.DataFrame({
-        "Iteración": iteraciones,
-        "Xn": xn_vals,
-        "f(Xn)": fn_vals,
-        "f'(Xn)": df_vals,
-        "Error": errores
-    })
-
+    tabla = pd.DataFrame(
+        {
+            "Iteración": iteraciones,
+            "Xn": xn_vals,
+            "f(Xn)": fn_vals,
+            "f'(Xn)": df_vals,
+            "Error": errores,
+        }
+    )
 
     if f == 0:
-        #print(f"{x} es raíz de f(x)")
+        # print(f"{x} es raíz de f(x)")
         return tabla, x
     elif Error < Tol:
-        #print(f"{x} es una aproximación de una raíz con tolerancia {Tol}")
+        # print(f"{x} es una aproximación de una raíz con tolerancia {Tol}")
         return tabla, x
     else:
-        #print(f"Fracaso en {Niter} iteraciones")
+        # print(f"Fracaso en {Niter} iteraciones")
         return None, Niter

@@ -35,13 +35,13 @@ class Numerical_Methods:
 class Web_page:
     def Main(self):
         Raices = [
-            "Punto_Fijo",
-            "Raices_Multiples",
+            "Fixed_point",
+            "Multiple_roots",
             "Newton",
-            "Bisección",
-            "Busquedas_Incrementales",
-            "Secante",
-            "Regla_Falsa",
+            "Bisection",
+            "Incremental_search",
+            "Secant",
+            "False_position",
         ]
         solution_linear_system = [""]
         st.markdown("### Section 1:")

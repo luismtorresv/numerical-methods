@@ -315,6 +315,10 @@ graph TD
 > requirements (operating system, memory, other programs, environment variables,
 > etc.)
 
+```shell
+pip install -r requirements.txt
+streamlit run Main.py
+```
 
 # 11. About this project
 

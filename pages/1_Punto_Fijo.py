@@ -6,16 +6,16 @@ from Methods.Fixed_point_method import fixed_point_method
 
 
 class Fixed_Point_Page(Numerical_Methods):
-    def __init__(self, iteraciones, function, tolerance, intervalo, X0, g_function):
-        super().__init__(iteraciones, function, tolerance, intervalo)
+    def __init__(self, iterations, function, tolerance, interval, X0, g_function):
+        super().__init__(iterations, function, tolerance, interval)
         self.X0 = X0
         self.g_funtion = g_function
 
     def call_method(self):
-        a, b = self.intervalo
+        a, b = self.interval
         X0 = self.X0
         Tol = self.tolerance
-        Niter = self.N_iteraciones
+        Niter = self.N_iterations
         Fun = self.function
         Fun_g = self.g_funtion
         return fixed_point_method(
@@ -30,20 +30,20 @@ def Main():
         # Input data. The data unique to the method is passed as an arg to the method
         (
             N_iter,
-            tolerancia,
+            tolerance,
             f_function,
             x_0,
-            tipo_tolerancia,
-            intervalo,
+            type_of_tolerance,
+            interval,
             g_function,
-        ) = Web_page.form_questions("Funcion G")
-        button = st.form_submit_button("Ejecutar Metodo")
+        ) = Web_page.form_questions("Function g(x)")
+        button = st.form_submit_button("Run method")
     if button:
         # Check if the entered values are valid
         try:
             # Check parent values
-            intervalo, tolerancia, x_0 = Web_page.check_values(
-                intervalo, tolerancia, tipo_tolerancia, x_0
+            interval, tolerance, x_0 = Web_page.check_values(
+                interval, tolerance, type_of_tolerance, x_0
             )
 
             # Check both functions
@@ -52,14 +52,14 @@ def Main():
             g_function = f"{sp.parse_expr(g_function,evaluate=False)}"
 
         except:
-            st.write("Hubo un error con los datos ingresados. ¡Intenta de nuevo!")
+            st.write("Input error. Check your inputs.")
 
-        # If there are no errores with the inputs, create the class.
+        # If there are no errors with the inputs, create the class.
         pf = Fixed_Point_Page(
             N_iter,
             f_function,
-            (tolerancia, tipo_tolerancia),
-            intervalo,
+            (tolerance, type_of_tolerance),
+            interval,
             x_0,
             g_function,
         )
@@ -71,11 +71,11 @@ def Main():
 
         table, x = pf.call_method()  # We can finally call the numerical method.
         if table is None:
-            st.write("Fracaso")
+            st.write("Method failed.")
             return
         else:
             pf.display_results(table, x, pf.tolerance)
-            Web_page.create_graph(pf.function, pf.intervalo)
+            Web_page.create_graph(pf.function, pf.interval)
 
 
 if __name__ == "__main__":

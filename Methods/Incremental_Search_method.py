@@ -4,45 +4,45 @@ import pandas as pd
 
 
 def incremental_search_method(Xi, DeltaX, Niter, Fun):
-    # Inicialización de listas para la tabla
-    iteraciones = []
+    # Initialise lists for table
+    iterations = []
     xn_vals = []
     fn_vals = []
 
-    # Evaluar función en el punto inicial
+    # Evaluate function at initial point
     x = Xi
     f = eval(Fun)
-    c = 0  # Contador de iteraciones
+    c = 0  # Iteration counter
 
-    # Guardar primera iteración
-    iteraciones.append(c)
+    # Store first iteration
+    iterations.append(c)
     xn_vals.append(x)
     fn_vals.append(f)
 
-    # Algoritmo de búsquedas incrementales
+    # Do incremental search
     while c < Niter:
-        x_new = x + DeltaX  # Incrementamos x
-        f_new = eval(Fun)  # Evaluamos f(x_new)
+        x_new = x + DeltaX
+        f_new = eval(Fun)
 
-        if f * f_new < 0:  # Cambio de signo => hay raíz en el intervalo [x, x_new]
-            # print(f"Se detectó un cambio de signo entre {x} y {x_new}")
+        if f * f_new < 0:  # Change of sign => there's a root in the interval [x, x_new]
+            # print(f"A change of sign was detected between {x} and {x_new}")
             break
 
-        # Guardar valores en listas
+        # Store values in lists
         c += 1
-        iteraciones.append(c)
+        iterations.append(c)
         xn_vals.append(x_new)
         fn_vals.append(f_new)
 
-        # Actualizar valores
+        # Update values
         x = x_new
         f = f_new
 
-    # Mostrar resultados finales
-    # Crear y mostrar la tabla de iteraciones
-    tabla = pd.DataFrame(
+    # Show final results
+    # Create and show iterations table
+    table = pd.DataFrame(
         {
-            "Iteración": iteraciones,
+            "Iteración": iterations,
             "Xn": xn_vals,
             "f(Xn)": fn_vals,
         }
@@ -50,13 +50,13 @@ def incremental_search_method(Xi, DeltaX, Niter, Fun):
 
     if f_new == 0:
         s = x
-        texto = "es raiz de f(x)"
-        return tabla, s, texto
+        text = "is a root of f(x)"
+        return table, s, text
     elif f * f_new < 0:
         s = x
-        texto = f"Existe una raiz de f(x) entre {x} y {x_new}"
-        return tabla, s, texto
+        text = f"There exists a root of f(x) between {x} and {x_new}"
+        return table, s, text
     else:
         s = x
-        texto = f"Fracaso en {Niter} iteraciones "
-        return None, s, texto
+        text = f"Method failed in {Niter} iterations"
+        return None, s, text

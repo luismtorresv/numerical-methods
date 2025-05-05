@@ -5,14 +5,14 @@ import sympy as sp
 
 
 class Numerical_Methods:
-    def __init__(self, iteraciones, function, tolerance, intervalo):
+    def __init__(self, iterations, function, tolerance, interval):
         # The values shared between all the functions: Niter, Tol, Func, Interval
-        self.N_iteraciones = iteraciones
+        self.N_iterations = iterations
         self.function = self.check_function(function)
 
         # Tuple made up of: (amount of tolerance, type of tolerance). ej: (10,DC) where DC = Decimales Correctos
         self.tolerance, self.type_of_tolerance = tolerance
-        self.intervalo = intervalo
+        self.interval = interval
 
     def check_function(self, function):
         # Safely parse and convert strings into callable functions.
@@ -27,10 +27,8 @@ class Numerical_Methods:
         f = sp.lambdify(x_sym, f_expr, modules=["numpy"])
         return f
 
-    def display_results(self, table, x, tolerancia):
-        st.markdown(
-            f"### {x} es una aproximación de una raíz con tolerancia {tolerancia}"
-        )
+    def display_results(self, table, x, tolerance):
+        st.markdown(f"### {x} is an approximation of a root with tolerance {tolerance}")
         st.table(table.style.format("{:7,.16f}"))
 
 
@@ -45,8 +43,8 @@ class Web_page:
             "Secante",
             "Regla_Falsa",
         ]
-        Sol_Sist_ecuaciones = [""]
-        st.markdown("### Capitulo 1:")
+        solution_linear_system = [""]
+        st.markdown("### Section 1:")
         row1 = st.columns(3)
         row2 = st.columns(4)
 
@@ -59,72 +57,73 @@ class Web_page:
             )
             counter += 1
 
-        st.markdown("### Capitulo 2:")
+        st.markdown("### Section 2:")
 
     @staticmethod
     def form_questions(method_input):
-        N_iter = st.slider("Numero de Iteraciones:", 0, 100)
-        tolerancia = st.slider("Tolerancia: ", 0, 100)
-        f_function = st.text_input("Funcion:")
+        N_iter = st.slider("Maximum number of iterations:", 0, 100)
+        tolerance = st.slider("Tolerance: ", 0, 100)
+        f_function = st.text_input("Function:")
 
         # Varies from method to method
-        varible_input = st.text_input(f"{method_input}: ")
+        variable_input = st.text_input(f"{method_input}: ")
 
-        x_0 = st.text_input("Valor inicial X0:")
+        x_0 = st.text_input("Initial value x0:")
 
-        tipo_tolerancia = st.selectbox(
-            "Escoge un tipo de tolerancia:",
+        type_of_tolerance = st.selectbox(
+            "Significant figures or correct decimals?:",
             ["C.S", "D.C"],
         )
 
-        st.write("Intervalo:")
-        intervalo = (
-            st.text_input("Limite inferior (a):"),
-            st.text_input("Limite superior (b):"),
+        st.write("Interval:")
+        interval = (
+            st.text_input("Lower limit (a):"),
+            st.text_input("Upper limit (b):"),
         )
 
         return (
             N_iter,
-            tolerancia,
+            tolerance,
             f_function,
             x_0,
-            tipo_tolerancia,
-            intervalo,
-            varible_input,
+            type_of_tolerance,
+            interval,
+            variable_input,
         )
 
     @staticmethod
-    def check_values(intervalo, tolerancia, tipo_tolerancia, x_0):
-        a, b = intervalo
-        intervalo = (
+    def check_values(interval, tolerance, type_of_tolerance, x_0):
+        a, b = interval
+        interval = (
             float(a),
             float(b),
         )
 
-        tolerancia = (
-            float(f"5e-{tolerancia}")
-            if tipo_tolerancia == "C.S"
-            else float(f"0.5e-{tolerancia}")
+        tolerance = (
+            float(f"5e-{tolerance}")
+            if type_of_tolerance == "C.S"
+            else float(f"0.5e-{tolerance}")
         )
 
         x_0 = float(x_0)
 
-        return intervalo, tolerancia, x_0
+        return interval, tolerance, x_0
 
     @staticmethod
     def intro(method_type):
         st.set_page_config(page_title=f"{method_type}")
         st.markdown(f"# {method_type}")
         st.markdown(
-            " ### NOTA: La funcion ingresada debe de ser una funcion valida y continua. Solo ingresar el numero deseado de D.C/C.S en la tolerancia."
+            " ### NOTE: The input function must be continuous."
+            "Please only input the number of D.C/C.S in the tolerance field."
         )
 
     @staticmethod
-    def create_graph(function, intervalo):
+    def create_graph(function, interval):
         # Define symbol
         f_np = function
         # Create x and y values. fill the inbetween with 1000 dots.
-        x_vals = np.linspace(intervalo[0], intervalo[1], 1000)
+        x_vals = np.linspace(interval[0], interval[1], 1000)
         try:
             y_vals = f_np(x_vals)
         except Exception as e:
@@ -152,7 +151,7 @@ if __name__ == "__main__":
         page_icon="👋",
     )
 
-    st.sidebar.success("Selecciona el metodo que desees.")
-    st.markdown("## PROYECTO ANALISIS NUMERICO 2025-1")
+    st.sidebar.success("Choose a numerical method.")
+    st.markdown("## Numerical Analysis project - 2025-1")
     p = Web_page()
     p.Main()

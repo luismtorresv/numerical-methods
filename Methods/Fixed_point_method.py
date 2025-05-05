@@ -4,7 +4,6 @@ import sympy as sp
 
 def fixed_point_method(a, b, X0, Tol, type_of_tol, Niter, Fun, Fun_g):
     # Check the G function
-
     x_sym = sp.symbols("x")
     try:
         g_expr = sp.sympify(Fun_g.replace("^", "**"))
@@ -12,59 +11,60 @@ def fixed_point_method(a, b, X0, Tol, type_of_tol, Niter, Fun, Fun_g):
         raise ValueError(f"Invalid expression: {e}")
     g_func = sp.lambdify(x_sym, g_expr, modules=["math"])
 
-    # Inicialización de listas para la tabla
-    iteraciones = []
+    # Initialise lists for table
+    iterations = []
     xn = []
     fn = []
-    errores = []
+    errors = []
 
-    # Primera iteración
+    # First iteration
     x = X0
     f = Fun(x)
     c = 0
-    Error = 100  # Error inicial arbitrario
+    error = 100  # Initial error (arbitrary)
 
-    iteraciones.append(c)
+    iterations.append(c)
     xn.append(x)
     fn.append(f)
-    errores.append(Error)
-    while Error > Tol and f != 0 and c < Niter:
-        x = g_func(x)  # Nueva aproximación usando g(x)
+    errors.append(error)
 
-        # Validar que la nueva aproximación esté en el intervalo [a, b]
+    while error > Tol and f != 0 and c < Niter:
+        x = g_func(x)  # New approximation using g(x)
+
+        # Validate new approximation in interval [a, b]
         if x < a or x > b:
             print(
-                f"Error: La iteración {c} generó un valor fuera del intervalo [{a}, {b}]."
+                f"Error: Iteration #{c} resulted in a value outside of the interval [{a}, {b}]."
             )
             break
 
-        f = Fun(x)  # Evaluamos f(x)
+        f = Fun(x)  # We evaluate f(x)
 
         c += 1
         if type_of_tol == "D.C":
-            Error = abs(x - xn[-1])  # Cálculo del error absoluto
+            error = abs(x - xn[-1])  # Absolute error
         else:
-            Error = abs((x - xn[-1]) / x)  # Cálculo del error relativo
+            error = abs((x - xn[-1]) / x)  # Relative error
 
-        # Guardar valores en listas
-        iteraciones.append(c)
+        # Store values in lists
+        iterations.append(c)
         xn.append(x)
         fn.append(f)
-        errores.append(Error)
+        errors.append(error)
 
-    # Mostrar resultados finales
+    # Show final results
 
-    # Crear y mostrar la tabla de iteraciones
-    tabla = pd.DataFrame(
-        {"Iteración": iteraciones, "Xn": xn, "f(Xn)": fn, "Error": errores}
+    # Create and show iterations and errors
+    table = pd.DataFrame(
+        {"Iteración": iterations, "Xn": xn, "f(Xn)": fn, "Error": errors}
     )
 
     if f == 0:
-        # print(f"{x} es raíz de f(x)")
-        return tabla, x
-    elif Error < Tol:
-        # print(f"{x} es una aproximación de una raíz con tolerancia {Tol}")
-        return tabla, x
+        # print(f"{x} is a root of f(x).")
+        return table, x
+    elif error < Tol:
+        # print(f"{x} is an approximation of a root of f(x) with tolerance {Tol}.")
+        return table, x
     else:
-        # print(f"Fracaso en {Niter} iteraciones")
+        # print(f"Method failed in {Niter} iterations.")
         return None, Niter

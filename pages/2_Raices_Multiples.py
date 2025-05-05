@@ -7,18 +7,18 @@ from Main import Numerical_Methods, Web_page
 
 
 class Multiple_Roots_page(Numerical_Methods):
-    def __init__(self, iteraciones, function, tolerance, intervalo, X0, f_derivate):
-        super().__init__(iteraciones, function, tolerance, intervalo)
+    def __init__(self, iterations, function, tolerance, interval, X0, f_derivative):
+        super().__init__(iterations, function, tolerance, interval)
         self.X0 = X0
-        self.f_derivate = f_derivate
+        self.f_derivative = f_derivative
 
     def call_method(self):
         X0 = self.X0
         Tol = self.tolerance
-        Niter = self.N_iteraciones
+        Niter = self.N_iterations
         Fun = self.function
-        Fun_derivate = self.f_derivate
-        # return Newton_method(X0, Tol, self.type_of_tolerance, Niter, Fun, Fun_derivate)
+        Fun_derivative = self.f_derivative
+        # return Newton_method(X0, Tol, self.type_of_tolerance, Niter, Fun, Fun_derivative)
 
 
 def Main():
@@ -27,52 +27,52 @@ def Main():
     with st.form("NT"):
         (
             N_iter,
-            tolerancia,
+            tolerance,
             f_function,
             x_0,
-            tipo_tolerancia,
-            intervalo,
-            f_derivate,
-        ) = Web_page.form_questions("Derivate of function F")
+            type_of_tolerance,
+            interval,
+            f_derivative,
+        ) = Web_page.form_questions("Derivative of function F")
 
-        button = st.form_submit_button("Ejecutar Metodo")
+        button = st.form_submit_button("Run method")
     if button:
         # Check if the entered values are valid
         try:
             # Check parent values
-            intervalo, tolerancia, x_0 = Web_page.check_values(
-                intervalo, tolerancia, tipo_tolerancia, x_0
+            interval, tolerance, x_0 = Web_page.check_values(
+                interval, tolerance, type_of_tolerance, x_0
             )
             x_symbol = sp.symbols(f"x")
 
             # Check both functions
             x_symbol = sp.symbols("x")
             f_function = f"{sp.parse_expr(f_function,evaluate=False)}"
-            f_derivate = f"{sp.parse_expr(f_derivate,evaluate=False)}"
+            f_derivative = f"{sp.parse_expr(f_derivative,evaluate=False)}"
 
         except:
-            st.write("Hubo un error con los datos ingresados. ¡Intenta de nuevo!")
+            st.write("Input error. Check your inputs.")
 
         st.subheader("Functions")
         st.latex(f"f({x_symbol}) = {sp.latex(f_function)}")
-        st.latex(f"f'({x_symbol}) = {sp.latex(f_derivate)}")
+        st.latex(f"f'({x_symbol}) = {sp.latex(f_derivative)}")
 
         # Check if the functions are valid
         Newton = Newton_page(
             N_iter,
             f_function,
-            (tolerancia, tipo_tolerancia),
-            intervalo,
+            (tolerance, type_of_tolerance),
+            interval,
             x_0,
-            f_derivate,
+            f_derivative,
         )
         table, x = Newton.call_method()  # We can finally call the numerical method.
         if table is None:
-            st.write("Fracaso")
+            st.write("Method failed.")
             return
         else:
             Newton.display_results(table, x, Newton.tolerance)
-            Web_page.create_graph(Newton.function, Newton.intervalo)
+            Web_page.create_graph(Newton.function, Newton.interval)
 
 
 if __name__ == "__main__":

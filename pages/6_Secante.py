@@ -6,14 +6,14 @@ from Methods.Secant_method import secant_method
 
 
 class Secante_page(Numerical_Methods):
-    def __init__(self, iteraciones, function, tolerance, intervalo, X0, X1):
-        super().__init__(iteraciones, function, tolerance, intervalo)
+    def __init__(self, iterations, function, tolerance, interval, X0, X1):
+        super().__init__(iterations, function, tolerance, interval)
         self.X0, self.X1 = X0, X1
 
     def call_method(self):
         X0, X1 = self.X0, self.X1
         tol = self.tolerance
-        max_iter = self.N_iteraciones
+        max_iter = self.N_iterations
         Fun = self.function
         secant_method(X0, X1, tol, max_iter, Fun)
 
@@ -24,21 +24,21 @@ def Main():
     with st.form("PF"):
         (
             N_iter,
-            tolerancia,
+            tolerance,
             f_function,
             x_0,
-            tipo_tolerancia,
-            intervalo,
+            type_of_tolerance,
+            interval,
             x_1,
         ) = Web_page.form_questions("X1")
 
-        button = st.form_submit_button("Ejecutar Metodo")
+        button = st.form_submit_button("Run method")
     if button:
         # Check if the entered values are valid
         try:
             # Check parent values
-            intervalo, tolerancia, x_0 = Web_page.check_values(
-                intervalo, tolerancia, tipo_tolerancia, x_0
+            interval, tolerance, x_0 = Web_page.check_values(
+                interval, tolerance, type_of_tolerance, x_0
             )
             x_1 = float(x_1)
 
@@ -46,21 +46,21 @@ def Main():
             x_symbol = sp.symbols(f"x")
             f_function = f"{sp.parse_expr(f_function,evaluate=False)}"
         except:
-            st.write("Hubo un error con los datos ingresados. ¡Intenta de nuevo!")
+            st.write("Input error. Check your inputs.")
 
         st.subheader("Functions")
         st.latex(f"f({x_symbol}) = {sp.latex(f_function)}")
 
         Secant = Secante_page(
-            N_iter, f_function, (tolerancia, tipo_tolerancia), intervalo, x_0, x_1
+            N_iter, f_function, (tolerance, type_of_tolerance), interval, x_0, x_1
         )
         table, x = Secant.call_method()  # We can finally call the numerical method.
         if table is None:
-            st.write("Fracaso")
+            st.write("Method failed.")
             return
         else:
             Secant.display_results(table, x, Secant.tolerance)
-            Web_page.create_graph(Secant.function, Secant.intervalo)
+            Web_page.create_graph(Secant.function, Secant.interval)
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@ import sympy as sp
 
 
 def Newton_method(X0, Tol, type_of_tol, Niter, Fun, df):
-    # Checks the derivate of F
+    # Check the derivative of Fun
     x_sym = sp.symbols("x")
     try:
         df = sp.sympify(df.replace("^", "**"))
@@ -11,63 +11,63 @@ def Newton_method(X0, Tol, type_of_tol, Niter, Fun, df):
         raise ValueError(f"Invalid expression: {e}")
     df = sp.lambdify(x_sym, df, modules=["math"])
 
-    # Inicialización de listas para la tabla
-    iteraciones = []
+    # Initialise lists for table
+    iterations = []
     xn_vals = []
     fn_vals = []
     df_vals = []
-    errores = []
+    errors = []
 
-    # Primera iteración
+    # First iteration
     x = X0
     f = Fun(x)
-    derivada = df(x)
+    derivative = df(x)
     c = 0
-    Error = 100  # Error inicial arbitrario
+    error = 100  # Initial error (arbitrary)
 
-    iteraciones.append(c)
+    iterations.append(c)
     xn_vals.append(x)
     fn_vals.append(f)
-    df_vals.append(derivada)
-    errores.append(Error)
+    df_vals.append(derivative)
+    errors.append(error)
 
-    # Algoritmo del método de Newton-Raphson
-    while Error > Tol and f != 0 and derivada != 0 and c < Niter:
-        x = x - f / derivada  # Fórmula de Newton-Raphson
-        derivada = df(x)  # Evaluamos la derivada en el nuevo x
-        f = Fun(x)  # Evaluamos f(x)
+    # Newton-Raphson
+    while error > Tol and f != 0 and derivative != 0 and c < Niter:
+        x = x - f / derivative
+        derivative = df(x)
+        f = Fun(x)
 
         c += 1
         if type_of_tol == "D.C":
-            Error = abs(x - xn_vals[-1])  # Cálculo del error absoluto
+            error = abs(x - xn_vals[-1])
         else:
-            Error = abs((x - xn_vals[-1]) / xn_vals[-1])  # Cálculo del error relativo
+            error = abs((x - xn_vals[-1]) / xn_vals[-1])
 
-        # Guardar valores en listas
-        iteraciones.append(c)
+        # Store values in lists.
+        iterations.append(c)
         xn_vals.append(x)
         fn_vals.append(f)
-        df_vals.append(derivada)
-        errores.append(Error)
+        df_vals.append(derivative)
+        errors.append(error)
 
-    # Mostrar resultados finales
-    # Crear y mostrar la tabla de iteraciones
-    tabla = pd.DataFrame(
+    # Show final results
+    # Create and show iterations table
+    table = pd.DataFrame(
         {
-            "Iteración": iteraciones,
+            "Iteración": iterations,
             "Xn": xn_vals,
             "f(Xn)": fn_vals,
             "f'(Xn)": df_vals,
-            "Error": errores,
+            "Error": errors,
         }
     )
 
     if f == 0:
-        # print(f"{x} es raíz de f(x)")
-        return tabla, x
-    elif Error < Tol:
-        # print(f"{x} es una aproximación de una raíz con tolerancia {Tol}")
-        return tabla, x
+        # print(f"{x} is a root of f(x)")
+        return table, x
+    elif error < Tol:
+        # print(f"{x} is an approximation of a root of f(x) with tolerance {Tol}.")
+        return table, x
     else:
-        # print(f"Fracaso en {Niter} iteraciones")
+        # print(f"Method failed in {Niter} iterations.")
         return None, Niter

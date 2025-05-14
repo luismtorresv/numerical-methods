@@ -1,0 +1,18 @@
+[logger]
+level = "error"
+
+[client]
+showErrorDetails = "none"
+toolbarMode = "minimal"
+
+[runner]
+magicEnabled = false
+
+[server]
+folderWatchBlacklist = ['.vscode']
+headless = true
+port = 8080
+baseUrlPath = "numerical-methods"
+
+[browser]
+gatherUsageStats = false

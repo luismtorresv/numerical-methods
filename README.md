@@ -369,4 +369,4 @@ Jerónimo Acosta Acevedo and Luis Miguel Torres Villegas.
 
 # 15. License
 
-Copyright 2025 The Authors.
+Copyright really unclear.

@@ -1,0 +1,5 @@
+from interpolation.Lagrange_View import show_lagrange
+from interpolation.NewtonDividedDiff_View import show_newton_divided_diff
+from interpolation.Spline_Cubic_View import show_cubic_spline
+from interpolation.Spline_View import show_spline
+from interpolation.Vandermonde_View import show_vandermonde

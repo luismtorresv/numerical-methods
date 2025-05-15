@@ -13,6 +13,16 @@ folderWatchBlacklist = ['.vscode']
 headless = true
 port = 8080
 baseUrlPath = "numerical-methods"
+enableStaticServing = false
 
 [browser]
 gatherUsageStats = false
+
+[theme]
+base = "light"
+primaryColor = "#6080d6"
+backgroundColor = "#fafaff"
+secondaryBackgroundColor = "#ffffff"
+linkColor = "#2b5be0"
+showSidebarBorder = true
+headingFont = "serif"

@@ -1,7 +1,9 @@
 import streamlit as st
 
-from interface_blocks import LU_result, definite_matrix_interface, graph_Ab
-from Methods.PLU_factorization import PLU_factorization, solve_PLU
+from utils.interface_blocks import (LU_result, definite_matrix_interface,
+                                    graph_Ab)
+
+from .PLU_factorization import PLU_factorization, solve_PLU
 
 
 def show_PLU_factorization():

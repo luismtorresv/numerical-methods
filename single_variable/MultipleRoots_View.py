@@ -3,9 +3,10 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
-from interface_blocks import (calculate_tolerance, enter_function, graph,
-                              show_table)
-from Methods.MultipleRoots import multiple_roots
+from utils.interface_blocks import (calculate_tolerance, enter_function, graph,
+                                    show_table)
+
+from .MultipleRoots import multiple_roots
 
 
 def show_multiple_roots():
@@ -14,8 +15,8 @@ def show_multiple_roots():
     st.markdown(
         """
     The **Newton's Method for Multiple Roots** is a numerical technique used to approximate roots of a function  $f(x)$ ,
-    especially when the root has multiplicity greater than one. In such cases, the standard Newton-Raphson Method 
-    may converge slowly or fail entirely. 
+    especially when the root has multiplicity greater than one. In such cases, the standard Newton-Raphson Method
+    may converge slowly or fail entirely.
 
     This method modifies the Newton-Raphson formula to account for higher multiplicity using the first and second derivatives.
     """

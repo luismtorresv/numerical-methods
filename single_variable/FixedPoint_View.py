@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
-from interface_blocks import calculate_tolerance, enter_function, graph
+from utils.interface_blocks import calculate_tolerance, enter_function, graph
 
 
 def validate_fixed_point_function(x_symbol, f_function, g_function):

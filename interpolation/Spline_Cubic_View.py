@@ -2,8 +2,9 @@ import numpy as np
 import streamlit as st
 import sympy as sp
 
-from interface_blocks import enter_points, graph_with_points
-from Methods.Spline_cubic import cubic_spline_interpolation
+from utils.interface_blocks import enter_points, graph_with_points
+
+from .Spline_cubic import cubic_spline_interpolation
 
 
 def show_cubic_spline():
@@ -21,7 +22,7 @@ def show_cubic_spline():
     with st.expander("📘 How the False Position Method Works"):
         st.markdown(
             """
-    
+
         For each interval $ [x_i, x_{i+1}] $, the cubic spline is given by:
         """
         )

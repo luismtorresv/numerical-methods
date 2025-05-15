@@ -1,8 +1,9 @@
 import streamlit as st
 import sympy as sp
 
-from interface_blocks import enter_points, graph_with_points
-from Methods.Vandermonde import vandermonde
+from utils.interface_blocks import enter_points, graph_with_points
+
+from .Vandermonde import vandermonde
 
 
 def show_vandermonde():
@@ -10,7 +11,7 @@ def show_vandermonde():
 
     st.markdown(
         """
-    The **Vandermonde Interpolation Method** is a technique used to find a polynomial that passes through a given set of points. 
+    The **Vandermonde Interpolation Method** is a technique used to find a polynomial that passes through a given set of points.
     It constructs a system of linear equations based on the Vandermonde matrix, which is a structured matrix often used in polynomial interpolation.
 
     This method is especially useful for understanding how polynomials of degree $ n-1 $ can interpolate $ n $ data points.

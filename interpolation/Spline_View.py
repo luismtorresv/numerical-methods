@@ -1,15 +1,16 @@
 import streamlit as st
 import sympy as sp
 
-from interface_blocks import enter_points, graph_with_points
-from Methods.spline import linear_spline_interpolation
+from utils.interface_blocks import enter_points, graph_with_points
+
+from .spline import linear_spline_interpolation
 
 
 def show_spline():
     st.header("Linear Spline Method")
     st.markdown(
         """
-    The **Linear Spline Interpolation Method** is a piecewise linear approach for interpolating between data points. 
+    The **Linear Spline Interpolation Method** is a piecewise linear approach for interpolating between data points.
         It connects each pair of adjacent data points with a straight line, creating a continuous piecewise function that is linear in each interval.
 
     """
@@ -31,7 +32,7 @@ def show_spline():
         **Steps:**
         - For each pair of adjacent data points, compute the linear spline using the above formula.
         - Combine these splines to form the complete piecewise linear interpolation.
-        
+
         **Advantages:**
         - Simple and easy to compute.
         - Provides a continuous function without oscillation.

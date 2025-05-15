@@ -2,16 +2,17 @@ import numpy as np
 import streamlit as st
 import sympy as sp
 
-from interface_blocks import (calculate_tolerance, enter_function, graph,
-                              show_table)
-from Methods.Secant import secant
+from utils.interface_blocks import (calculate_tolerance, enter_function, graph,
+                                    show_table)
+
+from .Secant import secant
 
 
 def show_secant():
     st.markdown(
         """
-    The **Secant Method** is a numerical technique used to approximate the roots of a function  f(x) . 
-    Unlike the Newton-Raphson Method, it does not require the computation of derivatives. Instead, it approximates 
+    The **Secant Method** is a numerical technique used to approximate the roots of a function  f(x) .
+    Unlike the Newton-Raphson Method, it does not require the computation of derivatives. Instead, it approximates
     the derivative using a secant line through two points on the function.
 
     The method is iterative and converges faster than the Bisection Method but is less robust than Newton-Raphson.
@@ -33,7 +34,7 @@ def show_secant():
         )
         st.markdown(
             """
-            - This formula uses the slope of the secant line through $(x_{n-1}, f(x_{n-1}))$ and $(x_n, f(x_n))$ 
+            - This formula uses the slope of the secant line through $(x_{n-1}, f(x_{n-1}))$ and $(x_n, f(x_n))$
             to compute the next approximation $x_{n+1}$.
 
             **3. Check for Convergence:**

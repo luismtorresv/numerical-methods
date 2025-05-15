@@ -1,32 +1,9 @@
 import streamlit as st
 
-from views.single_variable.Bisection_View import show_bisection
-from views.single_variable.FixedPoint_View import show_fixed_point
-from views.linear_systems.Gauss_Seidel_View import show_gauss_seidel
-from Views.Bisection_View import show_bisection
-from Views.FixedPoint_View import show_fixed_point
-from Views.Gauss_Seidel_View import show_gauss_seidel
-from Views.GaussNoPivot_View import show_gauss_jordan_no_pivot
-from Views.GaussPartialPivot_View import show_gauss_jordan_partial_pivot
-from Views.GaussTotalPivot_View import show_gauss_jordan_total_pivot
-
-# Import necessary views for each method
-from Views.Graph import show_graph
-from Views.Incremental_View import show_incremental
-from Views.Jacobi_View import show_Jacobi
-from Views.Lagrange_View import show_lagrange
-from Views.LU_Factorization_View import show_LU_factorization
-from Views.MultipleRoots_View import show_multiple_roots
-from Views.Newton_View import show_newton
-from Views.NewtonDividedDiff_View import show_newton_divided_diff
-from Views.PLU_factorization_View import show_PLU_factorization
-from Views.RegulaFalsi_View import show_regula_falsi
-from Views.Secant_View import show_secant
-from Views.SOR_View import show_SOR
-from Views.Spline_Cubic_View import show_cubic_spline
-from Views.Spline_Quadratic_View import show_quadratic_spline
-from Views.Spline_View import show_spline
-from Views.Vandermonde_View import show_vandermonde
+from interpolation import *
+from linear_systems import *
+from single_variable import *
+from utils.graph import show_graph
 
 # Initialize session state if not already initialized
 if "page" not in st.session_state:
@@ -184,10 +161,8 @@ if st.sidebar.button("Interpolation Methods"):
 # Render the page based on session state
 if st.session_state.page == "home":
     show_home()
-
 elif st.session_state.page == "graph":
     show_graph()
-
 elif st.session_state.page == "roots":
     st.title("Finding Roots of Polynomials")
 
@@ -206,21 +181,21 @@ elif st.session_state.page == "roots":
     )
 
     # Display the corresponding method content based on the dropdown selection
-    if root_method == "Newton-Raphson":
-        show_newton()
-    elif root_method == "Secant":
-        show_secant()
-    elif root_method == "Bisection":
-        show_bisection()
-    elif root_method == "False Position":
-        show_regula_falsi()
-    elif root_method == "Incremental Search":
-        show_incremental()
-    elif root_method == "Fixed Point":
-        show_fixed_point()
-    elif root_method == "Multiple Roots":
-        show_multiple_roots()
-
+    match root_method:
+        case "Newton-Raphson":
+            show_newton()
+        case "Secant":
+            show_secant()
+        case "Bisection":
+            show_bisection()
+        case "False Position":
+            show_regula_falsi()
+        case "Incremental Search":
+            show_incremental()
+        case "Fixed Point":
+            show_fixed_point()
+        case "Multiple Roots":
+            show_multiple_roots()
 elif st.session_state.page == "systems":
     st.title("Solving Systems of Equations")
 
@@ -240,22 +215,17 @@ elif st.session_state.page == "systems":
     )
 
     # Display the corresponding method content based on the dropdown selection
-    if system_method == "Gauss-Jordan without Pivoting":
-        show_gauss_jordan_no_pivot()
-    elif system_method == "Gauss-Jordan with Partial Pivoting":
-        show_gauss_jordan_partial_pivot()
-    elif system_method == "Gauss-Jordan with Total Pivoting":
-        show_gauss_jordan_total_pivot()
-    elif system_method == "LU Factorization":
-        show_LU_factorization()
-    elif system_method == "PLU Factorization":
-        show_PLU_factorization()
-    elif system_method == "Jacobi":
-        show_Jacobi()
-    elif system_method == "Gauss-Seidel":
-        show_gauss_seidel()
-    elif system_method == "SOR":
-        show_SOR()
+    match system_method:
+        case "LU Factorization":
+            show_LU_factorization()
+        case "PLU Factorization":
+            show_PLU_factorization()
+        case "Jacobi":
+            show_Jacobi()
+        case "Gauss-Seidel":
+            show_gauss_seidel()
+        case "SOR":
+            show_SOR()
 
 elif st.session_state.page == "interpolation":
     st.title("Interpolation Methods")
@@ -273,15 +243,14 @@ elif st.session_state.page == "interpolation":
     )
 
     # Display the corresponding method content based on the dropdown selection
-    if interpolation_method == "Vandermonde Matrix":
-        show_vandermonde()
-    elif interpolation_method == "Newton Divided Difference":
-        show_newton_divided_diff()
-    elif interpolation_method == "Lagrange Interpolation":
-        show_lagrange()
-    elif interpolation_method == "Linear Spline Interpolation":
-        show_spline()
-    elif interpolation_method == "Quadratic Spline Interpolation":
-        show_quadratic_spline()
-    elif interpolation_method == "Cubic Spline Interpolation":
-        show_cubic_spline()
+    match interpolation_method:
+        case "Vandermonde Matrix":
+            show_vandermonde()
+        case "Newton Divided Difference":
+            show_newton_divided_diff()
+        case "Lagrange Interpolation":
+            show_lagrange()
+        case "Linear Spline Interpolation":
+            show_spline()
+        case "Cubic Spline Interpolation":
+            show_cubic_spline()

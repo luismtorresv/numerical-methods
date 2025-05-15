@@ -3,8 +3,10 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
-from interface_blocks import LU_result, definite_matrix_interface, graph_Ab
-from Methods.LU_factorization import LU_factorization, solve_LU
+from utils.interface_blocks import (LU_result, definite_matrix_interface,
+                                    graph_Ab)
+
+from .LU_factorization import LU_factorization, solve_LU
 
 
 def show_LU_factorization():
@@ -32,7 +34,7 @@ def show_LU_factorization():
 
         2. **Decomposition**:
         - For each column $i$, divide the elements below the diagonal by the pivot element $a_{ii}$ to determine the factors for elimination.
-        - Subtract the scaled row $i$ from each subsequent row to create zeros below the diagonal in $U$.
+        - Subtract the scaled row $i$ from .each subsequent row to create zeros below the diagonal in $U$.
         - Store the factors in the corresponding positions of $L$.
 
         3. **Validation**:

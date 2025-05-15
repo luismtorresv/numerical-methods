@@ -1,16 +1,18 @@
 import streamlit as st
 
-from interface_blocks import (calculate_tolerance, definite_matrix_interface,
-                              graph_Ab, show_matrix, show_T_and_C)
-from Methods.Jacobi import jacobi_method
+from utils.interface_blocks import (calculate_tolerance,
+                                    definite_matrix_interface, graph_Ab,
+                                    show_matrix, show_T_and_C)
+
+from .Jacobi import jacobi_method
 
 
 def show_Jacobi():
     st.header("Jacobi Method")
     st.markdown(
         """
-    **Jacobi Method** is an iterative algorithm for solving systems of linear equations $Ax = b$. 
-    It computes each component of the solution independently at each iteration, using only the values from the previous iteration.
+    **Jacobi Method** is an iterative algorithm for solving systems of linear equations $Ax = b$.
+    It computes each component of the solution independently at each iteration, using only the values from .the previous iteration.
     """
     )
 

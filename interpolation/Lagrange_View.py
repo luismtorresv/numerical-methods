@@ -2,8 +2,9 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
-from interface_blocks import enter_points, graph_with_points
-from Methods.lagrange import lagrange
+from utils.interface_blocks import enter_points, graph_with_points
+
+from .lagrange import lagrange
 
 
 def show_lagrange():
@@ -11,7 +12,7 @@ def show_lagrange():
 
     st.markdown(
         """
-    The **Lagrange Interpolation Method** is one of the most widely used methods for polynomial interpolation. 
+    The **Lagrange Interpolation Method** is one of the most widely used methods for polynomial interpolation.
     It provides a polynomial that exactly passes through a given set of data points. Unlike Newton's method, which builds the polynomial incrementally, Lagrange's method computes the entire polynomial in one go using Lagrange basis polynomials.
 
     The method is particularly simple to implement and understand, and it is useful when dealing with small datasets or when you need an explicit polynomial form.

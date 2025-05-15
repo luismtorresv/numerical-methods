@@ -2,8 +2,9 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
-from interface_blocks import enter_points, graph_with_points, show_table
-from Methods.newton_interpolation import newton_interpolation
+from utils.interface_blocks import enter_points, graph_with_points, show_table
+
+from .newton_interpolation import newton_interpolation
 
 
 def show_newton_divided_diff():
@@ -11,7 +12,7 @@ def show_newton_divided_diff():
 
     st.markdown(
         """
-    The **Newton Divided Difference Method** is a numerical technique used to construct an interpolating polynomial for a given set of data points. 
+    The **Newton Divided Difference Method** is a numerical technique used to construct an interpolating polynomial for a given set of data points.
     It is particularly advantageous because it can handle unevenly spaced data and allows incremental addition of points without recomputing the entire polynomial.
 
     This method represents the polynomial in terms of divided differences, leading to a compact and recursive formulation.

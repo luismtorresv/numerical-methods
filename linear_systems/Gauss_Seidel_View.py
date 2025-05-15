@@ -1,15 +1,17 @@
 import streamlit as st
 
-from interface_blocks import (calculate_tolerance, definite_matrix_interface,
-                              graph_Ab, show_matrix, show_T_and_C)
-from Methods.Gauss_seidel import gauss_seidel_method
+from utils.interface_blocks import (calculate_tolerance,
+                                    definite_matrix_interface, graph_Ab,
+                                    show_matrix, show_T_and_C)
+
+from .Gauss_seidel import gauss_seidel_method
 
 
 def show_gauss_seidel():
     st.header("Gauss Seidel Method")
     st.markdown(
         """
-    **Gauss-Seidel Method** is an iterative algorithm for solving systems of linear equations of the form $Ax = b$. 
+    **Gauss-Seidel Method** is an iterative algorithm for solving systems of linear equations of the form $Ax = b$.
     It refines an initial guess by repeatedly updating the solution components, using the most recent values for faster convergence.
     """
     )

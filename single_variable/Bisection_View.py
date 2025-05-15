@@ -1,23 +1,21 @@
-import numpy as np
-import pandas as pd
 import streamlit as st
 import sympy as sp
 
-from interface_blocks import calculate_tolerance, enter_function, graph
-from Methods.Incremental import incremental_search
+from utils.interface_blocks import calculate_tolerance, enter_function, graph
+
+from .bisection import bisection
 
 
-def show_incremental():
+def show_bisection():
     st.markdown(
         """
-    Incremental search is a numerical method used to approximate the roots of a function ${f(x)}$. 
-    It works by iteratively evaluating the function over a specified interval and looking for sign changes 
-    between consecutive evaluations. A sign change indicates the presence of a root within the interval.
-    """,
-        unsafe_allow_html=True,
+    The **Bisection Method** is a numerical technique used to find roots of a continuous function  ${f(x)}$
+    over a specified interval. It is based on the **Intermediate Value Theorem**, which states that if a continuous
+    function changes sign over an interval ${[a, b]}$, then there is at least one root in that interval.
+    """
     )
 
-    with st.expander("📘 How Incremental Search Works"):
+    with st.expander("📘 How the Bisection Method Works"):
         st.markdown(
             """
         **1. Define the Interval and Step Size:**
@@ -37,7 +35,7 @@ def show_incremental():
         st.markdown(
             """
             **3. Check for Sign Changes:**
-            - If 
+            - If
         """
         )
         st.latex(
@@ -69,7 +67,7 @@ def show_incremental():
         )
 
     try:
-        st.header("Incremental Search Method")
+        st.header("Bisection Method")
 
         x, function_input = enter_function(
             placeholder_function="x**2 - 4", placeholder_variable="x"
@@ -77,21 +75,20 @@ def show_incremental():
 
         col3, col4 = st.columns(2)
         with col3:
-            x0 = st.number_input(
-                "Initial point of search",
+            a = st.number_input(
+                "Initial point of search interval (a)",
                 format="%.4f",
-                value=1.0,
+                value=0.1,
                 step=0.0001,
-                help="The initial point of the search.",
+                help="The infimum of the desired search interval [a, b].",
             )
         with col4:
-            delta_x = st.number_input(
-                "Step size (delta x)",
+            b = st.number_input(
+                "End point of search interval (b)",
                 format="%.4f",
-                value=0.001,
+                value=3.0,
                 step=0.0001,
-                min_value=0.00009,
-                help="How large the steps will be in the search.",
+                help="The supremum of the desired search interval [a, b].",
             )
 
         tol, niter, tolerance_type = calculate_tolerance()
@@ -108,10 +105,11 @@ def show_incremental():
         # DO CHECKS ON INPUT INTEGRITY
         # check if derivative is continuous in general
 
-        result = incremental_search(x0, delta_x, niter, tol, tolerance_type, function)
+        result = bisection(a, b, niter, tol, tolerance_type, function)
 
         if result["status"] == "error":
             st.error(result["message"])
+            graph(x, function_input)
             return
         else:
             result = result["table"]
@@ -132,13 +130,17 @@ def show_incremental():
         st.subheader("Results")
         st.dataframe(result_display, use_container_width=True)
 
-        mid = result.iloc[-1]["x_i"]
-        st.success(
-            f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {function(mid):.{decimals}f}"
-        )
+        mid = result.iloc[-1]["mid"]
+        if function(mid) < 0 + tol:
+            st.success(
+                f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {function(mid):.{decimals}f}"
+            )
+        else:
+            st.warning(
+                f"Method did not converge, potentially because of a discontinuity in the function."
+            )
 
     except Exception as e:
-        st.error("Error: Check your inputs")
-        print(e)
+        st.error("Error: Check your inputs ")
 
     graph(x, function_input)

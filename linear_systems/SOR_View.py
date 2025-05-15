@@ -1,8 +1,10 @@
 import streamlit as st
 
-from interface_blocks import (calculate_tolerance, definite_matrix_interface,
-                              graph_Ab, show_matrix, show_T_and_C)
-from Methods.SOR import \
+from utils.interface_blocks import (calculate_tolerance,
+                                    definite_matrix_interface, graph_Ab,
+                                    show_matrix, show_T_and_C)
+
+from .SOR import \
     sor_method  # Asegúrate de que el método SOR esté implementado en el módulo correspondiente
 
 
@@ -10,7 +12,7 @@ def show_SOR():
     st.header("Successive Over-Relaxation (SOR) Method")
     st.markdown(
         """
-    **Successive Over-Relaxation (SOR) Method** is an iterative technique for solving linear systems of equations, 
+    **Successive Over-Relaxation (SOR) Method** is an iterative technique for solving linear systems of equations,
     extending the Gauss-Seidel method by introducing a relaxation factor, $\\omega$, to accelerate convergence.
     """
     )
@@ -19,7 +21,7 @@ def show_SOR():
         st.markdown(
             """
             **Method Overview:**
-            - The SOR method is derived from splitting the matrix $A$ into its diagonal ($D$), lower triangular ($L$), 
+            - The SOR method is derived from splitting the matrix $A$ into its diagonal ($D$), lower triangular ($L$),
             and upper triangular ($U$) components, similar to the Gauss-Seidel method, but with an over-relaxation factor $\\omega$.
             - The formula for the iteration is:
             """

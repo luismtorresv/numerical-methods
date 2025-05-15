@@ -2,8 +2,9 @@ import numpy as np
 import streamlit as st
 import sympy as sp
 
-from interface_blocks import enter_points, graph_with_points
-from Methods.Spline_quadratic import quadratic_spline_interpolation
+from utils.interface_blocks import enter_points, graph_with_points
+
+from .Spline_quadratic import quadratic_spline_interpolation
 
 
 def show_quadratic_spline():

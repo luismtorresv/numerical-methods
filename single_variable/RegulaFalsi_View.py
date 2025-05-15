@@ -3,8 +3,9 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
-from interface_blocks import calculate_tolerance, enter_function, graph
-from Methods.regula_falsi import regula_falsi
+from utils.interface_blocks import calculate_tolerance, enter_function, graph
+
+from .regula_falsi import regula_falsi
 
 
 def show_regula_falsi():
@@ -12,8 +13,8 @@ def show_regula_falsi():
 
     st.markdown(
         """
-    The **False Position Method**, also called the **False Position Method**, is a root-finding algorithm used to 
-    approximate the solution of the equation  f(x) = 0  for a continuous function  f(x) . 
+    The **False Position Method**, also called the **False Position Method**, is a root-finding algorithm used to
+    approximate the solution of the equation  f(x) = 0  for a continuous function  f(x) .
     It is based on the Intermediate Value Theorem and linear interpolation.
     """
     )
@@ -22,7 +23,7 @@ def show_regula_falsi():
         st.markdown(
             """
             **1. Interval Selection:**
-            - Start with an interval $[a, b]$ such that $f(a) \cdot f(b) < 0$. 
+            - Start with an interval $[a, b]$ such that $f(a) \cdot f(b) < 0$.
             This ensures there is at least one root in the interval.
 
             **2. Compute the Next Approximation:**
@@ -36,7 +37,7 @@ def show_regula_falsi():
         )
         st.markdown(
             """
-            - This formula determines the $x$-coordinate of the intersection between the secant line connecting 
+            - This formula determines the $x$-coordinate of the intersection between the secant line connecting
             $(a, f(a))$ and $(b, f(b))$ and the $x$-axis.
 
             **3. Update the Interval:**

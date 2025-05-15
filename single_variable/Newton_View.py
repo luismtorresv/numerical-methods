@@ -1,14 +1,15 @@
 import streamlit as st
 import sympy as sp
 
-from interface_blocks import calculate_tolerance, enter_function, graph
-from Methods.newton import get_derivative, newton
+from utils.interface_blocks import calculate_tolerance, enter_function, graph
+
+from .newton import get_derivative, newton
 
 
 def show_newton():
     st.markdown(
         """
-    The **Newton-Raphson Method** is an iterative numerical technique used to find roots of a differentiable function 
+    The **Newton-Raphson Method** is an iterative numerical technique used to find roots of a differentiable function
     ${f(x)}$. It uses the tangent line at a given point to approximate the root of the function.
 
     This method is faster than the Bisection Method but requires the function to be differentiable and a good initial guess.

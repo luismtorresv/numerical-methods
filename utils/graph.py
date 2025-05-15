@@ -1,7 +1,7 @@
 import streamlit as st
 import sympy as sp
 
-from interface_blocks import graph
+from utils.interface_blocks import graph
 
 
 def show_graph():

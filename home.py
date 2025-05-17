@@ -21,7 +21,6 @@ def show_home():
 
     # Finding Roots
     st.subheader("Finding Roots")
-    st.markdown("- Incremental Search")
     st.markdown("- Bisection")
     st.markdown("- False Position")
     st.markdown("- Fixed Point")
@@ -31,10 +30,6 @@ def show_home():
 
     # Solving Systems of Equations
     st.subheader("Solving Systems of Equations")
-    st.markdown("- Gaussian Elimination Simple")
-    st.markdown("- Gaussian Elimination Partial Pivot")
-    st.markdown("- Gaussian Elimination Total Pivot")
-    st.markdown("- Direct Factorization (LU - PLU)")
     st.markdown("- Jacobi")
     st.markdown("- Gauss-Seidel")
     st.markdown("- SOR")
@@ -45,7 +40,6 @@ def show_home():
     st.markdown("- Newton Interpolation")
     st.markdown("- Lagrange")
     st.markdown("- Spline Linear")
-    st.markdown("- Spline Quadratic")
     st.markdown("- Spline Cubic")
 
     st.header("How to Input Functions in Python SymPy")
@@ -170,7 +164,6 @@ elif st.session_state.page == "roots":
     root_method = st.selectbox(
         "Select a root-finding method",
         [
-            "Incremental Search",
             "Bisection",
             "Newton-Raphson",
             "Secant",
@@ -190,8 +183,6 @@ elif st.session_state.page == "roots":
             show_bisection()
         case "False Position":
             show_regula_falsi()
-        case "Incremental Search":
-            show_incremental()
         case "Fixed Point":
             show_fixed_point()
         case "Multiple Roots":
@@ -203,11 +194,6 @@ elif st.session_state.page == "systems":
     system_method = st.selectbox(
         "Select a system-solving method",
         [
-            "Gauss-Jordan without Pivoting",
-            "Gauss-Jordan with Partial Pivoting",
-            "Gauss-Jordan with Total Pivoting",
-            "LU Factorization",
-            "PLU Factorization",
             "Jacobi",
             "Gauss-Seidel",
             "SOR",
@@ -216,10 +202,6 @@ elif st.session_state.page == "systems":
 
     # Display the corresponding method content based on the dropdown selection
     match system_method:
-        case "LU Factorization":
-            show_LU_factorization()
-        case "PLU Factorization":
-            show_PLU_factorization()
         case "Jacobi":
             show_Jacobi()
         case "Gauss-Seidel":
@@ -237,7 +219,6 @@ elif st.session_state.page == "interpolation":
             "Newton Divided Difference",
             "Lagrange Interpolation",
             "Linear Spline Interpolation",
-            "Quadratic Spline Interpolation",
             "Cubic Spline Interpolation",
         ],
     )

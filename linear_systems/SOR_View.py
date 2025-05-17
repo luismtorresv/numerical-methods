@@ -1,11 +1,16 @@
 import streamlit as st
 
-from utils.interface_blocks import (calculate_tolerance,
-                                    definite_matrix_interface, graph_Ab,
-                                    show_matrix, show_T_and_C)
+from utils.interface_blocks import (
+    calculate_tolerance,
+    definite_matrix_interface,
+    graph_Ab,
+    show_matrix,
+    show_T_and_C,
+)
 
-from .SOR import \
-    sor_method  # Asegúrate de que el método SOR esté implementado en el módulo correspondiente
+from .SOR import (
+    sor_method,
+)  # Asegúrate de que el método SOR esté implementado en el módulo correspondiente
 
 
 def show_SOR():

@@ -1,8 +1,12 @@
 import streamlit as st
 
-from utils.interface_blocks import (calculate_tolerance,
-                                    definite_matrix_interface, graph_Ab,
-                                    show_matrix, show_T_and_C)
+from utils.interface_blocks import (
+    calculate_tolerance,
+    definite_matrix_interface,
+    graph_Ab,
+    show_matrix,
+    show_T_and_C,
+)
 
 from .Jacobi import jacobi_method
 

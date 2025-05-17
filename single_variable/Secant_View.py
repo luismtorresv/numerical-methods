@@ -2,8 +2,12 @@ import numpy as np
 import streamlit as st
 import sympy as sp
 
-from utils.interface_blocks import (calculate_tolerance, enter_function, graph,
-                                    show_table)
+from utils.interface_blocks import (
+    calculate_tolerance,
+    enter_function,
+    graph,
+    show_table,
+)
 
 from .Secant import secant
 

@@ -98,7 +98,7 @@ def graph(x, function_input, min_value=-10, max_value=10):
         hovermode="closest",
     )
 
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, key=f"plotly_chart_{function_input}")
 
     svg_file = "function_graph.svg"
     pio.write_image(fig, svg_file, format="svg", engine="kaleido")

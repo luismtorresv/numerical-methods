@@ -7,76 +7,88 @@ from utils.interface_blocks import calculate_tolerance, enter_function, graph
 
 
 def regula_falsi(a, b, niter, tol, tolerance_type, function):
-    table = []
-    row = {}
-    Error = (
+    error_type = (
         "Relative Error"
         if tolerance_type == "Significant Figures"
         else "Absolute Error"
     )
 
-    # initial call
-    row["a"] = a
-    row["b"] = b
-    row["x_intersect"] = (function(b) * a - function(a) * b) / (
-        function(b) - function(a)
-    )
-    row["f(a)"] = function(a)
-    row["f(x_intersect)"] = function(
-        (function(b) * a - function(a) * b) / (function(b) - function(a))
-    )
-    row["f(b)"] = function(b)
-    row[Error] = None
-    table.append(row)
+    # Initialize dictionary for table
+    table = {
+        "Iteración": [],
+        "Xm": [],
+        "f(Xm)": [],
+        "Error": [],
+    }
 
-    err = 100
+    # Calculate initial function values
+    f_a = function(a)
+    f_b = function(b)
 
-    if function(a) * function(b) > 0:
+    if f_a == 0:
+        result = a
+        print(f"{a} es raiz de f(x)")
+    elif f_b == 0:
+        result = b
+        print(f"{b} es raiz de f(x)")
+
+    if (f_b * f_a) >= 0:
         return {
             "status": "error",
             "message": "Invalid Arguments, the function does not change sign in the interval.",
         }
+
     else:
-        x_intersect = (function(b) * a - function(a) * b) / (function(b) - function(a))
-        iter = 0
-        while iter < niter and err > tol:
-            if function(a) == 0:
-                return table
-            if function(a) * function(x_intersect) < 0:
+        c = 0
+        Error = 100
+        x_intersect = (a * f_b - b * f_a) / (f_b - f_a)
+        fx = function(x_intersect)
+
+        # Store initial iteration
+        table["Iteración"].append(c)
+        table["Xm"].append(x_intersect)
+        table["f(Xm)"].append(fx)
+        table["Error"].append(Error)
+
+        # Iterate
+        while Error > tol != 0 and c < niter:
+            if f_a * fx < 0:
                 b = x_intersect
+                f_b = fx
             else:
                 a = x_intersect
+                f_a = fx
 
-            iter += 1
             old_intersect = x_intersect
-            x_intersect = (function(b) * a - function(a) * b) / (
-                function(b) - function(a)
-            )
+            x_intersect = (a * f_b - b * f_a) / (f_b - f_a)
+            fx = function(x_intersect)
 
-            row = {}
-            row["a"] = a
-            row["x_intersect"] = x_intersect
-            row["b"] = b
-            row["f(a)"] = function(a)
-            row["f(x_intersect)"] = function(x_intersect)
-            row["f(b)"] = function(b)
-
-            if Error == "Relative Error":
-                row[Error] = abs((x_intersect - old_intersect) / x_intersect)
+            if error_type == "Relative Error":
+                Error = abs((x_intersect - old_intersect) / x_intersect)
             else:
-                row[Error] = abs(x_intersect - old_intersect)
-            table.append(row)
+                Error = abs(x_intersect - old_intersect)
 
-            err = row[Error]
+            c += 1
+            table["Iteración"].append(c)
+            table["Xm"].append(x_intersect)
+            table["f(Xm)"].append(fx)
+            table["Error"].append(Error)
 
-        df = pd.DataFrame(table)
-        return {"status": "success", "table": df}
+        if fx == 0:
+            result = x_intersect
+            print(f"{result} es raiz de f(x)")
+        else:
+            result = x_intersect
+            print(f"Fracaso en {niter} iteraciones")
+
+    df = pd.DataFrame(table)
+
+    return {"status": "success", "table": df}
 
 
 def show_regula_falsi():
     explain_method()
     st.header("False Position Method")
-
     try:
         x, function_input = enter_function(
             placeholder_function="x**2 - 4", placeholder_variable="x"
@@ -109,14 +121,14 @@ def show_regula_falsi():
         second_derivative = sp.diff(first_derivative, x)
 
         st.subheader("Function")
-        st.latex(f"f({x}) = {sp.latex(function)}")
+        st.latex(f"f({x}) = {sp.latex(function_sp)}")
 
-        function = sp.lambdify(x, sp.sympify(function_input), "numpy")
+        lambda_function = sp.lambdify(x, function_sp, "numpy")
 
         # DO CHECKS ON INPUT INTEGRITY
         # check if derivative is continuous in general
 
-        result = regula_falsi(a, b, niter, tol, tolerance_type, function)
+        result = regula_falsi(a, b, niter, tol, tolerance_type, lambda_function)
 
         if result["status"] == "error":
             st.error(result["message"])
@@ -137,10 +149,10 @@ def show_regula_falsi():
             f"{{:.{decimals}f}}"
         )  # Use f-string to format dynamically
 
-        mid = result.iloc[-1]["x_intersect"]
-        if function(mid) < 0 + tol:
+        mid = result.iloc[-1]["Xm"]
+        if lambda_function(mid) < 0 + tol:
             st.success(
-                f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {function(mid):.{decimals}f}"
+                f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {lambda_function(mid):.{decimals}f}"
             )
             st.subheader("Results")
             st.dataframe(result_display, use_container_width=True)
@@ -152,7 +164,7 @@ def show_regula_falsi():
         graph(x, function_input)
         generate_report(
             niter,
-            function,
+            lambda_function,
             tol,
             tolerance_type,
             x,
@@ -162,6 +174,7 @@ def show_regula_falsi():
     except Exception as ep:
         st.error("Error: Check inputs")
         print(ep)
+        return
 
 
 def explain_method():

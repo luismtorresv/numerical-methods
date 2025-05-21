@@ -3,6 +3,7 @@ import streamlit as st
 import sympy as sp
 
 from utils.interface_blocks import calculate_tolerance, enter_function, graph
+from utils.generate_report import generate_report
 
 
 def bisection(a, b, niter, tol, tolerance_type, function):
@@ -147,6 +148,7 @@ def show_bisection():
         st.error("Error: Check your inputs ")
 
     graph(x, function_input)
+    generate_report(niter, function, tol, tolerance_type, x)
 
 
 def explain_method():

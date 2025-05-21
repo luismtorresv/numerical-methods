@@ -1,3 +1,3 @@
-from .Gauss_Seidel_View import show_gauss_seidel
-from .Jacobi_View import show_Jacobi
-from .SOR_View import show_SOR
+from .gauss_seidel import show_gauss_seidel
+from .jacobi import show_Jacobi
+from .sor import show_SOR

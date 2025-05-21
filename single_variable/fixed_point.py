@@ -5,12 +5,78 @@ import sympy as sp
 
 from utils.interface_blocks import calculate_tolerance, enter_function, graph
 
-from .FixedPoint import fixed_point
+
+def fixed_point(a, b, X0, Tol, type_of_tol, Niter, Fun, Fun_g):
+    # Check the G function
+
+    x_sym = sp.symbols("x")
+    try:
+        g_expr = sp.sympify(Fun_g.replace("^", "**"))
+    except (sp.SympifyError, SyntaxError) as e:
+        raise ValueError(f"Invalid expression: {e}")
+    g_func = sp.lambdify(x_sym, g_expr, modules=["math"])
+
+    # Inicialización de listas para la tabla
+    iteraciones = []
+    xn = []
+    fn = []
+    errores = []
+
+    # Primera iteración
+    x = X0
+    f = Fun(x)
+    c = 0
+    Error = 100  # Error inicial arbitrario
+
+    iteraciones.append(c)
+    xn.append(x)
+    fn.append(f)
+    errores.append(Error)
+    while Error > Tol and f != 0 and c < Niter:
+        x = g_func(x)  # Nueva aproximación usando g(x)
+
+        # Validar que la nueva aproximación esté en el intervalo [a, b]
+        if x < a or x > b:
+            print(
+                f"Error: La iteración {c} generó un valor fuera del intervalo [{a}, {b}]."
+            )
+            break
+
+        f = Fun(x)  # Evaluamos f(x)
+
+        c += 1
+        if type_of_tol == "D.C":
+            Error = abs(x - xn[-1])  # Cálculo del error absoluto
+        else:
+            Error = abs((x - xn[-1]) / x)  # Cálculo del error relativo
+
+        # Guardar valores en listas
+        iteraciones.append(c)
+        xn.append(x)
+        fn.append(f)
+        errores.append(Error)
+
+    # Mostrar resultados finales
+
+    # Crear y mostrar la tabla de iteraciones
+    tabla = pd.DataFrame(
+        {"Iteración": iteraciones, "Xn": xn, "f(Xn)": fn, "Error": errores}
+    )
+
+    if f == 0:
+        # print(f"{x} es raíz de f(x)")
+        return tabla, x
+    elif Error < Tol:
+        # print(f"{x} es una aproximación de una raíz con tolerancia {Tol}")
+        return tabla, x
+    else:
+        # print(f"Fracaso en {Niter} iteraciones")
+        return None, Niter
 
 
 def validate_fixed_point_function(x_symbol, f_function, g_function):
     """
-    Validate fixed-point iteration requirements
+    Validate fixed-point iteration requirements.
 
     Args:
         x_symbol (sympy.Symbol): Variable symbol
@@ -18,64 +84,31 @@ def validate_fixed_point_function(x_symbol, f_function, g_function):
         g_function (sympy.Expr): Transformed function g(x)
 
     Returns:
-        bool: Validation result
+        bool: True if validation passes, False otherwise
     """
     try:
-        # Find roots of f(x)
-        # roots = sp.solve(f_function, x_symbol)
-        """
-        # Check if g(root) = root for all roots of f(x)
-        for root in roots:
-            transformed_root = g_function.subs(x_symbol, root)
-            if not sp.simplify(transformed_root - root).is_zero:
-                st.error(f"Error: g(x) does not satisfy the fixed-point condition g(x) = x when f(x) = 0  at x = {root}.")
-                return False
-        """
-        # Check convergence condition |g'(x)| < 1 around the roots
+        roots = sp.solve(f_function, x_symbol)
+        if not roots:
+            return False
+
         g_derivative = sp.diff(g_function, x_symbol)
         for root in roots:
+            if not sp.simplify(g_function.subs(x_symbol, root) - root).is_zero:
+                st.error(f"g(x) ≠ x at x = {root} where f(x) = 0.")
+                return False
+
             derivative_value = g_derivative.subs(x_symbol, root)
             if abs(derivative_value) >= 1:
-                st.warning(
-                    f"Warning: Convergence condition |g'(x)| < 1 is not satisfied at root = {root}."
-                )
+                st.warning(f"|g'(x)| ≥ 1 at x = {root}. Convergence not guaranteed.")
 
         return True
-    except Exception as e:
-        st.error(f"Error: Please check your inputs")
-        print(e)
+    except:
+        st.error("Validation failed. Invalid input functions.")
         return False
 
 
 def show_fixed_point():
-    st.markdown(
-        """
-    The **Fixed Point Iteration Method** finds roots by transforming $f(x) = 0$ to $x = g(x)$.
-    """
-    )
-
-    with st.expander("📘 How the Fixed Point Method Works"):
-        st.markdown(
-            """
-            **1. Rewrite the Function:**
-            - Express $f(x) = 0$ as $x = g(x)$, where $g(x)$ is chosen to simplify computations and ensure convergence.
-
-            **2. Choose an Initial Guess $x_0$:**
-            - Select an initial guess $x_0$ close to the suspected root.
-
-            **3. Apply the Iteration Formula:**
-
-            $$x_{n+1} = g(x_n)$$
-
-            - Compute successive approximations $x_1, x_2, \dots$ by evaluating $g(x)$ at the previous point.
-
-            **4. Check for Convergence:**
-            - Stop the iteration when $|x_{n+1} - x_n|$ is less than a specified tolerance.
-
-            **Convergence Conditions:**
-            - The method converges if $|g'(x)| < 1$ for all $x$ in the interval of interest.
-        """
-        )
+    explain_method()
 
     st.header("Fixed-Point Iteration Method")
     try:
@@ -123,11 +156,10 @@ def show_fixed_point():
         st.error(f"Invalid function input: Please check your inputs")
         return
 
-    """
     # Validate the functions
     if not validate_fixed_point_function(x_symbol, f_function, g_function):
         return
-    """
+
     # Display the functions in LaTeX
     st.subheader("Functions")
     st.latex(f"f({x_symbol}) = {sp.latex(f_function)}")
@@ -198,3 +230,32 @@ def show_fixed_point():
         st.error(f"Error: Please check your inputs {e}")
 
     graph(x, f_input)
+
+
+def explain_method():
+    st.markdown(
+        "The **Fixed Point Iteration Method** finds roots by transforming $f(x) = 0$ to $x = g(x)$."
+    )
+
+    with st.expander("📘 How the Fixed Point Method Works"):
+        st.markdown(
+            """
+            **1. Rewrite the Function:**
+            - Express $f(x) = 0$ as $x = g(x)$, where $g(x)$ is chosen to simplify computations and ensure convergence.
+
+            **2. Choose an Initial Guess $x_0$:**
+            - Select an initial guess $x_0$ close to the suspected root.
+
+            **3. Apply the Iteration Formula:**
+
+            $$x_{n+1} = g(x_n)$$
+
+            - Compute successive approximations $x_1, x_2, \dots$ by evaluating $g(x)$ at the previous point.
+
+            **4. Check for Convergence:**
+            - Stop the iteration when $|x_{n+1} - x_n|$ is less than a specified tolerance.
+
+            **Convergence Conditions:**
+            - The method converges if $|g'(x)| < 1$ for all $x$ in the interval of interest.
+        """
+        )

@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
+from utils.generate_report import generate_report
 from utils.interface_blocks import calculate_tolerance, enter_function, graph
 
 
@@ -9,14 +10,6 @@ def get_derivative(f):
     x = sp.symbols("x")
     f_prime = sp.diff(f, x)
     return f_prime
-
-
-def check_continuity(f, x):
-    try:
-        f(x)
-        return True
-    except:
-        return False
 
 
 def newton(x0, niter, tol, tolerance_type, function, derivative):
@@ -83,17 +76,18 @@ def show_newton():
 
         x = sp.symbols(f"{x}")
         function = sp.sympify(function_input)
-        derivative = get_derivative(function)
+        first_derivative = sp.diff(function, x)
+        second_derivative = sp.diff(first_derivative, x)
 
         st.subheader("Function")
         st.latex(f"f({x}) = {sp.latex(function)}")
         st.subheader("Derivative")
-        st.latex(f"f({x}) = {sp.latex(sp.sympify(derivative))}")
+        st.latex(f"f({x}) = {sp.latex(first_derivative)}")
 
         function = sp.lambdify(x, sp.sympify(function_input), "numpy")
-        derivative = sp.lambdify(x, derivative, "numpy")
+        derivative_lambda = sp.lambdify(x, first_derivative, "numpy")
 
-        result = newton(x0, niter, tol, tolerance_type, function, derivative)
+        result = newton(x0, niter, tol, tolerance_type, function, derivative_lambda)
         if result["status"] == "error":
             st.error(result["message"])
             return
@@ -129,6 +123,15 @@ def show_newton():
         print(e)
         st.error("Error: Check your input")
     graph(x, function_input)
+    generate_report(
+        niter,
+        function,
+        tol,
+        tolerance_type,
+        x,
+        first_derivative,
+        second_derivative,
+    )
 
 
 def explain_method():

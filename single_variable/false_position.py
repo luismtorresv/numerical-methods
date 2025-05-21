@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
+from utils.generate_report import generate_report
 from utils.interface_blocks import calculate_tolerance, enter_function, graph
 
 
@@ -103,7 +104,9 @@ def show_regula_falsi():
         st.markdown(f"**Calculated Tolerance:** {tol:.10f}")
 
         x = sp.symbols(f"{x}")
-        function = sp.sympify(function_input)
+        function_sp = sp.sympify(function_input)
+        first_derivative = sp.diff(function_sp, x)
+        second_derivative = sp.diff(first_derivative, x)
 
         st.subheader("Function")
         st.latex(f"f({x}) = {sp.latex(function)}")
@@ -147,6 +150,15 @@ def show_regula_falsi():
             )
 
         graph(x, function_input)
+        generate_report(
+            niter,
+            function,
+            tol,
+            tolerance_type,
+            x,
+            first_derivative,
+            second_derivative,
+        )
     except Exception as ep:
         st.error("Error: Check inputs")
         print(ep)

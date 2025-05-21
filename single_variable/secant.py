@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
+from utils.generate_report import generate_report
 from utils.interface_blocks import (
     calculate_tolerance,
     enter_function,
@@ -91,6 +92,9 @@ def show_secant():
 
         x = sp.symbols(f"{x}")
         function = sp.lambdify(x, sp.sympify(function_input), "numpy")
+        first_derivative = sp.diff(sp.sympify(function_input), x)
+        second_derivative = sp.diff(first_derivative, x)
+
         result = secant(x0, x1, niter, tol, function, tolerance_type)
 
         if result["status"] == "error":
@@ -113,6 +117,15 @@ def show_secant():
             )
 
         graph(x, function_input)
+        generate_report(
+            niter,
+            function,
+            tol,
+            tolerance_type,
+            x,
+            first_derivative,
+            second_derivative,
+        )
     except Exception as e:
         st.error("Error: Check your input")
         print(e)

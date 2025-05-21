@@ -3,6 +3,7 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
+from utils.generate_report import generate_report
 from utils.interface_blocks import calculate_tolerance, enter_function, graph
 
 
@@ -151,6 +152,8 @@ def show_fixed_point():
         x_symbol = sp.symbols(f"{x}")
 
         f_function = sp.sympify(f_input)
+        first_derivative = sp.diff(f_function, x)
+        second_derivative = sp.diff(first_derivative, x)
         g_function = sp.sympify(g_input)
     except Exception as e:
         st.error(f"Invalid function input: Please check your inputs")
@@ -166,10 +169,9 @@ def show_fixed_point():
     st.latex(f"g({x_symbol}) = {sp.latex(g_function)}")
 
     # Check convergence condition
-    derivative = sp.diff(g_function, x_symbol)
-
+    g_first_derivative = sp.diff(g_function, x_symbol)
     st.subheader("Derivative of g(x):")
-    st.latex(derivative)
+    st.latex(g_first_derivative)
 
     # Lambdify the functions for numerical evaluations
     g = sp.lambdify(x_symbol, g_function, "numpy")
@@ -230,6 +232,15 @@ def show_fixed_point():
         st.error(f"Error: Please check your inputs {e}")
 
     graph(x, f_input)
+    generate_report(
+        niter,
+        f,
+        tol,
+        tolerance_type,
+        x,
+        first_derivative,
+        second_derivative,
+    )
 
 
 def explain_method():

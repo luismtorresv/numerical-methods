@@ -2,8 +2,8 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
-from utils.interface_blocks import calculate_tolerance, enter_function, graph
 from utils.generate_report import generate_report
+from utils.interface_blocks import calculate_tolerance, enter_function, graph
 
 
 def bisection(a, b, niter, tol, tolerance_type, function):

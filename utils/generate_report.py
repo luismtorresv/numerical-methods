@@ -58,4 +58,28 @@ def generate_report(
         return
 
     if submitted:
-        pass
+        results = {
+            "bisection": bisection(
+                a, b, n_iterations, tolerance, type_of_tolerance, func
+            ),
+            "false_position": regula_falsi(
+                a, b, n_iterations, tolerance, type_of_tolerance, func
+            ),
+            "fixed_point": fixed_point(
+                a, b, x0, tolerance, type_of_tolerance, n_iterations, func, g_input
+            ),
+            "multiple_roots": multiple_roots(
+                x0,
+                n_iterations,
+                tolerance,
+                func,
+                first_derivative,
+                second_derivative,
+                type_of_tolerance,
+            ),
+            "secant": secant(a, b, n_iterations, tolerance, func, type_of_tolerance),
+            "newton": newton(
+                x0, n_iterations, tolerance, type_of_tolerance, func, first_derivative
+            ),
+        }
+        st.write(results)

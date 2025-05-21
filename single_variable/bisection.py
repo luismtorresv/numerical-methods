@@ -99,10 +99,12 @@ def show_bisection():
         st.markdown(f"**Calculated Tolerance:** {tol:.10f}")
 
         x = sp.symbols(f"{x}")
-        function = sp.sympify(function_input)
+        function_sp = sp.sympify(function_input)
+        first_derivative = sp.diff(function_sp, x)
+        second_derivative = sp.diff(first_derivative, x)
 
         st.subheader("Function")
-        st.latex(f"f({x}) = {sp.latex(function)}")
+        st.latex(f"f({x}) = {sp.latex(function_sp)}")
 
         function = sp.lambdify(x, sp.sympify(function_input), "numpy")
 
@@ -148,7 +150,15 @@ def show_bisection():
         st.error("Error: Check your inputs ")
 
     graph(x, function_input)
-    generate_report(niter, function, tol, tolerance_type, x)
+    generate_report(
+        niter,
+        function,
+        tol,
+        tolerance_type,
+        x,
+        first_derivative,
+        second_derivative,
+    )
 
 
 def explain_method():

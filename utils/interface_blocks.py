@@ -82,9 +82,9 @@ def graph(x, function_input, min_value=-10, max_value=10):
     y_vals = function(x_vals)
 
     with np.errstate(divide="ignore", invalid="ignore"):
-        y_vals[
-            np.abs(y_vals) > 1 / 0.0000000001
-        ] = None  # Mask large values (possible infinity)
+        y_vals[np.abs(y_vals) > 1 / 0.0000000001] = (
+            None  # Mask large values (possible infinity)
+        )
 
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=x_vals, y=y_vals, mode="lines", name=function_input))
@@ -131,7 +131,9 @@ def graph(x, function_input, min_value=-10, max_value=10):
 def definite_matrix_interface(x_0=None):
     col1 = st.columns(1)[0]
     with col1:
-        rows_A = st.number_input("Enter number of rows:", min_value=2, value=3)
+        rows_A = st.number_input(
+            "Enter number of rows:", min_value=2, max_value=7, value=3
+        )
         cols_A = rows_A
 
     if x_0 is None:

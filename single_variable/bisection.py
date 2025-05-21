@@ -67,64 +67,7 @@ def bisection(a, b, niter, tol, tolerance_type, function):
 
 
 def show_bisection():
-    st.markdown(
-        """
-    The **Bisection Method** is a numerical technique used to find roots of a continuous function  ${f(x)}$
-    over a specified interval. It is based on the **Intermediate Value Theorem**, which states that if a continuous
-    function changes sign over an interval ${[a, b]}$, then there is at least one root in that interval.
-    """
-    )
-
-    with st.expander("📘 How the Bisection Method Works"):
-        st.markdown(
-            """
-        **1. Define the Interval and Step Size:**
-        - Choose an interval $[a, b]$ where you suspect the root lies.
-        - Select a step size $\Delta x$ for evaluating the function incrementally.
-
-        **2. Evaluate the Function Incrementally:**
-        - Start at the lower bound $a$.
-        - Evaluate $f(x)$ at each increment:
-        """
-        )
-        st.latex(
-            r"""
-        x_i = a + i \cdot \Delta x, \; i = 0, 1, 2, \dots
-        """
-        )
-        st.markdown(
-            """
-            **3. Check for Sign Changes:**
-            - If
-        """
-        )
-        st.latex(
-            r"""
-        f(x_i) \cdot f(x_{i+1}) < 0
-        """
-        )
-        st.markdown(
-            """
-            there is a root in the interval:
-        """
-        )
-        st.latex(
-            r"""
-        [x_i, x_{i+1}]
-        """
-        )
-        st.markdown(
-            """
-            **Advantages:**
-            - Simple to implement and understand.
-            - Does not require derivatives or complex calculations.
-
-            **Disadvantages:**
-            - May miss roots if the step size $\Delta x$ is too large.
-            - Computationally expensive for small $\Delta x$ over large intervals.
-        """,
-            unsafe_allow_html=True,
-        )
+    explain_method()
 
     try:
         st.header("Bisection Method")
@@ -204,3 +147,64 @@ def show_bisection():
         st.error("Error: Check your inputs ")
 
     graph(x, function_input)
+
+
+def explain_method():
+    st.markdown(
+        """
+    The **Bisection Method** is a numerical technique used to find roots of a continuous function  ${f(x)}$
+    over a specified interval. It is based on the **Intermediate Value Theorem**, which states that if a continuous
+    function changes sign over an interval ${[a, b]}$, then there is at least one root in that interval.
+    """
+    )
+
+    with st.expander("📘 How the Bisection Method Works"):
+        st.markdown(
+            """
+        **1. Define the Interval and Step Size:**
+        - Choose an interval $[a, b]$ where you suspect the root lies.
+        - Select a step size $\Delta x$ for evaluating the function incrementally.
+
+        **2. Evaluate the Function Incrementally:**
+        - Start at the lower bound $a$.
+        - Evaluate $f(x)$ at each increment:
+        """
+        )
+        st.latex(
+            r"""
+        x_i = a + i \cdot \Delta x, \; i = 0, 1, 2, \dots
+        """
+        )
+        st.markdown(
+            """
+            **3. Check for Sign Changes:**
+            - If
+        """
+        )
+        st.latex(
+            r"""
+        f(x_i) \cdot f(x_{i+1}) < 0
+        """
+        )
+        st.markdown(
+            """
+            there is a root in the interval:
+        """
+        )
+        st.latex(
+            r"""
+        [x_i, x_{i+1}]
+        """
+        )
+        st.markdown(
+            """
+            **Advantages:**
+            - Simple to implement and understand.
+            - Does not require derivatives or complex calculations.
+
+            **Disadvantages:**
+            - May miss roots if the step size $\Delta x$ is too large.
+            - Computationally expensive for small $\Delta x$ over large intervals.
+        """,
+            unsafe_allow_html=True,
+        )

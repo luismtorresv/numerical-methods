@@ -53,7 +53,62 @@ def multiple_roots(x0, niter, tol, function, df, d2f, tolerance_type):
 
 def show_multiple_roots():
     st.header("Multiple Roots Method")
+    explain_methods()
 
+    try:
+        # Entrada de función y variable
+        x, function_input = enter_function()
+
+        col3 = st.columns(1)[0]
+        with col3:
+            x0 = st.number_input(
+                "Initial Point (x_0)",
+                format="%.4f",
+                value=1.0,
+                step=0.0001,
+                help="Initial guess for the root. The method requires an initial value close to the actual root.",
+            )
+
+        # Calcular tolerancia
+        tol, niter, tolerance_type = calculate_tolerance()
+        st.markdown(f"**Calculated Tolerance:** {tol:.10f}")
+        st.subheader("Function")
+        st.latex(f"f({x}) = {sp.latex(sp.sympify(function_input))}")
+
+        # Preparar función, derivadas y método
+        x = sp.symbols(f"{x}")
+        function = sp.lambdify(x, sp.sympify(function_input), "numpy")
+        df = sp.lambdify(x, sp.diff(sp.sympify(function_input), x), "numpy")
+        d2f = sp.lambdify(
+            x, sp.diff(sp.diff(sp.sympify(function_input), x), x), "numpy"
+        )
+
+        result = multiple_roots(x0, niter, tol, function, df, d2f, tolerance_type)
+
+        # Mostrar resultados o errores
+        if result["status"] == "error":
+            st.error(result["message"])
+        else:
+            mid = result["table"].iloc[-1]["x_i"]
+            if function(mid) < 0 + tol:
+                decimals = show_table(result["table"])
+                st.success(
+                    f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {function(mid):.{decimals}f}"
+                )
+            else:
+                st.warning(
+                    f"Method did not converge, potentially because of a discontinuity in the function."
+                )
+
+        # Gráfica de la función
+        graph(x, function_input)
+    except Exception as e:
+        st.error("Error: Check your inputs")
+
+    graph(x, function_input)
+
+
+def explain_methods():
     st.markdown(
         """
     The **Newton's Method for Multiple Roots** is a numerical technique used to approximate roots of a function  $f(x)$ ,
@@ -108,55 +163,3 @@ def show_multiple_roots():
             - If $f'(x_i) = 0$, the method fails because the denominator in the formula becomes zero.
         """
         )
-
-    try:
-        # Entrada de función y variable
-        x, function_input = enter_function()
-
-        col3 = st.columns(1)[0]
-        with col3:
-            x0 = st.number_input(
-                "Initial Point (x_0)",
-                format="%.4f",
-                value=1.0,
-                step=0.0001,
-                help="Initial guess for the root. The method requires an initial value close to the actual root.",
-            )
-
-        # Calcular tolerancia
-        tol, niter, tolerance_type = calculate_tolerance()
-        st.markdown(f"**Calculated Tolerance:** {tol:.10f}")
-        st.subheader("Function")
-        st.latex(f"f({x}) = {sp.latex(sp.sympify(function_input))}")
-
-        # Preparar función, derivadas y método
-        x = sp.symbols(f"{x}")
-        function = sp.lambdify(x, sp.sympify(function_input), "numpy")
-        df = sp.lambdify(x, sp.diff(sp.sympify(function_input), x), "numpy")
-        d2f = sp.lambdify(
-            x, sp.diff(sp.diff(sp.sympify(function_input), x), x), "numpy"
-        )
-
-        result = multiple_roots(x0, niter, tol, function, df, d2f, tolerance_type)
-
-        # Mostrar resultados o errores
-        if result["status"] == "error":
-            st.error(result["message"])
-        else:
-            mid = result["table"].iloc[-1]["x_i"]
-            if function(mid) < 0 + tol:
-                decimals = show_table(result["table"])
-                st.success(
-                    f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {function(mid):.{decimals}f}"
-                )
-            else:
-                st.warning(
-                    f"Method did not converge, potentially because of a discontinuity in the function."
-                )
-
-        # Gráfica de la función
-        graph(x, function_input)
-    except Exception as e:
-        st.error("Error: Check your inputs")
-
-    graph(x, function_input)

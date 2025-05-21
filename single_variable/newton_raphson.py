@@ -64,45 +64,7 @@ def newton(x0, niter, tol, tolerance_type, function, derivative):
 
 
 def show_newton():
-    st.markdown(
-        """
-    The **Newton-Raphson Method** is an iterative numerical technique used to find roots of a differentiable function
-    ${f(x)}$. It uses the tangent line at a given point to approximate the root of the function.
-
-    This method is faster than the Bisection Method but requires the function to be differentiable and a good initial guess.
-    """
-    )
-
-    with st.expander("📘 How the Newton-Raphson Method Works"):
-        st.markdown(
-            """
-        **1. Choose an Initial Guess ${x_0}$ close to the suspected root**
-
-        **2. Apply the Iteration Formula:**
-        """
-        )
-        st.latex(
-            r"""
-        x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}
-        """
-        )
-        st.markdown(
-            """
-        - Here, ${f'(x_n)}$ is the derivative of ${f(x)}$ evaluated at ${x_n}$.
-        - Compute the next approximation ${x_{n+1}}$.
-
-        **3. Check for Convergence:**
-        - Stop if ${|f(x_{n+1})|}$ is sufficiently close to zero or ${|x_{n+1} - x_n|}$ is less than a specified tolerance.
-
-        **4. Repeat:**
-        - Use ${x_{n+1}}$ as the new approximation and iterate until convergence.
-
-        **Convergence:**
-        - The Newton-Raphson Method converges quadratically if the initial guess ${x_0}$ is close to the root.
-        - However, it may fail if ${f'(x_n) = 0}$ or if the initial guess is far from the root.
-        """
-        )
-
+    explain_method()
     try:
         st.header("Newton-Raphson Method")
 
@@ -167,3 +129,44 @@ def show_newton():
         print(e)
         st.error("Error: Check your input")
     graph(x, function_input)
+
+
+def explain_method():
+    st.markdown(
+        """
+    The **Newton-Raphson Method** is an iterative numerical technique used to find roots of a differentiable function
+    ${f(x)}$. It uses the tangent line at a given point to approximate the root of the function.
+
+    This method is faster than the Bisection Method but requires the function to be differentiable and a good initial guess.
+    """
+    )
+
+    with st.expander("📘 How the Newton-Raphson Method Works"):
+        st.markdown(
+            """
+        **1. Choose an Initial Guess ${x_0}$ close to the suspected root**
+
+        **2. Apply the Iteration Formula:**
+        """
+        )
+        st.latex(
+            r"""
+        x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}
+        """
+        )
+        st.markdown(
+            """
+        - Here, ${f'(x_n)}$ is the derivative of ${f(x)}$ evaluated at ${x_n}$.
+        - Compute the next approximation ${x_{n+1}}$.
+
+        **3. Check for Convergence:**
+        - Stop if ${|f(x_{n+1})|}$ is sufficiently close to zero or ${|x_{n+1} - x_n|}$ is less than a specified tolerance.
+
+        **4. Repeat:**
+        - Use ${x_{n+1}}$ as the new approximation and iterate until convergence.
+
+        **Convergence:**
+        - The Newton-Raphson Method converges quadratically if the initial guess ${x_0}$ is close to the root.
+        - However, it may fail if ${f'(x_n) = 0}$ or if the initial guess is far from the root.
+        """
+        )

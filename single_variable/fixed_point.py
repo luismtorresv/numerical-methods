@@ -109,8 +109,8 @@ def validate_fixed_point_function(x_symbol, f_function, g_function):
 
 def show_fixed_point():
     explain_method()
-
     st.header("Fixed-Point Iteration Method")
+
     try:
         col1, col2, col3 = st.columns(3)
         with col1:

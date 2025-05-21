@@ -18,8 +18,8 @@ def generate_report(
     from single_variable.false_position import regula_falsi
     from single_variable.fixed_point import fixed_point
     from single_variable.multiple_roots import multiple_roots
-    from single_variable.secant import secant
     from single_variable.newton_raphson import newton
+    from single_variable.secant import secant
 
     try:
         with st.form("Report"):

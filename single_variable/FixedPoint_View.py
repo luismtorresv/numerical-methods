@@ -5,6 +5,8 @@ import sympy as sp
 
 from utils.interface_blocks import calculate_tolerance, enter_function, graph
 
+from .FixedPoint import fixed_point
+
 
 def validate_fixed_point_function(x_symbol, f_function, g_function):
     """
@@ -62,15 +64,9 @@ def show_fixed_point():
             - Select an initial guess $x_0$ close to the suspected root.
 
             **3. Apply the Iteration Formula:**
-        """
-        )
-        st.latex(
-            r"""
-        x_{n+1} = g(x_n)
-        """
-        )
-        st.markdown(
-            """
+
+            $$x_{n+1} = g(x_n)$$
+
             - Compute successive approximations $x_1, x_2, \dots$ by evaluating $g(x)$ at the previous point.
 
             **4. Check for Convergence:**

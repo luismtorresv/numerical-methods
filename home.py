@@ -12,125 +12,49 @@ if "page" not in st.session_state:
 
 # Function definitions for each page
 def show_home():
-    st.title("Numerical Methods Project")
+    st.header("Function input guide")
+
     st.write(
-        "Welcome to the project on numerical methods. Choose a category from the sidebar to explore various algorithms."
-    )
-
-    st.header("Categories and Methods")
-
-    # Finding Roots
-    st.subheader("Finding Roots")
-    st.markdown("- Bisection")
-    st.markdown("- False Position")
-    st.markdown("- Fixed Point")
-    st.markdown("- Newton Raphson")
-    st.markdown("- Secant")
-    st.markdown("- Multiple Roots")
-
-    # Solving Systems of Equations
-    st.subheader("Solving Systems of Equations")
-    st.markdown("- Jacobi")
-    st.markdown("- Gauss-Seidel")
-    st.markdown("- SOR")
-
-    # Interpolation
-    st.subheader("Interpolation")
-    st.markdown("- Vandermonde Interpolation")
-    st.markdown("- Newton Interpolation")
-    st.markdown("- Lagrange")
-    st.markdown("- Spline Linear")
-    st.markdown("- Spline Cubic")
-
-    st.header("How to Input Functions in Python SymPy")
-    st.write(
-        """
-        SymPy's `sympify(expr_str)` function allows you to convert a string representation of a mathematical expression into a SymPy-compatible format. In this proyect we use this function. Then, for a function input, you have to follow the following set of guidelines:
-    """
+        "You can combine these elements to create complex expressions."
+        " "
+        "Ensure your input string follows proper Python syntax for mathematical expressions."
+        " "
+        "This way, `sympify` can parse and convert it correctly into a SymPy expression."
     )
 
     st.subheader("1. Polynomials")
     st.write(
-        """
-        For polynomials, you can input terms with powers of a variable using standard mathematical notation.
-    """
+        "For polynomials, you can input terms with powers of a variable using standard mathematical notation."
     )
-    st.code(
-        """
-            x**2 + 3*x - 5
-    """,
-        language="python",
-    )
+    st.code("x**2 + 3*x - 5", language="python")
 
     st.subheader("2. Trigonometric Functions")
     st.write(
-        """
-        Use standard names for trigonometric functions: `sin`, `cos`, `tan`, etc.
-    """
+        "Use standard names for trigonometric functions: `sin`, `cos`, `tan`, etc."
     )
-    st.code(
-        """
-        sin(x) + cos(x)
-    """,
-        language="python",
-    )
+    st.code("sin(x) + cos(x)", language="python")
 
     st.subheader("3. Exponential Functions")
-    st.write(
-        """
-        Represent exponential functions using `exp`.
-    """
-    )
-    st.code(
-        """
-            exp(x)
-    """,
-        language="python",
-    )
+    st.write("Represent exponential functions using `exp`.")
+    st.code("exp(x)", language="python")
 
     st.subheader("4. Hyperbolic Trigonometric Functions")
-    st.write(
-        """
-        Use `sinh`, `cosh`, and `tanh` for hyperbolic functions.
-    """
-    )
-    st.code(
-        """
-        sinh(x) + cosh(x)
-    """,
-        language="python",
-    )
+    st.write("Use `sinh`, `cosh`, and `tanh` for hyperbolic functions.")
+    st.code("sinh(x) + cosh(x)", language="python")
 
     st.subheader("5. Logarithms")
     st.write(
-        """
-        Use `log` for natural logarithms and `log(expr, base)` for logarithms with a specific base.
-    """
+        "Use `log` for natural logarithms and `log(expr, base)` for logarithms with a specific base."
     )
-    st.code(
-        """
-        log(x) + log(x, 10)
-    """,
-        language="python",
-    )
+    st.code("log(x) + log(x, 10)", language="python")
 
     st.subheader("6. Square Roots and Other Roots")
-    st.write(
-        """
-        Use `sqrt` for square roots or fractional powers for other roots.
-    """
-    )
-    st.code("""sqrt(x) + x**(1/3)""", language="python")
-
-    st.write(
-        """
-        You can combine these elements to create complex expressions. Ensure your input string follows proper Python syntax for mathematical expressions. This way, `sympify` can parse and convert it correctly into a SymPy expression.
-    """
-    )
+    st.write("Use `sqrt` for square roots or fractional powers for other roots.")
+    st.code("sqrt(x) + x**(1/3)", language="python")
 
 
 # Sidebar navigation and categories with buttons for each method
-st.sidebar.title("Numerical Methods Menu")
+st.sidebar.title("Numerical Methods")
 
 if st.sidebar.button("Home"):
     st.session_state.page = "home"

@@ -1,6 +1,7 @@
+import pandas as pd
 import streamlit as st
 import sympy as sp
-import pandas as pd
+from .general import nm_lambdify
 
 
 def generate_report(
@@ -13,8 +14,8 @@ def generate_report(
     second_derivative,
 ):
     st.markdown("# Generate Report")
-    first_derivative = sp.lambdify(x_symbol, sp.sympify(first_derivative), "numpy")
-    second_derivative = sp.lambdify(x_symbol, sp.sympify(second_derivative), "numpy")
+    first_derivative = nm_lambdify(first_derivative, x_symbol)
+    second_derivative = nm_lambdify(second_derivative, x_symbol)
 
     from single_variable.bisection import bisection
     from single_variable.false_position import regula_falsi

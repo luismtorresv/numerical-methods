@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
+from utils.general import nm_lambdify
 from utils.generate_report import generate_report
 from utils.interface_blocks import calculate_tolerance, enter_function, graph
 
@@ -84,8 +85,8 @@ def show_newton():
         st.subheader("Derivative")
         st.latex(f"f({x}) = {sp.latex(first_derivative)}")
 
-        function = sp.lambdify(x, sp.sympify(function_input), "numpy")
-        derivative_lambda = sp.lambdify(x, first_derivative, "numpy")
+        function = nm_lambdify(function, x)
+        derivative_lambda = nm_lambdify(first_derivative, x)
 
         result = newton(x0, niter, tol, tolerance_type, function, derivative_lambda)
         if result["status"] == "error":

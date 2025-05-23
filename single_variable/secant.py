@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
+from utils.general import nm_lambdify
 from utils.generate_report import generate_report
 from utils.interface_blocks import (
     calculate_tolerance,
@@ -88,13 +89,14 @@ def show_secant():
         tol, niter, tolerance_type = calculate_tolerance()
         st.markdown(f"**Calculated Tolerance:** {tol:.10f}")
         st.subheader("Function")
-        st.latex(f"f({x}) = {sp.latex(sp.sympify(function_input))}")
+        function = sp.sympify(function_input)
+        st.latex(f"f({x}) = {sp.latex(function)}")
 
         x = sp.symbols(f"{x}")
-        function = sp.lambdify(x, sp.sympify(function_input), "numpy")
-        first_derivative = sp.diff(sp.sympify(function_input), x)
+        first_derivative = sp.diff(function, x)
         second_derivative = sp.diff(first_derivative, x)
 
+        function = nm_lambdify(function, x)
         result = secant(x0, x1, niter, tol, function, tolerance_type)
 
         if result["status"] == "error":

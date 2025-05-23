@@ -4,6 +4,8 @@ import plotly.graph_objs as go
 import streamlit as st
 import sympy as sp
 
+from utils.general import nm_lambdify
+
 
 def enter_function(placeholder_variable="x", placeholder_function="sin(x)"):
     col1, col2 = st.columns(2)
@@ -75,7 +77,8 @@ def calculate_tolerance():
 
 def graph(x, function_input, min_value=-10, max_value=10):
     # Create a symbolic function
-    function = sp.lambdify(x, sp.sympify(function_input), "numpy")
+    function_sp = sp.sympify(function_input)
+    function = nm_lambdify(function_sp, x)
 
     x_vals = np.linspace(min_value, max_value, 1000)
     y_vals = function(x_vals)
@@ -258,7 +261,7 @@ def enter_points(val=2):
 
 
 def graph_with_points(x_values, y_values, function, x_symbol=sp.symbols("x")):
-    function = sp.lambdify(x_symbol, function, "numpy")
+    function = nm_lambdify(function, x_symbol)
 
     x_min = min(x_values) - 1
     x_max = max(x_values) + 1

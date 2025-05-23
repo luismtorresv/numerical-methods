@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
+from utils.general import nm_lambdify
 from utils.generate_report import generate_report
 from utils.interface_blocks import calculate_tolerance, enter_function, graph
 
@@ -117,7 +118,7 @@ def show_regula_falsi():
         st.subheader("Function")
         st.latex(f"f({x}) = {sp.latex(function_sp)}")
 
-        lambda_function = sp.lambdify(x, function_sp, "numpy")
+        lambda_function = nm_lambdify(function_sp, x)
 
         # DO CHECKS ON INPUT INTEGRITY
         # check if derivative is continuous in general

@@ -3,6 +3,7 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
+from utils.general import nm_lambdify
 from utils.generate_report import generate_report
 from utils.interface_blocks import calculate_tolerance, enter_function, graph
 
@@ -174,8 +175,8 @@ def show_fixed_point():
     st.latex(g_first_derivative)
 
     # Lambdify the functions for numerical evaluations
-    g = sp.lambdify(x_symbol, g_function, "numpy")
-    f = sp.lambdify(x_symbol, f_function, "numpy")
+    g = nm_lambdify(g_function, x_symbol)
+    f = nm_lambdify(f_function, x_symbol)
 
     # Fixed-Point Iteration Algorithm
     st.subheader("Results")

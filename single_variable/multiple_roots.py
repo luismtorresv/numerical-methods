@@ -3,6 +3,7 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
+from utils.general import nm_lambdify
 from utils.generate_report import generate_report
 from utils.interface_blocks import (
     calculate_tolerance,
@@ -74,18 +75,20 @@ def show_multiple_roots():
         tol, niter, tolerance_type = calculate_tolerance()
         st.markdown(f"**Calculated Tolerance:** {tol:.10f}")
         st.subheader("Function")
-        st.latex(f"f({x}) = {sp.latex(sp.sympify(function_input))}")
+        function_sp = sp.sympify(function_input)
+        st.latex(f"f({x}) = {sp.latex(function_sp)}")
 
         # Preparar función, derivadas y método
         x = sp.symbols(f"{x}")
-        function = sp.lambdify(x, sp.sympify(function_input), "numpy")
+        function = nm_lambdify(function_sp, x)
         first_derivative = sp.diff(function, x)
         second_derivative = sp.diff(first_derivative, x)
 
-        df = sp.lambdify(x, sp.diff(sp.sympify(function_input), x), "numpy")
-        d2f = sp.lambdify(
-            x, sp.diff(sp.diff(sp.sympify(function_input), x), x), "numpy"
-        )
+        df_sp = sp.diff(function_sp, x)
+        d2f_sp = sp.diff(df_sp, x)
+
+        df = nm_lambdify(df_sp, x)
+        d2f = nm_lambdify(d2f_sp, x)
 
         result = multiple_roots(x0, niter, tol, function, df, d2f, tolerance_type)
 

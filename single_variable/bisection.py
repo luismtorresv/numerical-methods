@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import sympy as sp
 
+from utils.general import nm_lambdify
 from utils.generate_report import generate_report
 from utils.interface_blocks import calculate_tolerance, enter_function, graph
 
@@ -106,7 +107,7 @@ def show_bisection():
         st.subheader("Function")
         st.latex(f"f({x}) = {sp.latex(function_sp)}")
 
-        function = sp.lambdify(x, sp.sympify(function_input), "numpy")
+        function = nm_lambdify(function_input, x)
 
         # DO CHECKS ON INPUT INTEGRITY
         # check if derivative is continuous in general

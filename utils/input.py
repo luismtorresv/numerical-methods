@@ -6,14 +6,6 @@ def string_to_function(expr_str, variables):
     return expr
 
 
-def string_to_lambda(
-    variables,
-    expr,
-):
-    func = sp.lambdify(variables, expr, "numpy")
-    return func
-
-
 def function_input(var="x"):
     expression = input("Expression: ")
     variables = sp.symbols(var)

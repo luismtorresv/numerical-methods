@@ -28,7 +28,7 @@ def secant(x0, x1, niter, tol, function, tolerance_type):
     )
 
     # First iteration (iteration 0)
-    row = {"x_{n-1}": x0, "x_n": x1, "f(x_n)": function(x1), f"{Error}": None}
+    row = {"x_{n-1}": x0, "x_n": x1, "f(x_n)": function(x1), "Error": None}
     table.append(row)
 
     # Secant method iterations
@@ -47,7 +47,7 @@ def secant(x0, x1, niter, tol, function, tolerance_type):
             err = abs(xn - x_prev)
 
         # Append row for current iteration
-        row = {"x_{n-1}": x_prev, "x_n": xn, "f(x_n)": function(xn), f"{Error}": err}
+        row = {"x_{n-1}": x_prev, "x_n": xn, "f(x_n)": function(xn), "Error": err}
         table.append(row)
 
         iter += 1

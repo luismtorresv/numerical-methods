@@ -7,7 +7,7 @@ from utils.interface_blocks import calculate_tolerance, enter_function, graph
 
 
 def regula_falsi(a, b, niter, tol, tolerance_type, function):
-    error_type = (
+    Error = (
         "Relative Error"
         if tolerance_type == "Significant Figures"
         else "Absolute Error"
@@ -15,7 +15,7 @@ def regula_falsi(a, b, niter, tol, tolerance_type, function):
 
     # Initialize dictionary for table
     table = {
-        "Iteración": [],
+        "Iteration": [],
         "Xm": [],
         "f(Xm)": [],
         "Error": [],
@@ -24,13 +24,6 @@ def regula_falsi(a, b, niter, tol, tolerance_type, function):
     # Calculate initial function values
     f_a = function(a)
     f_b = function(b)
-
-    if f_a == 0:
-        result = a
-        print(f"{a} es raiz de f(x)")
-    elif f_b == 0:
-        result = b
-        print(f"{b} es raiz de f(x)")
 
     if (f_b * f_a) >= 0:
         return {
@@ -45,7 +38,7 @@ def regula_falsi(a, b, niter, tol, tolerance_type, function):
         fx = function(x_intersect)
 
         # Store initial iteration
-        table["Iteración"].append(c)
+        table["Iteration"].append(c)
         table["Xm"].append(x_intersect)
         table["f(Xm)"].append(fx)
         table["Error"].append(Error)
@@ -63,13 +56,13 @@ def regula_falsi(a, b, niter, tol, tolerance_type, function):
             x_intersect = (a * f_b - b * f_a) / (f_b - f_a)
             fx = function(x_intersect)
 
-            if error_type == "Relative Error":
+            if Error == "Relative Error":
                 Error = abs((x_intersect - old_intersect) / x_intersect)
             else:
                 Error = abs(x_intersect - old_intersect)
 
             c += 1
-            table["Iteración"].append(c)
+            table["Iteration"].append(c)
             table["Xm"].append(x_intersect)
             table["f(Xm)"].append(fx)
             table["Error"].append(Error)
@@ -77,14 +70,12 @@ def regula_falsi(a, b, niter, tol, tolerance_type, function):
 
         df = pd.DataFrame(table)
         if fx == 0:
-            result = x_intersect
             #print(f"{result} es raiz de f(x)")
             return {"status": "success", "table": df}
         elif Error < tol:
             # print(f"{x} es una aproximación de una raíz con tolerancia {Tol}")
             return {"status": "success", "table": df}
         else:
-            result = x_intersect
             #print(f"Fracaso en {niter} iteraciones")
             return {"status": "error", "message": f"Fracaso en {niter} iteraciones"}
 

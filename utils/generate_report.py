@@ -1,5 +1,6 @@
 import streamlit as st
 import sympy as sp
+import pandas as pd
 
 
 def generate_report(
@@ -83,5 +84,33 @@ def generate_report(
                 x0, n_iterations, tolerance, type_of_tolerance, func, first_derivative
             ),
         }
-        st.write(results)
-        print(results["fixed_point"])
+
+        table = {
+            "method": [],
+            "iteration": [],
+            "X_solution": [],
+            "Error": []
+        }
+        for methods in results:
+            #TODO: Fixed point is not currently working properly with the rest of the code.
+            if methods == "fixed_point":
+                continue
+            dict = results[methods]
+            #Append the method.
+            table["method"].append(methods)
+            
+            #Append the last iteration of each method.
+            table["iteration"].append(dict["table"].index[-1])
+
+            #Append the last X value of each method.
+            table["X_solution"].append(0)
+
+            #Append the Error of the last iteration.
+            error_value = dict["table"].tail(1)["Error"].iloc[0]
+            formatted_error = f"{error_value:.10e}"
+            table["Error"].append(formatted_error)
+        
+        df = pd.DataFrame(table)
+        st.latex(r"\text{Method} \quad \text{Iteration} \quad X_{\text{solution}} \quad \text{Error}")
+        st.write(df)
+

@@ -28,7 +28,7 @@ def newton(x0, niter, tol, tolerance_type, function, derivative):
     row["x_n"] = x0
     row["f(x_n)"] = function(x0)
     row["f'(x_n)"] = derivative(x0)
-    row[Error] = None
+    row["Error"] = None
     table.append(row)
 
     err = 100
@@ -46,11 +46,11 @@ def newton(x0, niter, tol, tolerance_type, function, derivative):
         table.append(row)
 
         if Error == "Relative Error":
-            row[Error] = abs((xn - x_prev) / xn)
+            row["Error"] = abs((xn - x_prev) / xn)
         else:
-            row[Error] = abs(xn - x_prev)
+            row["Error"] = abs(xn - x_prev)
 
-        err = row[Error]
+        err = row["Error"]
 
     df = pd.DataFrame(table)
     return {"status": "success", "table": df}

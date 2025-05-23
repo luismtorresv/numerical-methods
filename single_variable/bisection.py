@@ -28,7 +28,7 @@ def bisection(a, b, niter, tol, tolerance_type, function):
     row["f(a)"] = function(a)
     row["f(mid)"] = function((a + b) / 2)
     row["f(b)"] = function(b)
-    row[Error] = None
+    row["Error"] = None
     table.append(row)
     err = 100
 
@@ -57,10 +57,10 @@ def bisection(a, b, niter, tol, tolerance_type, function):
             row["f(mid)"] = function(mid)
             row["f(b)"] = function(b)
             if Error == "Relative Error":
-                row[Error] = abs((mid - prev_mid) / mid)
+                row["Error"] = abs((mid - prev_mid) / mid)
             else:
-                row[Error] = abs(mid - prev_mid)
-            err = row[Error]
+                row["Error"] = abs(mid - prev_mid)
+            err = row["Error"]
             table.append(row)
 
         df = pd.DataFrame(table)

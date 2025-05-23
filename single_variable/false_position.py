@@ -74,16 +74,19 @@ def regula_falsi(a, b, niter, tol, tolerance_type, function):
             table["f(Xm)"].append(fx)
             table["Error"].append(Error)
 
+
+        df = pd.DataFrame(table)
         if fx == 0:
             result = x_intersect
-            print(f"{result} es raiz de f(x)")
+            #print(f"{result} es raiz de f(x)")
+            return {"status": "success", "table": df}
+        elif Error < tol:
+            # print(f"{x} es una aproximación de una raíz con tolerancia {Tol}")
+            return {"status": "success", "table": df}
         else:
             result = x_intersect
-            print(f"Fracaso en {niter} iteraciones")
-
-    df = pd.DataFrame(table)
-
-    return {"status": "success", "table": df}
+            #print(f"Fracaso en {niter} iteraciones")
+            return {"status": "error", "message": f"Fracaso en {niter} iteraciones"}
 
 
 def show_regula_falsi():

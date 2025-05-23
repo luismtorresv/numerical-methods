@@ -11,6 +11,7 @@ def generate_report(
     first_derivative,
     second_derivative,
 ):
+    st.markdown("# Generate Report")
     first_derivative = sp.lambdify(x_symbol, sp.sympify(first_derivative), "numpy")
     second_derivative = sp.lambdify(x_symbol, sp.sympify(second_derivative), "numpy")
 
@@ -83,3 +84,4 @@ def generate_report(
             ),
         }
         st.write(results)
+        print(results["fixed_point"])

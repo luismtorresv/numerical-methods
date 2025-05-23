@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 import plotly.graph_objs as go
-import plotly.io as pio
 import streamlit as st
 import sympy as sp
 
@@ -100,20 +99,6 @@ def graph(x, function_input, min_value=-10, max_value=10):
 
     st.plotly_chart(fig, key=f"plotly_chart_{function_input}")
 
-    svg_file = "function_graph.svg"
-    pio.write_image(fig, svg_file, format="svg", engine="kaleido")
-
-    # Check if the SVG file was created
-    try:
-        with open(svg_file, "rb") as file:
-            st.download_button(
-                label="Download SVG Image",
-                data=file,
-                file_name="function_graph.svg",
-                mime="image/svg+xml",
-            )
-    except FileNotFoundError:
-        st.error("SVG file not found. Please check if it was created correctly.")
     # Add value calculator
     st.subheader("Calculate Value at Point")
     x_calc = st.number_input(
@@ -307,21 +292,6 @@ def graph_with_points(x_values, y_values, function, x_symbol=sp.symbols("x")):
     )
     y_calc = float(function(x_calc))
     st.write(f"Q({x_calc}) = {y_calc}")
-
-    svg_file = "function_graph.svg"
-    pio.write_image(fig, svg_file, format="svg", engine="kaleido")
-
-    # Check if the SVG file was created
-    try:
-        with open(svg_file, "rb") as file:
-            st.download_button(
-                label="Download SVG Image",
-                data=file,
-                file_name="function_graph.svg",
-                mime="image/svg+xml",
-            )
-    except FileNotFoundError:
-        st.error("SVG file not found. Please check if it was created correctly.")
 
 
 def show_table(result, deci=True, decimals=None):

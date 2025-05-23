@@ -173,5 +173,6 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-# Generated graph.
+# Generated graph by `kaleido`. This used to be needed when we still had not
+# removed the SVG image generation feature. I kept it here just to prevent checking it in.
 function_graph.svg

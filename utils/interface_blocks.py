@@ -117,16 +117,16 @@ def graph(x, function_input, min_value=-10, max_value=10):
 
 
 def definite_matrix_interface(x_0=None):
-    col1 = st.columns(1)[0]
-    with col1:
-        rows_A = st.number_input(
-            "Enter number of rows:", min_value=2, max_value=7, value=3
-        )
-        cols_A = rows_A
+    cols_A = rows_A = st.number_input(
+        "Enter number of rows:",
+        min_value=2,
+        max_value=7,
+        value=3,
+    )
 
     if x_0 is None:
-        col2, col3 = st.columns(2)
-        with col2:
+        col1, col2 = st.columns(2)
+        with col1:
             matrix_A = pd.DataFrame(
                 np.zeros((rows_A, cols_A)), columns=[f"x_{i}" for i in range(cols_A)]
             )
@@ -136,7 +136,7 @@ def definite_matrix_interface(x_0=None):
 
             # Convert the edited matrix to a NumPy array
             matrix_A = edited_matrix.to_numpy()
-        with col3:
+        with col2:
             rows_b = rows_A
             cols_b = 1
             vector_b = pd.DataFrame(
@@ -161,10 +161,10 @@ def definite_matrix_interface(x_0=None):
         )
         matrix_A = edited_matrix.to_numpy()
 
-        col5, col3, col4 = st.columns(3)
-        with col5:
+        col1, col2, col3 = st.columns(3)
+        with col1:
             norm_value = norm()
-        with col3:
+        with col2:
             # Input for b vector
             vector_b = pd.DataFrame(np.zeros((rows_A, 1)), columns=["b"])
             st.write("**$b$ vector**")
@@ -173,7 +173,7 @@ def definite_matrix_interface(x_0=None):
             )
             vector_b = edited_vector.to_numpy()
 
-        with col4:
+        with col3:
             # Input for x_0 vector
             vector_x0 = pd.DataFrame(np.zeros((rows_A, 1)), columns=["x_0"])
             st.write("**Initial Guess Vector ($x_0$)**")

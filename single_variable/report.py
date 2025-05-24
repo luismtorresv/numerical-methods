@@ -14,7 +14,7 @@ def generate_report(
     first_derivative,
     second_derivative,
 ):
-    st.markdown("# Generate Report")
+    st.subheader("Method comparison report")
     first_derivative = nm_lambdify(first_derivative, symbol)
     second_derivative = nm_lambdify(second_derivative, symbol)
 
@@ -47,7 +47,7 @@ def generate_report(
                 value=3.0,
                 step=0.0001,
             )
-            submitted = st.form_submit_button("Generate Report")
+            submitted = st.form_submit_button("Generate report")
     except Exception as e:
         st.error(f"Invalid function input: Please check your inputs")
         return

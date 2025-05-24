@@ -4,6 +4,8 @@ import sympy as sp
 
 from utils.interface_blocks import enter_points, graph_with_points
 
+from .utils import are_x_values_unique
+
 
 def cubic_spline_interpolation(x, y, decimals=None, x_sym=sp.symbols("x")):
     """
@@ -111,11 +113,7 @@ def show_cubic_spline():
         # Input points (minimum 4 points required for cubic spline)
         x_values, y_values = enter_points(val=4)
 
-        # Input validation
-        if len(x_values) != len(set(x_values)):
-            st.error(
-                "Error: The points entered have an x-repeated value, which makes it impossible to be represented as a function."
-            )
+        if not are_x_values_unique(x_values):
             return
 
         if len(x_values) < 4:

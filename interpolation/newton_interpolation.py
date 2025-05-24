@@ -5,6 +5,8 @@ import sympy as sp
 
 from utils.interface_blocks import enter_points, graph_with_points, show_table
 
+from .utils import are_x_values_unique
+
 
 def newton_interpolation(x, y, decimals, x_sym=sp.symbols("x")):
     n = len(x)
@@ -68,12 +70,8 @@ def show_newton_divided_diff():
     try:
         x_values, y_values = enter_points()
 
-        # Check for repeated x values
-        if len(x_values) != len(set(x_values)):
-            st.error(
-                "Error: The points entered have an x-repeated value, which makes it impossible to be represented as a function."
-            )
-            return  # Stop further execution if there are repeated x values
+        if not are_x_values_unique(x_values):
+            return
 
         decimals = st.slider(
             "Select number of decimals to display",

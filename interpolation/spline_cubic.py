@@ -106,64 +106,6 @@ def cubic_spline_interpolation(x, y, decimals=None, x_sym=sp.symbols("x")):
 
 def show_cubic_spline():
     st.header("Cubic Spline Method")
-    st.markdown(
-        """
-    **Cubic Spline Interpolation** is a method for interpolating data points using piecewise cubic polynomials. Each segment of the spline is a cubic polynomial, and the method ensures that the overall function is smooth, continuous, and its first and second derivatives are also continuous across all intervals.
-
-    **Key Features:**
-    - Each piece of the spline is a cubic polynomial.
-    - The spline is continuous, and both the first and second derivatives are continuous at the interior points.
-    - The method provides a smooth curve without sharp turns or discontinuities.
-    """
-    )
-    with st.expander("📘 How the False Position Method Works"):
-        st.markdown(
-            """
-
-        For each interval $ [x_i, x_{i+1}] $, the cubic spline is given by:
-        """
-        )
-        st.latex(
-            r"""
-        S_i(x) = a_i x^3 + b_i x^2 + c_i x + d_i
-        """
-        )
-        st.markdown(
-            """
-        Where $ a_i $, $ b_i $, $ c_i $, and $ d_i $ are the coefficients to be determined.
-
-        **Steps:**
-        1. **Interpolation Constraints**: The cubic spline must pass through each data point, so we have the following conditions:
-        """
-        )
-        st.latex(
-            r"""
-        S_i(x_i) = y_i \quad \text{and} \quad S_i(x_{i+1}) = y_{i+1}
-        """
-        )
-        st.markdown(
-            """
-        2. **Continuity of Derivatives**: The first and second derivatives of the spline must be continuous at the interior points:
-        """
-        )
-        st.latex(
-            r"""
-        S'_i(x_{i+1}) = S'_{i+1}(x_{i+1}) \quad \text{and} \quad S''_i(x_{i+1}) = S''_{i+1}(x_{i+1})
-        """
-        )
-        st.markdown(
-            """
-        3. **Solve for Coefficients**: The system of equations formed by these conditions is solved to determine the coefficients $ a_i $, $ b_i $, $ c_i $, and $ d_i $.
-
-        **Advantages:**
-        - Produces a smooth, continuous curve with no abrupt changes in slope or curvature.
-        - Often used for applications requiring smooth interpolations like computer graphics or numerical simulations.
-
-        **Disadvantages:**
-        - Requires solving a system of linear equations, which can be computationally intensive for large datasets.
-        - May not perform well if the data is highly oscillatory or has outliers.
-        """
-        )
 
     try:
         # Input points (minimum 4 points required for cubic spline)

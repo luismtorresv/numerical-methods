@@ -41,39 +41,6 @@ def linear_spline_interpolation(x, y, decimals=None, x_sym=sp.symbols("x")):
 
 def show_spline():
     st.header("Linear Spline Method")
-    st.markdown(
-        """
-    The **Linear Spline Interpolation Method** is a piecewise linear approach for interpolating between data points.
-        It connects each pair of adjacent data points with a straight line, creating a continuous piecewise function that is linear in each interval.
-
-    """
-    )
-
-    with st.expander("📘 How the Linear Spline Method Works"):
-        st.markdown(
-            """
-        - The linear spline between two points $ (x_i, y_i) $ and $ (x_{i+1}, y_{i+1}) $ is:
-        """
-        )
-        st.latex(
-            r"""
-        S_i(x) = y_i + \frac{(y_{i+1} - y_i)}{(x_{i+1} - x_i)}(x - x_i)
-        """
-        )
-        st.markdown(
-            """
-        **Steps:**
-        - For each pair of adjacent data points, compute the linear spline using the above formula.
-        - Combine these splines to form the complete piecewise linear interpolation.
-
-        **Advantages:**
-        - Simple and easy to compute.
-        - Provides a continuous function without oscillation.
-
-        **Disadvantages:**
-        - Does not ensure smoothness of the first derivative between segments (i.e., the slope can change abruptly).
-        """
-        )
 
     try:
         x_values, y_values = enter_points(val=2)

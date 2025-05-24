@@ -61,7 +61,6 @@ def secant(x0, x1, niter, tol, function, tolerance_type):
 
 
 def show_secant():
-    explain_method()
     st.header("Secant Method")
 
     try:
@@ -131,48 +130,3 @@ def show_secant():
     except Exception as e:
         st.error("Error: Check your input")
         print(e)
-
-
-def explain_method():
-    st.markdown(
-        """
-    The **Secant Method** is a numerical technique used to approximate the roots of a function  f(x) .
-    Unlike the Newton-Raphson Method, it does not require the computation of derivatives. Instead, it approximates
-    the derivative using a secant line through two points on the function.
-
-    The method is iterative and converges faster than the Bisection Method but is less robust than Newton-Raphson.
-    """
-    )
-
-    with st.expander("📘 How the Secant Method Works"):
-        st.markdown(
-            """
-        **1. Choose Two Initial Guesses $x_0$ and $x_1$ close to the suspected root.**
-
-        **2. Apply the Iteration Formula:**
-        """
-        )
-        st.latex(
-            r"""
-        x_{n+1} = x_n - f(x_n) \cdot \frac{x_n - x_{n-1}}{f(x_n) - f(x_{n-1})}
-        """
-        )
-        st.markdown(
-            """
-            - This formula uses the slope of the secant line through $(x_{n-1}, f(x_{n-1}))$ and $(x_n, f(x_n))$
-            to compute the next approximation $x_{n+1}$.
-
-            **3. Check for Convergence:**
-            - Stop when $|f(x_{n+1})|$ is sufficiently close to zero or $|x_{n+1} - x_n|$ is less than a specified tolerance.
-
-            **4. Repeat:**
-            - Use $x_{n+1}$ and $x_n$ as the new points and iterate until convergence.
-
-            **Advantages:**
-            - Does not require the computation of derivatives.
-            - Typically converges faster than the Bisection Method.
-
-            **Disadvantages:**
-            - May fail if $f(x_n) = f(x_{n-1})$ or if the initial guesses are not close to the root.
-        """
-        )

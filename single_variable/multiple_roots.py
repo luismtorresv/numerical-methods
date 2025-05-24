@@ -55,7 +55,6 @@ def multiple_roots(x0, niter, tol, function, df, d2f, tolerance_type):
 
 def show_multiple_roots():
     st.header("Multiple Roots Method")
-    explain_methods()
 
     try:
         # Entrada de función y variable
@@ -122,60 +121,3 @@ def show_multiple_roots():
         st.error("Error: Check your inputs")
 
     graph(x, function_input)
-
-
-def explain_methods():
-    st.markdown(
-        """
-    The **Newton's Method for Multiple Roots** is a numerical technique used to approximate roots of a function  $f(x)$ ,
-    especially when the root has multiplicity greater than one. In such cases, the standard Newton-Raphson Method
-    may converge slowly or fail entirely.
-
-    This method modifies the Newton-Raphson formula to account for higher multiplicity using the first and second derivatives.
-    """
-    )
-
-    with st.expander("📘 How the Newton's Method for Multiple Roots Works"):
-        st.markdown(
-            """
-            **1. Formula for the Iteration:**
-        """
-        )
-        st.latex(
-            r"""
-        x_{i+1} = x_i - \frac{f(x_i)f'(x_i)}{(f'(x_i))^2 - f(x_i)f''(x_i)}
-        """
-        )
-        st.markdown(
-            """
-            - $f'(x_i)$: First derivative of $f(x)$ evaluated at $x_i$.
-            - $f''(x_i)$: Second derivative of $f(x)$ evaluated at $x_i$.
-            - This formula incorporates the second derivative to improve convergence for multiple roots.
-
-            **2. Choose Initial Guess $x_0$:**
-            - Start with an initial guess $x_0$ close to the suspected root.
-
-            **3. Iteration Process:**
-            - Compute $f(x_i)$, $f'(x_i)$, and $f''(x_i)$.
-            - Apply the formula to compute $x_{i+1}$.
-            - Repeat until the error is less than a specified tolerance.
-
-            **4. Error Check:**
-            - The error is calculated as:
-        """
-        )
-        st.latex(
-            r"""
-        \text{Error} = |x_{i+1} - x_i|
-        """
-        )
-        st.markdown(
-            """
-            - The iteration stops when the error is below the tolerance threshold, which can be based on:
-            - **Significant Figures:** Error must be less than a given tolerance $\text{tol}$.
-            - **Correct Decimals:** The error rounded to the specified precision is zero.
-
-            **5. Special Case:**
-            - If $f'(x_i) = 0$, the method fails because the denominator in the formula becomes zero.
-        """
-        )

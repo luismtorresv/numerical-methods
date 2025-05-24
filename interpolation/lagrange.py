@@ -39,63 +39,6 @@ def lagrange(x, y, decimals, x_sym=sp.symbols("x")):
 def show_lagrange():
     st.header("Lagrange Method")
 
-    st.markdown(
-        """
-    The **Lagrange Interpolation Method** is one of the most widely used methods for polynomial interpolation.
-    It provides a polynomial that exactly passes through a given set of data points. Unlike Newton's method, which builds the polynomial incrementally, Lagrange's method computes the entire polynomial in one go using Lagrange basis polynomials.
-
-    The method is particularly simple to implement and understand, and it is useful when dealing with small datasets or when you need an explicit polynomial form.
-    """
-    )
-
-    with st.expander("📘 How the Lagrange Interpolation Method Works"):
-        st.markdown(
-            """
-        **1. Lagrange Basis Polynomials:**
-        - The Lagrange interpolating polynomial is given by the following sum:
-        """
-        )
-        st.latex(
-            r"""
-        P(x) = \sum_{i=0}^{n-1} y_i \cdot L_i(x)
-        """
-        )
-        st.markdown(
-            """
-        Where $ y_i $ are the given data points and $ L_i(x) $ are the Lagrange basis polynomials.
-
-        - Each Lagrange basis polynomial $ L_i(x) $ is defined as:
-        """
-        )
-        st.latex(
-            r"""
-        L_i(x) = \prod_{\substack{0 \leq j < n \\ j \neq i}} \frac{x - x_j}{x_i - x_j}
-        """
-        )
-        st.markdown(
-            """
-        - These basis polynomials have the property that $ L_i(x_j) = 1 $ if $i = j$ and $ L_i(x_j) = 0 $ if $i ≠ j$, ensuring that each term in the sum contributes only at the corresponding $ x_i $.
-        - The final polynomial is then:
-        """
-        )
-        st.latex(
-            r"""
-        P(x) = y_0 \cdot L_0(x) + y_1 \cdot L_1(x) + \dots + y_{n-1} \cdot L_{n-1}(x)
-        """
-        )
-        st.markdown(
-            """
-        **Advantages:**
-        - Simple to implement.
-        - Does not require solving a system of equations.
-        - Provides a direct expression for the interpolating polynomial.
-
-        **Disadvantages:**
-        - Can be computationally expensive for large datasets due to the number of multiplications required.
-        - Not as efficient for adding new points as methods like Newton's method.
-        """
-        )
-
     try:
         x_values, y_values = enter_points()
 

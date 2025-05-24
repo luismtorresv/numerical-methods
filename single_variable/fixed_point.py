@@ -110,7 +110,6 @@ def validate_fixed_point_function(x_symbol, f_function, g_function):
 
 
 def show_fixed_point():
-    explain_method()
     st.header("Fixed-Point Iteration Method")
 
     try:
@@ -242,32 +241,3 @@ def show_fixed_point():
         first_derivative,
         second_derivative,
     )
-
-
-def explain_method():
-    st.markdown(
-        "The **Fixed Point Iteration Method** finds roots by transforming $f(x) = 0$ to $x = g(x)$."
-    )
-
-    with st.expander("📘 How the Fixed Point Method Works"):
-        st.markdown(
-            """
-            **1. Rewrite the Function:**
-            - Express $f(x) = 0$ as $x = g(x)$, where $g(x)$ is chosen to simplify computations and ensure convergence.
-
-            **2. Choose an Initial Guess $x_0$:**
-            - Select an initial guess $x_0$ close to the suspected root.
-
-            **3. Apply the Iteration Formula:**
-
-            $$x_{n+1} = g(x_n)$$
-
-            - Compute successive approximations $x_1, x_2, \dots$ by evaluating $g(x)$ at the previous point.
-
-            **4. Check for Convergence:**
-            - Stop the iteration when $|x_{n+1} - x_n|$ is less than a specified tolerance.
-
-            **Convergence Conditions:**
-            - The method converges if $|g'(x)| < 1$ for all $x$ in the interval of interest.
-        """
-        )

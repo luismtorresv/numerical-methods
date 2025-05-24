@@ -81,7 +81,6 @@ def regula_falsi(a, b, niter, tol, tolerance_type, function):
 
 
 def show_regula_falsi():
-    explain_method()
     st.header("False Position Method")
     try:
         x, function_input = enter_function(
@@ -169,71 +168,3 @@ def show_regula_falsi():
         st.error("Error: Check inputs")
         print(ep)
         return
-
-
-def explain_method():
-    st.markdown(
-        """
-    The **False Position Method**, also called the **False Position Method**, is a root-finding algorithm used to
-    approximate the solution of the equation  f(x) = 0  for a continuous function  f(x) .
-    It is based on the Intermediate Value Theorem and linear interpolation.
-    """
-    )
-
-    with st.expander("📘 How the False Position Method Works"):
-        st.markdown(
-            """
-            **1. Interval Selection:**
-            - Start with an interval $[a, b]$ such that $f(a) \cdot f(b) < 0$.
-            This ensures there is at least one root in the interval.
-
-            **2. Compute the Next Approximation:**
-            - Use the formula for linear interpolation to find the root approximation $x_r$:
-        """
-        )
-        st.latex(
-            r"""
-        x_r = b - \frac{f(b)(b - a)}{f(b) - f(a)}
-        """
-        )
-        st.markdown(
-            """
-            - This formula determines the $x$-coordinate of the intersection between the secant line connecting
-            $(a, f(a))$ and $(b, f(b))$ and the $x$-axis.
-
-            **3. Update the Interval:**
-            - Evaluate $f(x_r)$:
-            - If $f(a) \cdot f(x_r) < 0$, the root lies in $[a, x_r]$, so update $b = x_r$.
-            - If $f(b) \cdot f(x_r) < 0$, the root lies in $[x_r, b]$, so update $a = x_r$.
-            - If $f(x_r) = 0$, the method has found an exact root.
-
-            **4. Convergence Criteria:**
-            - Stop the iteration when:
-            - The absolute error is below a tolerance:
-        """
-        )
-        st.latex(
-            r"""
-        \text{Error} = |x_r^{(i+1)} - x_r^{(i)}|
-        """
-        )
-        st.markdown(
-            """
-            - Or, the function value at $x_r$ is sufficiently close to zero:
-        """
-        )
-        st.latex(
-            r"""
-        |f(x_r)| < \text{tol}.
-        """
-        )
-        st.markdown(
-            """
-            **Advantages:**
-            - The method combines the accuracy of the Bisection Method and the speed of linear interpolation.
-            - It always converges for continuous functions satisfying $f(a) \cdot f(b) < 0$.
-
-            **Limitations:**
-            - Convergence may be slow if the function is highly non-linear or one side of the interval dominates.
-        """
-        )

@@ -4,13 +4,14 @@ import streamlit as st
 import sympy as sp
 
 from utils.general import nm_lambdify
-from utils.generate_report import generate_report
 from utils.interface_blocks import (
     calculate_tolerance,
     enter_function,
     graph,
     show_table,
 )
+
+from .report import generate_report
 
 
 def multiple_roots(x0, niter, tol, function, df, d2f, tolerance_type):

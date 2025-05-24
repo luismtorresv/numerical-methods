@@ -4,8 +4,9 @@ import streamlit as st
 import sympy as sp
 
 from utils.general import nm_lambdify
-from utils.generate_report import generate_report
 from utils.interface_blocks import calculate_tolerance, enter_function, graph
+
+from .report import generate_report
 
 
 def fixed_point(a, b, X0, Tol, type_of_tol, Niter, Fun, Fun_g):

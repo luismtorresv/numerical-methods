@@ -40,14 +40,12 @@ def generate_report(
                 format="%.4f",
                 value=0.1,
                 step=0.0001,
-                help="The infimum of the desired search interval [a, b].",
             )
             b = st.number_input(
                 "End point of search interval (b)",
                 format="%.4f",
                 value=3.0,
                 step=0.0001,
-                help="The supremum of the desired search interval [a, b].",
             )
             submitted = st.form_submit_button("Generate Report")
     except Exception as e:

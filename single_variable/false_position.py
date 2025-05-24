@@ -95,7 +95,6 @@ def show_regula_falsi():
                 format="%.4f",
                 value=0.1,
                 step=0.0001,
-                help="The infimum of the desired search interval [a, b].",
             )
         with col2:
             b = st.number_input(
@@ -103,7 +102,6 @@ def show_regula_falsi():
                 format="%.4f",
                 value=3.0,
                 step=0.0001,
-                help="The supremum of the desired search interval [a, b].",
             )
 
         tol, niter, tolerance_type = calculate_tolerance()

@@ -125,7 +125,7 @@ def show_SOR():
             st.success("The SOR method has converged successfully.")
 
             # Mostrar los resultados
-            st.write(f"**Solution Vector (x)**")
+            st.write("**Solution Vector ($\\vec{x}$)**")
             show_matrix(X, deci=False)
 
             st.write(f"**Solution Table**")

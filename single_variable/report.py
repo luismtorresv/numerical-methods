@@ -22,7 +22,7 @@ def generate_report(
         with st.form("Report"):
             # Initial guess input
             x0 = st.number_input(
-                "Initial guess (x₀)",
+                "Initial guess ($x_0$)",
                 format="%.4f",
                 value=2.0,
                 step=0.0001,

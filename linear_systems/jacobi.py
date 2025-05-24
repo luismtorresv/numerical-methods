@@ -198,9 +198,9 @@ def show_Jacobi():
         if err == None:
             st.success("The Jacobi method has converged successfully.")
             # Display the results
-            st.write(f"**Solution Vector (x)**")
+            st.write("**Solution Vector ($\\vec{x}$)**")
             show_matrix(X, deci=False)
-            st.write(f"**Solution Table**")
+            st.write("**Solution Table**")
             show_matrix(table)
             st.write("Spectral Radius: ", rad_esp)
             show_T_and_C(T, C)

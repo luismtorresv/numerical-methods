@@ -131,7 +131,7 @@ def definite_matrix_interface(x_0=None):
                 np.zeros((rows_A, cols_A)), columns=[f"x_{i}" for i in range(cols_A)]
             )
 
-            st.write("**A Matrix**")
+            st.write("**$A$ matrix**")
             edited_matrix = st.data_editor(matrix_A, num_rows="fixed")
 
             # Convert the edited matrix to a NumPy array
@@ -143,7 +143,7 @@ def definite_matrix_interface(x_0=None):
                 np.zeros((rows_b, cols_b)), columns=[f"b" for i in range(cols_b)]
             )
 
-            st.write("**b Vector**")
+            st.write("**$b$ vector**")
             edited_vector = st.data_editor(vector_b, num_rows="fixed")
 
             vector_b = edited_vector.to_numpy()
@@ -155,7 +155,7 @@ def definite_matrix_interface(x_0=None):
         matrix_A = pd.DataFrame(
             np.zeros((rows_A, cols_A)), columns=[f"x_{i + 1}" for i in range(cols_A)]
         )
-        st.write("**A Matrix**")
+        st.write("**$A$ matrix**")
         edited_matrix = st.data_editor(
             matrix_A, num_rows="fixed", use_container_width=True
         )
@@ -167,7 +167,7 @@ def definite_matrix_interface(x_0=None):
         with col3:
             # Input for b vector
             vector_b = pd.DataFrame(np.zeros((rows_A, 1)), columns=["b"])
-            st.write("**b Vector**")
+            st.write("**$b$ vector**")
             edited_vector = st.data_editor(
                 vector_b, num_rows="fixed", use_container_width=True
             )
@@ -175,10 +175,12 @@ def definite_matrix_interface(x_0=None):
 
         with col4:
             # Input for x_0 vector
-            vector_x0 = pd.DataFrame(np.zeros((rows_A, 1)), columns=["x₀"])
-            st.write("**Initial Guess Vector (x₀)**")
+            vector_x0 = pd.DataFrame(np.zeros((rows_A, 1)), columns=["x_0"])
+            st.write("**Initial Guess Vector ($x_0$)**")
             edited_vector_x0 = st.data_editor(
-                vector_x0, num_rows="fixed", use_container_width=True
+                vector_x0,
+                num_rows="fixed",
+                use_container_width=True,
             )
             vector_x0 = edited_vector_x0.to_numpy()
 
@@ -194,7 +196,7 @@ def iterative_matrix_interface():
             np.zeros((rows_A, cols_A)), columns=[f"x_{i}" for i in range(cols_A)]
         )
 
-        st.write("A matrix:")
+        st.write("$A$ matrix:")
         edited_matrix = st.data_editor(matrix_A, num_rows="fixed")
 
         # Convert the edited matrix to a NumPy array
@@ -206,7 +208,7 @@ def iterative_matrix_interface():
             np.zeros((rows_b, cols_b)), columns=[f"b" for i in range(cols_b)]
         )
 
-        st.write("b vector:")
+        st.write("$b$ vector:")
         edited_vector = st.data_editor(vector_b, num_rows="fixed")
 
         vector_b = edited_vector.to_numpy()
@@ -336,7 +338,7 @@ def gauss_matrix_result(row_echelon, vector_b, vector_x, decimals=5):
 
     st.subheader("Result")
 
-    st.write("**Row echelon form A and vector b**")
+    st.write("**Row echelon form $A$ and vector $\vec{b}$**")
     col1, col2 = st.columns(2)
     with col1:
         row_echelon = sp.Matrix(np.round(row_echelon, decimals))
@@ -354,28 +356,27 @@ def show_T_and_C(T, C):
     col1, col2 = st.columns(2)
 
     with col1:
-        st.write("**Matrix T**")
+        st.write("**Matrix $T$**")
         T = sp.Matrix(np.round(T, 5))
         st.latex(f"T = {sp.latex(T)}")
 
     with col2:
-        st.write("**Vector C**")
+        st.write("**Vector $\\vec{C}$**")
         C = sp.Matrix(np.round(C, 5))
-        st.latex(f"C = {sp.latex(C)}")
+        st.latex("\\vec{C} = " + f"{sp.latex(C)}")
 
 
 def norm():
     # Method to ask the user if they want 1, 2, 3 or infinity norm
     norm_value = st.radio(
-        "Select the norm to use:",
-        ("1-norm", "2-norm", "Infinity-norm"),
-        help="Choose the norm to use for error calculation.",
+        "Norm",
+        ("1-norm", "2-norm", "$\infty$-norm"),
     )
     if norm_value == "1-norm":
         norm_value = 1
     elif norm_value == "2-norm":
         norm_value = 2
-    elif norm_value == "Infinity-norm":
+    elif norm_value == "$\infty$-norm":
         norm_value = "inf"
     return norm_value
 

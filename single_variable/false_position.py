@@ -68,16 +68,15 @@ def regula_falsi(a, b, niter, tol, tolerance_type, function):
             table["f(Xm)"].append(fx)
             table["Error"].append(Error)
 
-
         df = pd.DataFrame(table)
         if fx == 0:
-            #print(f"{result} es raiz de f(x)")
+            # print(f"{result} es raiz de f(x)")
             return {"status": "success", "table": df}
         elif Error < tol:
             # print(f"{x} es una aproximación de una raíz con tolerancia {Tol}")
             return {"status": "success", "table": df}
         else:
-            #print(f"Fracaso en {niter} iteraciones")
+            # print(f"Fracaso en {niter} iteraciones")
             return {"status": "error", "message": f"Fracaso en {niter} iteraciones"}
 
 

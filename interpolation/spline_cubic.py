@@ -28,9 +28,7 @@ def cubic_spline_interpolation(x, y, decimals=None, x_sym=sp.symbols("x")):
     d = sp.symbols(f"d0:{n}")
 
     # Create a list of cubic polynomials for each interval
-    cubics = [
-        a[i] * x_sym**3 + b[i] * x_sym**2 + c[i] * x_sym + d[i] for i in range(n)
-    ]
+    cubics = [a[i] * x_sym**3 + b[i] * x_sym**2 + c[i] * x_sym + d[i] for i in range(n)]
 
     # System of equations
     equations = []

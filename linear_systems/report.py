@@ -72,32 +72,32 @@ def generate_report(matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_t
         }
 
         table = {
-            "method": [],
-            "N_iteration": [],
-            "X_1": [],
-            "X_2": [],
-            "X_3": [],
-            "Error": [],
+            "Método": [],
+            "$n_\\text{iter}$": [],
+            "$x_1$": [],
+            "$x_2$": [],
+            "$x_3$": [],
+            "$E$": [],
         }
 
         for method in results:
             X, results_table, _, _, _, _ = results[method]
 
             # Respective method
-            table["method"].append(method)
+            table["Método"].append(method)
 
             x1, x2, x3 = X
-            table["X_1"].append(x1[0])
-            table["X_2"].append(x2[0])
-            table["X_3"].append(x3[0])
+            table["$x_1$"].append(x1[0])
+            table["$x_2$"].append(x2[0])
+            table["$x_3$"].append(x3[0])
 
             # Append the last iteration of each method.
-            table["N_iteration"].append(results_table.index[-1])
+            table["$n_\\text{iter}$"].append(results_table.index[-1])
 
             # Append the Error of the last iteration.
             error_value = results_table.tail(1)["Error"].iloc[0]
             formatted_error = f"{error_value:.10e}"
-            table["Error"].append(formatted_error)
+            table["$E$"].append(formatted_error)
 
         df = pd.DataFrame(table)
-        st.write(df)
+        st.table(df)

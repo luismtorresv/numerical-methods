@@ -7,23 +7,16 @@ from utils.general import nm_lambdify
 
 def generate_report(
     n_iterations,
-    func,
+    f_function,
     tolerance,
     type_of_tolerance,
-    x_symbol,
+    symbol,
     first_derivative,
     second_derivative,
 ):
     st.markdown("# Generate Report")
-    first_derivative = nm_lambdify(first_derivative, x_symbol)
-    second_derivative = nm_lambdify(second_derivative, x_symbol)
-
-    from single_variable.bisection import bisection
-    from single_variable.false_position import regula_falsi
-    from single_variable.fixed_point import fixed_point
-    from single_variable.multiple_roots import multiple_roots
-    from single_variable.newton_raphson import newton
-    from single_variable.secant import secant
+    first_derivative = nm_lambdify(first_derivative, symbol)
+    second_derivative = nm_lambdify(second_derivative, symbol)
 
     try:
         with st.form("Report"):
@@ -62,30 +55,18 @@ def generate_report(
         return
 
     if submitted:
-        results = {
-            "bisection": bisection(
-                a, b, n_iterations, tolerance, type_of_tolerance, func
-            ),
-            "false_position": regula_falsi(
-                a, b, n_iterations, tolerance, type_of_tolerance, func
-            ),
-            "fixed_point": fixed_point(
-                a, b, x0, tolerance, type_of_tolerance, n_iterations, func, g_input
-            ),
-            "multiple_roots": multiple_roots(
-                x0,
-                n_iterations,
-                tolerance,
-                func,
-                first_derivative,
-                second_derivative,
-                type_of_tolerance,
-            ),
-            "secant": secant(a, b, n_iterations, tolerance, func, type_of_tolerance),
-            "newton": newton(
-                x0, n_iterations, tolerance, type_of_tolerance, func, first_derivative
-            ),
-        }
+        results = _run_all_methods(
+            x0,
+            a,
+            b,
+            n_iterations,
+            tolerance,
+            type_of_tolerance,
+            f_function,
+            g_input,
+            first_derivative,
+            second_derivative,
+        )
 
         table = {"method": [], "iteration": [], "X_solution": [], "Error": []}
         for methods in results:
@@ -112,3 +93,77 @@ def generate_report(
             r"\text{Method} \quad \text{Iteration} \quad X_{\text{solution}} \quad \text{Error}"
         )
         st.write(df)
+
+
+def _run_all_methods(
+    x_0,
+    a,
+    b,
+    n_iterations,
+    tolerance,
+    type_of_tolerance,
+    f_function,
+    g_function,
+    first_derivative,
+    second_derivative,
+):
+    from single_variable.bisection import bisection
+    from single_variable.false_position import regula_falsi
+    from single_variable.fixed_point import fixed_point
+    from single_variable.multiple_roots import multiple_roots
+    from single_variable.newton_raphson import newton
+    from single_variable.secant import secant
+
+    return {
+        "bisection": bisection(
+            a,
+            b,
+            n_iterations,
+            tolerance,
+            type_of_tolerance,
+            f_function,
+        ),
+        "false_position": regula_falsi(
+            a,
+            b,
+            n_iterations,
+            tolerance,
+            type_of_tolerance,
+            f_function,
+        ),
+        "fixed_point": fixed_point(
+            a,
+            b,
+            x_0,
+            tolerance,
+            type_of_tolerance,
+            n_iterations,
+            f_function,
+            g_function,
+        ),
+        "multiple_roots": multiple_roots(
+            x_0,
+            n_iterations,
+            tolerance,
+            f_function,
+            first_derivative,
+            second_derivative,
+            type_of_tolerance,
+        ),
+        "secant": secant(
+            a,
+            b,
+            n_iterations,
+            tolerance,
+            f_function,
+            type_of_tolerance,
+        ),
+        "newton": newton(
+            x_0,
+            n_iterations,
+            tolerance,
+            type_of_tolerance,
+            f_function,
+            first_derivative,
+        ),
+    }

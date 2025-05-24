@@ -83,10 +83,10 @@ def graph(x, function_input, min_value=-10, max_value=10):
     x_vals = np.linspace(min_value, max_value, 1000)
     y_vals = function(x_vals)
 
+    # Mask large values (possible infinity)
     with np.errstate(divide="ignore", invalid="ignore"):
-        y_vals[np.abs(y_vals) > 1 / 0.0000000001] = (
-            None  # Mask large values (possible infinity)
-        )
+        large_values = np.abs(y_vals) > 1 / 0.0000000001
+        y_vals[large_values] = None
 
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=x_vals, y=y_vals, mode="lines", name=function_input))

@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+from utils.generate_linear_systems_report import generate_report
 from utils.interface_blocks import (
     calculate_tolerance,
     definite_matrix_interface,
@@ -9,7 +10,7 @@ from utils.interface_blocks import (
     show_matrix,
     show_T_and_C,
 )
-from utils.generate_linear_systems_report import generate_report
+
 
 def calculate_error(X, X_L, norm=2, error_type=None):
     """
@@ -212,15 +213,15 @@ def show_gauss_seidel():
             show_matrix(table)
             st.write("Spectral Radius: ", rad_esp)
             show_T_and_C(T, C)
-            
+
             generate_report(
-                matrix_A, 
-                vector_b, 
-                x_0, 
-                tol, 
-                niter, 
-                norm_value, 
-                tolerance_type
+                matrix_A,
+                vector_b,
+                x_0,
+                tol,
+                niter,
+                norm_value,
+                tolerance_type,
             )
 
         else:

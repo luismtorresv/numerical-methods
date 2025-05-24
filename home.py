@@ -77,6 +77,7 @@ mathematical notation.
 # Sidebar navigation and categories with buttons for each method
 st.sidebar.title("Numerical Methods")
 
+# Sidebar.
 if st.sidebar.button("Function input guide"):
     st.session_state.page = "home"
 if st.sidebar.button("Equations in one variable"):
@@ -94,78 +95,52 @@ elif st.session_state.page == "graph":
 elif st.session_state.page == "roots":
     st.title("Equations in one variable")
 
-    # Dropdown to select root-finding method
+    name_function_matching = {
+        "Bisection": show_bisection,
+        "Newton-Raphson": show_newton,
+        "Secant": show_secant,
+        "False Position": show_regula_falsi,
+        "Fixed Point": show_fixed_point,
+        "Multiple Roots": show_multiple_roots,
+    }
+
     root_method = st.selectbox(
         "Select a root-finding method",
-        [
-            "Bisection",
-            "Newton-Raphson",
-            "Secant",
-            "False Position",
-            "Fixed Point",
-            "Multiple Roots",
-        ],
+        name_function_matching.keys(),
     )
 
-    # Display the corresponding method content based on the dropdown selection
-    match root_method:
-        case "Newton-Raphson":
-            show_newton()
-        case "Secant":
-            show_secant()
-        case "Bisection":
-            show_bisection()
-        case "False Position":
-            show_regula_falsi()
-        case "Fixed Point":
-            show_fixed_point()
-        case "Multiple Roots":
-            show_multiple_roots()
+    name_function_matching[root_method]()
+
 elif st.session_state.page == "systems":
     st.title("Linear systems of equations")
 
-    # Dropdown to select a system-solving method
+    name_function_matching = {
+        "Jacobi": show_Jacobi,
+        "Gauss-Seidel": show_gauss_seidel,
+        "SOR": show_SOR,
+    }
+
     system_method = st.selectbox(
         "Select a system-solving method",
-        [
-            "Jacobi",
-            "Gauss-Seidel",
-            "SOR",
-        ],
+        name_function_matching.keys(),
     )
 
-    # Display the corresponding method content based on the dropdown selection
-    match system_method:
-        case "Jacobi":
-            show_Jacobi()
-        case "Gauss-Seidel":
-            show_gauss_seidel()
-        case "SOR":
-            show_SOR()
+    name_function_matching[system_method]()
 
 elif st.session_state.page == "interpolation":
     st.title("Interpolation")
-    # Dropdown to select interpolation method
+
+    name_function_matching = {
+        "Vandermonde Matrix": show_vandermonde,
+        "Newton Divided Difference": show_newton_divided_diff,
+        "Lagrange Interpolation": show_lagrange,
+        "Linear Spline Interpolation": show_spline,
+        "Cubic Spline Interpolation": show_cubic_spline,
+    }
+
     interpolation_method = st.selectbox(
         "Select an interpolation method",
-        [
-            "Vandermonde Matrix",
-            "Newton Divided Difference",
-            "Lagrange Interpolation",
-            "Linear Spline Interpolation",
-            "Cubic Spline Interpolation",
-        ],
+        name_function_matching.keys(),
     )
 
-    # Display the corresponding method content based on the dropdown selection
-    match interpolation_method:
-        case "Vandermonde Matrix":
-            show_vandermonde()
-        case "Newton Divided Difference":
-            show_newton_divided_diff()
-        case "Lagrange Interpolation":
-            show_lagrange()
-        case "Linear Spline Interpolation":
-            show_spline()
-        case "Cubic Spline Interpolation":
-            show_cubic_spline()
+    name_function_matching[interpolation_method]()

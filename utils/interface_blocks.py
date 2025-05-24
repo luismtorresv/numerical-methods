@@ -367,37 +367,6 @@ def show_T_and_C(T, C):
         st.latex(f"C = {sp.latex(C)}")
 
 
-def LU_result(U, L, vector_x, P=None, decimals=5):
-    decimals = st.slider(
-        "Select number of decimals to display",
-        min_value=1,
-        max_value=10,
-        value=4,
-        help="Adjust the number of decimal places in the result.",
-    )
-
-    st.subheader("Result")
-
-    if P is not None:
-        st.write("**PLU decomposition for A**")
-        P = sp.Matrix(np.round(P, decimals))
-        st.latex(f"P = {sp.latex(P)}")
-    else:
-        st.write("**LU decomposition for A**")
-
-    col1, col2 = st.columns(2)
-    with col1:
-        L = sp.Matrix(np.round(L, decimals))
-        st.latex(f"L = {sp.latex(L)}")
-    with col2:
-        U = sp.Matrix(np.round(U, decimals))
-        st.latex(f"U = {sp.latex(U)}")
-
-    st.write("**Solution vector**")
-    vector_x = sp.Matrix(np.round(vector_x, decimals))
-    st.latex(f"\\vec{{x}} = {sp.latex(vector_x)}")
-
-
 def norm():
     # Method to ask the user if they want 1, 2, 3 or infinity norm
     norm_value = st.radio(

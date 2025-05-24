@@ -14,43 +14,64 @@ if "page" not in st.session_state:
 def show_home():
     st.header("Function input guide")
 
-    st.write(
-        "You can combine these elements to create complex expressions."
-        " "
-        "Ensure your input string follows proper Python syntax for mathematical expressions."
-        " "
-        "This way, `sympify` can parse and convert it correctly into a SymPy expression."
+    st.markdown(
+        """
+You can combine these elements to create complex expressions. Ensure
+your input string follows proper Python syntax for mathematical
+expressions. This way, `sympify` can parse and convert it correctly into
+a SymPy expression.
+
+1. Polynomials:
+
+    You can input terms with powers of a variable using standard
+mathematical notation.
+
+    ```python
+    x**2 + 3*x - 5
+    ```
+
+2. Trigonometric Functions:
+
+    Use standard names for trigonometric functions: `sin`, `cos`, `tan`, etc.
+
+    ```python
+    sin(x) + cos(x)
+    ```
+
+3. Exponential Functions:
+
+    Represent exponential functions using `exp`.
+
+    ```python
+    exp(x)
+    ```
+
+4. Hyperbolic Trigonometric Functions:
+
+    Use `sinh`, `cosh`, and `tanh` for hyperbolic functions.
+
+    ```python
+    sinh(x) + cosh(x)
+    ```
+
+5. Logarithms:
+
+    Use `log` for natural logarithms and `log(expr, base)` for logarithms
+    with a specific base.
+
+    ```python
+    log(x) + log(x, 10)
+    ```
+
+6. Square Roots and Other Roots:
+
+    Use `sqrt` for square roots or fractional powers for other roots.
+
+    ```python
+    sqrt(x) + x**(1/3)
+    ```
+"""
     )
-
-    st.subheader("1. Polynomials")
-    st.write(
-        "For polynomials, you can input terms with powers of a variable using standard mathematical notation."
-    )
-    st.code("x**2 + 3*x - 5", language="python")
-
-    st.subheader("2. Trigonometric Functions")
-    st.write(
-        "Use standard names for trigonometric functions: `sin`, `cos`, `tan`, etc."
-    )
-    st.code("sin(x) + cos(x)", language="python")
-
-    st.subheader("3. Exponential Functions")
-    st.write("Represent exponential functions using `exp`.")
-    st.code("exp(x)", language="python")
-
-    st.subheader("4. Hyperbolic Trigonometric Functions")
-    st.write("Use `sinh`, `cosh`, and `tanh` for hyperbolic functions.")
-    st.code("sinh(x) + cosh(x)", language="python")
-
-    st.subheader("5. Logarithms")
-    st.write(
-        "Use `log` for natural logarithms and `log(expr, base)` for logarithms with a specific base."
-    )
-    st.code("log(x) + log(x, 10)", language="python")
-
-    st.subheader("6. Square Roots and Other Roots")
-    st.write("Use `sqrt` for square roots or fractional powers for other roots.")
-    st.code("sqrt(x) + x**(1/3)", language="python")
 
 
 # Sidebar navigation and categories with buttons for each method

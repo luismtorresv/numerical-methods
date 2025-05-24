@@ -77,24 +77,13 @@ mathematical notation.
 # Sidebar navigation and categories with buttons for each method
 st.sidebar.title("Numerical Methods")
 
-if st.sidebar.button("Home"):
+if st.sidebar.button("Function input guide"):
     st.session_state.page = "home"
-
-# Button for "Function Graphing"
-if st.sidebar.button("Show Graph"):
-    st.session_state.page = "graph"
-
-# Buttons for "Finding Roots"
-if st.sidebar.button("Finding Roots"):
+if st.sidebar.button("Equations in one variable"):
     st.session_state.page = "roots"
-
-# Buttons for "Solving Systems of Equations"
-if st.sidebar.button("Solving Systems of Equations"):
+if st.sidebar.button("Linear systems of equations"):
     st.session_state.page = "systems"
-
-
-# Buttons for "Interpolation Methods"
-if st.sidebar.button("Interpolation Methods"):
+if st.sidebar.button("Interpolation"):
     st.session_state.page = "interpolation"
 
 # Render the page based on session state
@@ -103,7 +92,7 @@ if st.session_state.page == "home":
 elif st.session_state.page == "graph":
     show_graph()
 elif st.session_state.page == "roots":
-    st.title("Finding Roots of Polynomials")
+    st.title("Equations in one variable")
 
     # Dropdown to select root-finding method
     root_method = st.selectbox(
@@ -133,7 +122,7 @@ elif st.session_state.page == "roots":
         case "Multiple Roots":
             show_multiple_roots()
 elif st.session_state.page == "systems":
-    st.title("Solving Systems of Equations")
+    st.title("Linear systems of equations")
 
     # Dropdown to select a system-solving method
     system_method = st.selectbox(
@@ -155,7 +144,7 @@ elif st.session_state.page == "systems":
             show_SOR()
 
 elif st.session_state.page == "interpolation":
-    st.title("Interpolation Methods")
+    st.title("Interpolation")
     # Dropdown to select interpolation method
     interpolation_method = st.selectbox(
         "Select an interpolation method",

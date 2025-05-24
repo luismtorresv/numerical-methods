@@ -88,8 +88,8 @@ def show_regula_falsi():
             placeholder_function="x**2 - 4", placeholder_variable="x"
         )
 
-        col3, col4 = st.columns(2)
-        with col3:
+        col1, col2 = st.columns(2)
+        with col1:
             a = st.number_input(
                 "Initial point of search interval (a)",
                 format="%.4f",
@@ -97,7 +97,7 @@ def show_regula_falsi():
                 step=0.0001,
                 help="The infimum of the desired search interval [a, b].",
             )
-        with col4:
+        with col2:
             b = st.number_input(
                 "End point of search interval (b)",
                 format="%.4f",

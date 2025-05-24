@@ -186,13 +186,10 @@ def definite_matrix_interface(x_0=None):
 
 
 def iterative_matrix_interface():
-    col1 = st.columns(1)[0]
-    with col1:
-        rows_A = st.number_input("Enter number of rows:", min_value=1, value=3)
-        cols_A = rows_A
+    cols_A = rows_A = st.number_input("Enter number of rows:", min_value=1, value=3)
 
-    col2, col3, col4 = st.columns(3)
-    with col2:
+    col1, col2, col3 = st.columns(3)
+    with col1:
         matrix_A = pd.DataFrame(
             np.zeros((rows_A, cols_A)), columns=[f"x_{i}" for i in range(cols_A)]
         )
@@ -202,7 +199,7 @@ def iterative_matrix_interface():
 
         # Convert the edited matrix to a NumPy array
         matrix_A = edited_matrix.to_numpy()
-    with col3:
+    with col2:
         rows_b = rows_A
         cols_b = 1
         vector_b = pd.DataFrame(
@@ -213,7 +210,7 @@ def iterative_matrix_interface():
         edited_vector = st.data_editor(vector_b, num_rows="fixed")
 
         vector_b = edited_vector.to_numpy()
-    with col4:
+    with col3:
         rows_x0 = rows_A
         cols_x0 = 1
         vector_x0 = pd.DataFrame(

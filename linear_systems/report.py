@@ -1,6 +1,5 @@
 import pandas as pd
 import streamlit as st
-import sympy as sp
 
 SOR_OMEGA_1 = 1
 SOR_OMEGA_2 = 0.5

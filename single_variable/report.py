@@ -1,6 +1,5 @@
 import pandas as pd
 import streamlit as st
-import sympy as sp
 
 from utils.general import nm_lambdify
 

@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 import streamlit as st
 
 from utils.interface_blocks import (

@@ -41,13 +41,13 @@ def bisection(a, b, niter, tol, tolerance_type, function):
         }
     else:
         mid = (a + b) / 2
-        iter = 0
-        while iter < niter and err > tol:
+        iterations = 0
+        while iterations < niter and err > tol:
             if function(a) * function(mid) <= 0:
                 b = mid
             else:
                 a = mid
-            iter += 1
+            iterations += 1
             prev_mid = mid
             mid = (a + b) / 2
 

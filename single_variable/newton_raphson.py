@@ -34,10 +34,10 @@ def newton(x0, niter, tol, tolerance_type, function, derivative):
     table.append(row)
 
     err = 100
-    iter = 0
+    iterations = 0
 
-    while iter < niter and err > tol:
-        iter += 1
+    while iterations < niter and err > tol:
+        iterations += 1
         x_prev = xn
         xn = xn - function(xn) / derivative(xn)
 

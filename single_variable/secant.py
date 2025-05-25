@@ -21,7 +21,7 @@ def secant(x0, x1, niter, tol, function, tolerance_type):
     x_prev = x1
     x_prev2 = x0
     err = 100
-    iter = 0
+    iterations = 0
 
     Error = (
         "Relative Error"
@@ -34,7 +34,7 @@ def secant(x0, x1, niter, tol, function, tolerance_type):
     table.append(row)
 
     # Secant method iterations
-    while iter < niter and err >= tol:
+    while iterations < niter and err >= tol:
         # Update xn
         xn = x_prev - function(x_prev) * (x_prev - x_prev2) / (
             function(x_prev) - function(x_prev2)
@@ -52,7 +52,7 @@ def secant(x0, x1, niter, tol, function, tolerance_type):
         row = {"x_{n-1}": x_prev, "x_n": xn, "f(x_n)": function(xn), "Error": err}
         table.append(row)
 
-        iter += 1
+        iterations += 1
         x_prev2 = x_prev
         x_prev = xn
 

@@ -11,84 +11,7 @@ from utils.interface_blocks import (
 )
 
 from .report import generate_report
-
-
-def calculate_error(X, X_L, norm=2, error_type=None):
-    """
-    Calculates the error between two arrays (X and X_L) based on specified norm and error format.
-
-    Parameters:
-    X : numpy array or list
-        The true values (ground truth).
-    X_L : numpy array or list
-        The predicted values (from the model).
-    norm : int, optional (default=2)
-        The type of norm to use:
-        1 - L1 norm (sum of absolute differences),
-        2 - L2 norm (Euclidean distance),
-        'inf' - L∞ norm (maximum difference).
-    error_type : str, optional
-        The type of error format:
-        "Significant Figures" for relative error, or
-        "Correct Decimals" for absolute error.
-    sig_figs : int, optional
-        The number of significant figures to round to (if error_type is "Significant Figures").
-    decimal_places : int, optional
-        The number of Correct Decimals to round to (if error_type is "Correct Decimals").
-
-    Returns:
-    error : float
-        The calculated error, possibly rounded.
-    """
-
-    # Compute absolute difference between the true and predicted values
-    diff = np.abs(X - X_L)
-
-    # Choose norm calculation based on norm
-    if norm == 1:  # L1 norm (sum of absolute differences)
-        norm_error = np.sum(diff)
-    elif norm == 2:  # L2 norm (Euclidean distance)
-        norm_error = np.sqrt(np.sum(diff**2))
-    elif norm == "inf":  # L∞ norm (maximum difference)
-        norm_error = np.max(diff)
-    else:
-        raise ValueError("Invalid value for error_rel. Must be 1, 2, or 'inf'.")
-
-    # Relative error if "Significant Figures" is selected
-    if error_type == "Significant Figures":
-        relative_error = norm_error / np.abs(X).max()  # Relative to the max value of X
-        error = relative_error
-
-    # Absolute error if "Correct Decimals" is selected
-    elif error_type == "Correct Decimals":
-        error = norm_error
-
-    else:
-        raise ValueError(
-            "Invalid value for error_type. Must be 'Significant Figures' or 'Correct Decimals'."
-        )
-
-    return error
-
-
-def rad_esp(T):
-    """
-    Computes the spectral radius (largest absolute eigenvalue) of a matrix T.
-    """
-    eig = np.linalg.eigvals(T)  # Compute eigenvalues of T
-    rsp = np.max(np.abs(eig))  # Spectral radius is the max absolute eigenvalue
-    return rsp
-
-
-def make_tableMat(x_m_list, errores):
-    """
-    Creates a DataFrame from a list of values and corresponding errors.
-    """
-    table = pd.DataFrame(
-        x_m_list[1:], columns=x_m_list[0]
-    )  # Convert the list to a DataFrame
-    table["Error"] = errores  # Add error column to the DataFrame
-    return table
+from .utils import calculate_error, make_tableMat, spectral_radius
 
 
 def gauss_seidel_method(
@@ -159,7 +82,7 @@ def gauss_seidel_method(
     # Check if initial guess already satisfies the tolerance
     E = (A @ X_i) - b  # Residual error
     if np.allclose(E, np.zeros(len(b)), atol=tol):
-        return X_i, make_tableMat(X_val, errores), rad_esp(T), err, T, C
+        return X_i, make_tableMat(X_val, errores), spectral_radius(T), err, T, C
 
     # Gauss-Seidel iteration loop
     X = X_i.copy()  # Initialize X with the initial guess
@@ -181,12 +104,12 @@ def gauss_seidel_method(
 
         # If error is smaller than tolerance, stop the iterations
         if error < tol:
-            return X, make_tableMat(X_val, errores), rad_esp(T), err, T, C
+            return X, make_tableMat(X_val, errores), spectral_radius(T), err, T, C
 
     # If the method doesn't converge within the given iterations, raise an error
     err = f"Gauss-Seidel method did not converge after {niter} iterations. Please check system parameters or increase the number of iterations."
 
-    return X, make_tableMat(X_val, errores), rad_esp(T), err, T, C
+    return X, make_tableMat(X_val, errores), spectral_radius(T), err, T, C
 
 
 def show_gauss_seidel():
@@ -201,32 +124,31 @@ def show_gauss_seidel():
 
         graph_Ab(matrix_A, vector_b)
 
-        X, table, rad_esp, err, T, C = gauss_seidel_method(
+        X, table, spectral_radius, err, T, C = gauss_seidel_method(
             matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_type
         )
 
-        if err == None:
-            st.success("The Gauss Seidel method has converged successfully.")
-            # Display the results
-            st.write("**Solution Vector ($\\vec{x}$)**")
-            show_matrix(X, deci=False)
-            st.write("**Solution Table**")
-            show_matrix(table)
-            st.write("Spectral Radius: ", rad_esp)
-            show_T_and_C(T, C)
+        st.write("Spectral Radius: ", spectral_radius)
+        if err:
+            st.error(err)
+            return
 
-            generate_report(
-                matrix_A,
-                vector_b,
-                x_0,
-                tol,
-                niter,
-                norm_value,
-                tolerance_type,
-            )
+        st.success("The Gauss Seidel method has converged successfully.")
+        # Display the results
+        st.write("**Solution Vector ($\\vec{x}$)**")
+        show_matrix(X, deci=False)
+        st.write("**Solution Table**")
+        show_matrix(table)
+        show_T_and_C(T, C)
 
-        else:
-            st.write("Spectral Radius: ", rad_esp)
-            st.error(f"Error: Please Check Your Input. {err}")
+        generate_report(
+            matrix_A,
+            vector_b,
+            x_0,
+            tol,
+            niter,
+            norm_value,
+            tolerance_type,
+        )
     except Exception as e:
         st.error(f"Error: Please Check Your Input")

@@ -11,49 +11,7 @@ from utils.interface_blocks import (
 )
 
 from .report import generate_report
-
-
-def calculate_error(X, X_L, norm=2, error_type=None):
-    """
-    Calculates the error between two arrays (X and X_L) based on specified norm and error format.
-    """
-    diff = np.abs(X - X_L)
-    if norm == 1:
-        norm_error = np.sum(diff)
-    elif norm == 2:
-        norm_error = np.sqrt(np.sum(diff**2))
-    elif norm == "inf":
-        norm_error = np.max(diff)
-    else:
-        raise ValueError("Invalid norm value. Must be 1, 2, or 'inf'.")
-
-    if error_type == "Significant Figures":
-        relative_error = norm_error / np.abs(X).max()
-        return relative_error
-    elif error_type == "Correct Decimals":
-        return norm_error
-    else:
-        raise ValueError(
-            "Invalid error_type. Must be 'Significant Figures' or 'Correct Decimals'."
-        )
-
-
-def rad_esp(T):
-    """
-    Computes the spectral radius of a matrix T.
-    """
-    eig = np.linalg.eigvals(T)
-    rsp = np.max(np.abs(eig))
-    return rsp
-
-
-def make_tableMat(x_m_list, errores):
-    """
-    Creates a DataFrame from a list of values and corresponding errors.
-    """
-    table = pd.DataFrame(x_m_list[1:], columns=x_m_list[0])
-    table["Error"] = errores
-    return table
+from .utils import calculate_error, make_tableMat, spectral_radius
 
 
 def sor_method(A, b, X_i, tol, niter, omega, norm=2, error_type="Significant Figures"):
@@ -92,10 +50,10 @@ def sor_method(A, b, X_i, tol, niter, omega, norm=2, error_type="Significant Fig
         errores.append(error)
 
         if error < tol:
-            return X, make_tableMat(X_val, errores), rad_esp(T), err, T, C
+            return X, make_tableMat(X_val, errores), spectral_radius(T), err, T, C
 
     err = f"SOR method did not converge after {niter} iterations."
-    return X, make_tableMat(X_val, errores), rad_esp(T), err, T, C
+    return X, make_tableMat(X_val, errores), spectral_radius(T), err, T, C
 
 
 def show_SOR():
@@ -117,35 +75,35 @@ def show_SOR():
         graph_Ab(matrix_A, vector_b)
 
         # Ejecutar el método SOR
-        X, table, rad_esp, err, T, C = sor_method(
+        X, table, spectral_radius, err, T, C = sor_method(
             matrix_A, vector_b, x_0, tol, niter, omega, norm_value, tolerance_type
         )
 
-        if err is None:
-            st.success("The SOR method has converged successfully.")
-
-            # Mostrar los resultados
-            st.write("**Solution Vector ($\\vec{x}$)**")
-            show_matrix(X, deci=False)
-
-            st.write(f"**Solution Table**")
-            show_matrix(table)
-
-            st.write("Spectral Radius: ", rad_esp)
-            show_T_and_C(T, C)
-
-            generate_report(
-                matrix_A,
-                vector_b,
-                x_0,
-                tol,
-                niter,
-                norm_value,
-                tolerance_type,
-            )
-
-        else:
+        st.write("Spectral Radius: ", spectral_radius)
+        if err:
             st.error(err)
+            return
+
+        st.success("The SOR method has converged successfully.")
+
+        # Mostrar los resultados
+        st.write("**Solution Vector ($\\vec{x}$)**")
+        show_matrix(X, deci=False)
+
+        st.write(f"**Solution Table**")
+        show_matrix(table)
+
+        show_T_and_C(T, C)
+
+        generate_report(
+            matrix_A,
+            vector_b,
+            x_0,
+            tol,
+            niter,
+            norm_value,
+            tolerance_type,
+        )
     except Exception as e:
         st.error("Error: Please Check The Input")
         print(e)

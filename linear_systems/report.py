@@ -73,11 +73,13 @@ def generate_report(matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_t
         table = {
             "Método": [],
             "$n_\\text{iter}$": [],
-            "$x_1$": [],
-            "$x_2$": [],
-            "$x_3$": [],
             "$E$": [],
         }
+
+        # Create a column for each value of the solution vector.
+        n = len(x_0)
+        for i in range(n):
+            table[f"$x_{i+1}$"] = []
 
         for method in results:
             X, results_table, _, _, _, _ = results[method]
@@ -85,17 +87,17 @@ def generate_report(matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_t
             # Respective method
             table["Método"].append(method)
 
-            x1, x2, x3 = X
-            table["$x_1$"].append(x1[0])
-            table["$x_2$"].append(x2[0])
-            table["$x_3$"].append(x3[0])
+            # Append each value of the solution vector in general format
+            # (that is, scientific notation if too big or small).
+            for i in range(n):
+                table[f"$x_{i+1}$"].append(f"{X[i][0]:g}")
 
             # Append the last iteration of each method.
             table["$n_\\text{iter}$"].append(results_table.index[-1])
 
             # Append the Error of the last iteration.
             error_value = results_table.tail(1)["Error"].iloc[0]
-            formatted_error = f"{error_value:.10e}"
+            formatted_error = f"{error_value:g}"
             table["$E$"].append(formatted_error)
 
         df = pd.DataFrame(table)

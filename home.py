@@ -86,6 +86,8 @@ if st.sidebar.button("Linear systems of equations"):
     st.session_state.page = "systems"
 if st.sidebar.button("Interpolation"):
     st.session_state.page = "interpolation"
+if st.sidebar.button(label="Make it snow ☃️"):
+    st.snow()
 
 # Render the page based on session state
 if st.session_state.page == "home":

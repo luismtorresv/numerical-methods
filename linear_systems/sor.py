@@ -75,11 +75,11 @@ def show_SOR():
         graph_Ab(matrix_A, vector_b)
 
         # Ejecutar el método SOR
-        X, table, spectral_radius, err, T, C = sor_method(
+        X, table, spectral_radius_T, err, T, C = sor_method(
             matrix_A, vector_b, x_0, tol, niter, omega, norm_value, tolerance_type
         )
 
-        st.write("Spectral Radius: ", spectral_radius)
+        st.write("Spectral Radius: ", spectral_radius_T)
         if err:
             st.error(err)
             return

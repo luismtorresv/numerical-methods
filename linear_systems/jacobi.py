@@ -114,11 +114,11 @@ def show_Jacobi():
 
         graph_Ab(matrix_A, vector_b)
 
-        X, table, spectral_radius, err, T, C = jacobi_method(
+        X, table, spectral_radius_T, err, T, C = jacobi_method(
             matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_type
         )
 
-        st.write("Spectral Radius: ", spectral_radius)
+        st.write("Spectral Radius: ", spectral_radius_T)
         if err:
             st.error(err)
             return

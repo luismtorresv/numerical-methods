@@ -1,5 +1,18 @@
+from dataclasses import dataclass
+from typing import Any
+
 import numpy as np
 import pandas as pd
+
+
+@dataclass
+class MatrixMethodOutput:
+    x: Any
+    table: Any
+    spectral_radius_T: Any
+    err: Any
+    T: Any
+    C: Any
 
 
 def calculate_error(X, X_L, norm=2, error_type=None):

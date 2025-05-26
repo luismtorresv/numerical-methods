@@ -1,17 +1,15 @@
 import numpy as np
 import streamlit as st
-import sympy as sp
 
 from utils.interface_blocks import (
     calculate_tolerance,
     definite_matrix_interface,
     graph_Ab,
-    show_matrix,
-    show_T_and_C,
 )
 
 from .report import generate_report
-from .utils import calculate_error, make_tableMat, spectral_radius
+from .ui import ui_matrix_flow
+from .utils import MatrixMethodOutput, calculate_error, make_tableMat, spectral_radius
 
 
 def gauss_seidel_method(
@@ -65,10 +63,10 @@ def gauss_seidel_method(
         det = np.linalg.det(A)  # Check the determinant of A
         if det == 0:
             err = "Matrix A is singular (non-invertible). Please check the matrix and try again."
-            return None, None, None, err, None, None
+            return MatrixMethodOutput(None, None, None, err, None, None)
     except np.linalg.LinAlgError:
         err = "Matrix A is singular (non-invertible). Please check the matrix and try again."
-        return None, None, None, err, None, None
+        return MatrixMethodOutput(None, None, None, err, None, None)
 
     # Split matrix A into diagonal, lower, and upper parts
     D = np.diag(np.diagonal(A))
@@ -82,7 +80,9 @@ def gauss_seidel_method(
     # Check if initial guess already satisfies the tolerance
     E = (A @ X_i) - b  # Residual error
     if np.allclose(E, np.zeros(len(b)), atol=tol):
-        return X_i, make_tableMat(X_val, errores), spectral_radius(T), err, T, C
+        return MatrixMethodOutput(
+            X_i, make_tableMat(X_val, errores), spectral_radius(T), err, T, C
+        )
 
     # Gauss-Seidel iteration loop
     X = X_i.copy()  # Initialize X with the initial guess
@@ -104,12 +104,16 @@ def gauss_seidel_method(
 
         # If error is smaller than tolerance, stop the iterations
         if error < tol:
-            return X, make_tableMat(X_val, errores), spectral_radius(T), err, T, C
+            return MatrixMethodOutput(
+                X, make_tableMat(X_val, errores), spectral_radius(T), err, T, C
+            )
 
     # If the method doesn't converge within the given iterations, raise an error
     err = f"Gauss-Seidel method did not converge after {niter} iterations. Please check system parameters or increase the number of iterations."
 
-    return X, make_tableMat(X_val, errores), spectral_radius(T), err, T, C
+    return MatrixMethodOutput(
+        X, make_tableMat(X_val, errores), spectral_radius(T), err, T, C
+    )
 
 
 def show_gauss_seidel():
@@ -124,54 +128,20 @@ def show_gauss_seidel():
 
         graph_Ab(matrix_A, vector_b)
 
-        X, table, spectral_radius_T, err, T, C = gauss_seidel_method(
+        matrix_method_output = gauss_seidel_method(
             matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_type
         )
 
-        st.divider()
-        st.header("Result")
-        if err:
-            st.error(err)
-            return
-        st.success(f":material/check: Method has converged to a solution.")
-
-        st.divider()
-
-        st.subheader("Intermediate results")
-        show_T_and_C(T, C)
-
-        st.divider()
-
-        st.subheader("Convergence")
-        st.metric("Spectral radius of $T$", spectral_radius_T)
-        if spectral_radius_T < 1:
-            message = "Since $\\rho(T) < 1$, the method was guaranteed to converge."
-        else:
-            message = (
-                "Since $\\rho(T) \geq 1$, "
-                "the method was _not_ guaranteed to converge."
+        if ui_matrix_flow(matrix_method_output):
+            generate_report(
+                matrix_A,
+                vector_b,
+                x_0,
+                tol,
+                niter,
+                norm_value,
+                tolerance_type,
             )
-        st.write(message)
-
-        st.divider()
-
-        st.header("Solution")
-        X = sp.Matrix(X)
-        st.latex("\\vec{x} = " + sp.latex(X))
-
-        st.subheader("Table")
-        show_matrix(table, deci=False)
-
-        st.divider()
-
-        generate_report(
-            matrix_A,
-            vector_b,
-            x_0,
-            tol,
-            niter,
-            norm_value,
-            tolerance_type,
-        )
     except Exception as e:
         st.error(f"Error: Please Check Your Input")
+        print(e)

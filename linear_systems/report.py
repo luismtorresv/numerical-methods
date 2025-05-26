@@ -23,32 +23,33 @@ def generate_report(matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_t
             "$E$": [],
         }
 
-        Failed_methods = []
+        failed_methods = []
 
         # Create a column for each value of the solution vector.
         n = len(x_0)
         for i in range(n):
             table[f"$x_{i+1}$"] = []
 
-        for method in results:
-            X, results_table, _, error, _, _ = results[method]
-
-            if error:
-                Failed_methods.append(method)
+        print(f"{results=}")
+        for method_name, output in results.items():
+            if output.err:
+                failed_methods.append(method_name)
                 continue
+
             # Respective method
-            table["Method"].append(method)
+            table["Method"].append(method_name)
 
             # Append each value of the solution vector in general format
             # (that is, scientific notation if too big or small).
             for i in range(n):
-                table[f"$x_{i+1}$"].append(f"{X[i][0]:g}")
+                table[f"$x_{i+1}$"].append(f"{output.x[i][0]:g}")
 
             # Append the last iteration of each method.
-            table["$n_\\text{iter}$"].append(results_table.index[-1])
+            last_iteration = output.table.index[-1]
+            table["$n_\\text{iter}$"].append(last_iteration)
 
             # Append the Error of the last iteration.
-            error_value = results_table.tail(1)["Error"].iloc[0]
+            error_value = output.table.tail(1)["Error"].iloc[0]
             formatted_error = f"{error_value:g}"
             table["$E$"].append(formatted_error)
 
@@ -56,9 +57,9 @@ def generate_report(matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_t
         st.table(df)
 
         # If any method fails, we print them out
-        if Failed_methods:
+        if failed_methods:
             st.write("The following methods failed to converge:")
-            for method in Failed_methods:
+            for method in failed_methods:
                 st.write(method)
 
         # Find the best method

@@ -11,6 +11,7 @@ magicEnabled = false
 [server]
 folderWatchBlacklist = ['.vscode']
 headless = true
+runOnSave = true
 port = 8080
 baseUrlPath = "numerical-methods"
 enableStaticServing = false

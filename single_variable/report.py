@@ -69,8 +69,13 @@ def generate_report(
         failed_methods = []
 
         for method in results:
-            # TODO: Fixed point is not currently working properly with the rest of the code.
-            if method == "fixed_point":
+            # TODO: Fixed point is not currently working properly with the rest
+            # of the code.
+
+            # TODO: Make these methods compatible with the way we're doing
+            # things in the rest of the report function. Even better: make the
+            # report function more reliable.
+            if method in ["fixed_point", "false_position"]:
                 continue
             method_result = results[method]
 
@@ -117,7 +122,7 @@ def _run_all_methods(
     second_derivative,
 ):
     from single_variable.bisection import bisection
-    from single_variable.false_position import regula_falsi
+    from single_variable.false_position import false_position
     from single_variable.fixed_point import fixed_point
     from single_variable.multiple_roots import multiple_roots
     from single_variable.newton_raphson import newton
@@ -127,7 +132,7 @@ def _run_all_methods(
         "bisection": bisection(
             a, b, n_iterations, tolerance, type_of_tolerance, f_function
         ),
-        "false_position": regula_falsi(
+        "false_position": false_position(
             a, b, n_iterations, tolerance, type_of_tolerance, f_function
         ),
         "fixed_point": fixed_point(

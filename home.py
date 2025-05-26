@@ -115,7 +115,7 @@ elif st.session_state.page == "roots":
         "Bisection": show_bisection,
         "Newton-Raphson": show_newton,
         "Secant": show_secant,
-        "False Position": show_regula_falsi,
+        "False Position": show_false_position,
         "Fixed Point": show_fixed_point,
         "Multiple Roots": show_multiple_roots,
     }

@@ -17,7 +17,7 @@ def bisection(a, b, niter, tol, tolerance_type, function):
 
     table = []
     row = {}
-    Error = (
+    error_type = (
         "Relative Error"
         if tolerance_type == "Significant Figures"
         else "Absolute Error"
@@ -58,7 +58,7 @@ def bisection(a, b, niter, tol, tolerance_type, function):
             row["f(a)"] = function(a)
             row["f(mid)"] = function(mid)
             row["f(b)"] = function(b)
-            if Error == "Relative Error":
+            if error_type == "Relative Error":
                 row["Error"] = abs((mid - prev_mid) / mid)
             else:
                 row["Error"] = abs(mid - prev_mid)

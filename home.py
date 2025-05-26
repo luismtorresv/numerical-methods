@@ -1,5 +1,7 @@
 import streamlit as st
 
+st.set_page_config(layout="wide")
+
 from interpolation import *
 from linear_systems import *
 from single_variable import *

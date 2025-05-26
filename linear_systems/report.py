@@ -12,15 +12,9 @@ def generate_report(matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_t
     with st.form("report"):
         submitted = st.form_submit_button("Generate report")
     if submitted:
-        
+
         results = _run_all_methods(
-            matrix_A, 
-            vector_b, 
-            x_0, 
-            tol, 
-            niter, 
-            norm_value, 
-            tolerance_type
+            matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_type
         )
 
         table = {
@@ -44,7 +38,6 @@ def generate_report(matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_t
                 continue
             # Respective method
             table["Method"].append(method)
-            
 
             # Append each value of the solution vector in general format
             # (that is, scientific notation if too big or small).
@@ -58,27 +51,31 @@ def generate_report(matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_t
             error_value = results_table.tail(1)["Error"].iloc[0]
             formatted_error = f"{error_value:g}"
             table["$E$"].append(formatted_error)
-                
+
         df = pd.DataFrame(table)
         st.table(df)
 
-        #If any method fails, we print them out
+        # If any method fails, we print them out
         if Failed_methods:
             st.write("The following methods failed to converge:")
             for method in Failed_methods:
                 st.write(method)
 
-        #Find the best method
+        # Find the best method
         best_iteration = min(table["$n_\\text{iter}$"])
-        best_method_id = table["$n_\\text{iter}$"].index(min(table["$n_\\text{iter}$"])) #Position of the lowest iteration
-        st.write(f'The best method is {table["Method"][best_method_id]}, which took {best_iteration} iterations to converge.')
+        best_method_id = table["$n_\\text{iter}$"].index(
+            min(table["$n_\\text{iter}$"])
+        )  # Position of the lowest iteration
+        st.write(
+            f'The best method is {table["Method"][best_method_id]}, which took {best_iteration} iterations to converge.'
+        )
 
-def _run_all_methods(
-        matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_type
-):
+
+def _run_all_methods(matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_type):
     from linear_systems.gauss_seidel import gauss_seidel_method
     from linear_systems.jacobi import jacobi_method
     from linear_systems.sor import sor_method
+
     return {
         "Jacobi": jacobi_method(
             matrix_A,

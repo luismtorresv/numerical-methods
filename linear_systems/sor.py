@@ -60,7 +60,7 @@ def show_SOR():
     st.header("Successive Over-Relaxation (SOR) Method")
     try:
         # Interfaz para definir la matriz, el vector b y otros parámetros iniciales
-        matrix_A, vector_b, x_0, norm_value = definite_matrix_interface(x_0="Yes")
+        matrix_A, vector_b, x_0, norm_value = definite_matrix_interface()
 
         # Parámetros adicionales: tolerancia, iteraciones y tipo de error
         tol, niter, tolerance_type = calculate_tolerance()

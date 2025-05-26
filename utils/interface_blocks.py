@@ -116,7 +116,7 @@ def graph(x, function_input, min_value=-10, max_value=10):
     st.write(f"f( ", x_calc, f") = {y_calc:.5f}")
 
 
-def definite_matrix_interface(x_0=None):
+def definite_matrix_interface():
     cols_A = rows_A = st.number_input(
         "Enter number of rows:",
         min_value=2,
@@ -124,67 +124,42 @@ def definite_matrix_interface(x_0=None):
         value=3,
     )
 
-    if x_0 is None:
-        col1, col2 = st.columns(2)
-        with col1:
-            matrix_A = pd.DataFrame(
-                np.zeros((rows_A, cols_A)), columns=[f"x_{i}" for i in range(cols_A)]
-            )
+    # Input for A matrix
+    matrix_A = pd.DataFrame(
+        np.zeros((rows_A, cols_A)),
+        columns=[f"x_{i + 1}" for i in range(cols_A)],
+    )
+    st.write("**$A$ matrix**")
+    edited_matrix = st.data_editor(
+        matrix_A,
+        num_rows="fixed",
+        use_container_width=True,
+    )
+    matrix_A = edited_matrix.to_numpy()
 
-            st.write("**$A$ matrix**")
-            edited_matrix = st.data_editor(matrix_A, num_rows="fixed")
-
-            # Convert the edited matrix to a NumPy array
-            matrix_A = edited_matrix.to_numpy()
-        with col2:
-            rows_b = rows_A
-            cols_b = 1
-            vector_b = pd.DataFrame(
-                np.zeros((rows_b, cols_b)), columns=[f"b" for i in range(cols_b)]
-            )
-
-            st.write("**$b$ vector**")
-            edited_vector = st.data_editor(vector_b, num_rows="fixed")
-
-            vector_b = edited_vector.to_numpy()
-
-        return matrix_A, vector_b
-
-    else:
-        # Input for A matrix
-        matrix_A = pd.DataFrame(
-            np.zeros((rows_A, cols_A)), columns=[f"x_{i + 1}" for i in range(cols_A)]
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        norm_value = norm()
+    with col2:
+        # Input for b vector
+        vector_b = pd.DataFrame(np.zeros((rows_A, 1)), columns=["b"])
+        st.write("**$b$ vector**")
+        edited_vector = st.data_editor(
+            vector_b, num_rows="fixed", use_container_width=True
         )
-        st.write("**$A$ matrix**")
-        edited_matrix = st.data_editor(
-            matrix_A, num_rows="fixed", use_container_width=True
+        vector_b = edited_vector.to_numpy()
+    with col3:
+        # Input for x_0 vector
+        vector_x0 = pd.DataFrame(np.zeros((rows_A, 1)), columns=["x_0"])
+        st.write("**Initial Guess Vector ($x_0$)**")
+        edited_vector_x0 = st.data_editor(
+            vector_x0,
+            num_rows="fixed",
+            use_container_width=True,
         )
-        matrix_A = edited_matrix.to_numpy()
+        vector_x0 = edited_vector_x0.to_numpy()
 
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            norm_value = norm()
-        with col2:
-            # Input for b vector
-            vector_b = pd.DataFrame(np.zeros((rows_A, 1)), columns=["b"])
-            st.write("**$b$ vector**")
-            edited_vector = st.data_editor(
-                vector_b, num_rows="fixed", use_container_width=True
-            )
-            vector_b = edited_vector.to_numpy()
-
-        with col3:
-            # Input for x_0 vector
-            vector_x0 = pd.DataFrame(np.zeros((rows_A, 1)), columns=["x_0"])
-            st.write("**Initial Guess Vector ($x_0$)**")
-            edited_vector_x0 = st.data_editor(
-                vector_x0,
-                num_rows="fixed",
-                use_container_width=True,
-            )
-            vector_x0 = edited_vector_x0.to_numpy()
-
-        return matrix_A, vector_b, vector_x0, norm_value
+    return matrix_A, vector_b, vector_x0, norm_value
 
 
 def iterative_matrix_interface():

@@ -116,7 +116,7 @@ def show_gauss_seidel():
     st.header("Gauss Seidel Method")
 
     try:
-        matrix_A, vector_b, x_0, norm_value = definite_matrix_interface(x_0="Yes")
+        matrix_A, vector_b, x_0, norm_value = definite_matrix_interface()
 
         tol, niter, tolerance_type = calculate_tolerance()
 

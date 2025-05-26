@@ -88,15 +88,19 @@ Course project for «Análisis numérico» (ST0256) taught @eafit by Julián Ren
 )
 
 # Sidebar.
-if st.sidebar.button("Function input guide"):
-    st.session_state.page = "home"
+st.sidebar.subheader("Chapters")
 if st.sidebar.button("Equations in one variable"):
     st.session_state.page = "roots"
 if st.sidebar.button("Linear systems of equations"):
     st.session_state.page = "systems"
 if st.sidebar.button("Interpolation"):
     st.session_state.page = "interpolation"
-if st.sidebar.button(label="Make it snow ☃️"):
+
+st.sidebar.subheader("Miscellaneous")
+col1, col2 = st.sidebar.columns(2)
+if col1.button("Input guide"):
+    st.session_state.page = "home"
+if col2.button(label="_Make it snow_ ☃️"):
     st.snow()
 
 # Render the page based on session state

@@ -1,5 +1,6 @@
 import numpy as np
 import streamlit as st
+import sympy as sp
 
 from utils.interface_blocks import (
     calculate_tolerance,
@@ -127,18 +128,41 @@ def show_gauss_seidel():
             matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_type
         )
 
+        st.divider()
+        st.header("Result")
         if err:
             st.error(err)
             return
+        st.success(f":material/check: Method has converged to a solution.")
 
+        st.divider()
+
+        st.subheader("Intermediate results")
         show_T_and_C(T, C)
+
+        st.divider()
+
+        st.subheader("Convergence")
         st.metric("Spectral radius of $T$", spectral_radius_T)
-        st.success("The Gauss Seidel method has converged successfully.")
-        # Display the results
-        st.write("**Solution Vector ($\\vec{x}$)**")
-        show_matrix(X, deci=False)
-        st.write("**Solution Table**")
-        show_matrix(table)
+        if spectral_radius_T < 1:
+            message = "Since $\\rho(T) < 1$, the method was guaranteed to converge."
+        else:
+            message = (
+                "Since $\\rho(T) \geq 1$, "
+                "the method was _not_ guaranteed to converge."
+            )
+        st.write(message)
+
+        st.divider()
+
+        st.header("Solution")
+        X = sp.Matrix(X)
+        st.latex("\\vec{x} = " + sp.latex(X))
+
+        st.subheader("Table")
+        show_matrix(table, deci=False)
+
+        st.divider()
 
         generate_report(
             matrix_A,

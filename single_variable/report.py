@@ -65,28 +65,49 @@ def generate_report(
             second_derivative,
         )
 
-        table = {"method": [], "iteration": [], "X_solution": [], "Error": []}
+        table = {
+            "Method": [], 
+            "$n_\\text{iter}$": [], 
+            "$x_\\text{sol}$": [], 
+            "$E$": []
+        }
+        failed_methods = []
+
         for method in results:
             # TODO: Fixed point is not currently working properly with the rest of the code.
             if method == "fixed_point":
                 continue
             method_result = results[method]
-            # Append the method.
-            table["method"].append(method)
 
-            # Append the last iteration of each method.
-            table["iteration"].append(method_result["table"].index[-1])
+            if method_result["status"] == "error":
+                failed_methods.append(method)
+                continue
+            # Append the method.
+            table["Method"].append(method)
+
+            # Append the last iteration of each method. Add 1 to match conventional standard.
+            table["$n_\\text{iter}$"].append(method_result["table"].index[-1]+1)
 
             # Append the last X value of each method.
-            table["X_solution"].append(0)
+            table["$x_\\text{sol}$"].append(0)
 
             # Append the Error of the last iteration.
             error_value = method_result["table"].tail(1)["Error"].iloc[0]
             formatted_error = f"{error_value:.10e}"
-            table["Error"].append(formatted_error)
+            table["$E$"].append(formatted_error)
 
         df = pd.DataFrame(table)
-        st.write(df)
+        st.table(df)
+        
+        # Find the best method
+        best_iteration = min(table["$n_\\text{iter}$"])
+        best_method_id = table["$n_\\text{iter}$"].index(
+            min(table["$n_\\text{iter}$"])
+        )  # Position of the lowest iteration
+        st.write(
+            f'The best method is {table["Method"][best_method_id]}, which took {best_iteration} iterations to converge.'
+        )
+
 
 
 def _run_all_methods(

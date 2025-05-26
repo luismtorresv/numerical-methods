@@ -9,72 +9,27 @@ SOR_OMEGA_3 = 1.5
 def generate_report(matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_type):
     st.subheader("Method comparison report")
 
-    from linear_systems.gauss_seidel import gauss_seidel_method
-    from linear_systems.jacobi import jacobi_method
-    from linear_systems.sor import sor_method
-
     with st.form("report"):
         submitted = st.form_submit_button("Generate report")
     if submitted:
-        results = {
-            "Jacobi": jacobi_method(
-                matrix_A,
-                vector_b,
-                x_0,
-                tol,
-                niter,
-                norm_value,
-                tolerance_type,
-            ),
-            "Gauss-Seidel": gauss_seidel_method(
-                matrix_A,
-                vector_b,
-                x_0,
-                tol,
-                niter,
-                norm_value,
-                tolerance_type,
-            ),
-            # Relaxation Factor = 1
-            "SOR-1": sor_method(
-                matrix_A,
-                vector_b,
-                x_0,
-                tol,
-                niter,
-                SOR_OMEGA_1,
-                norm_value,
-                tolerance_type,
-            ),
-            # Relaxation Factor = 0.5 (Sub-Relaxation)
-            "SOR-2": sor_method(
-                matrix_A,
-                vector_b,
-                x_0,
-                tol,
-                niter,
-                SOR_OMEGA_2,
-                norm_value,
-                tolerance_type,
-            ),
-            # Relaxation Factor = 1.5 (Over-Relaxation)
-            "SOR-3": sor_method(
-                matrix_A,
-                vector_b,
-                x_0,
-                tol,
-                niter,
-                SOR_OMEGA_3,
-                norm_value,
-                tolerance_type,
-            ),
-        }
+        
+        results = _run_all_methods(
+            matrix_A, 
+            vector_b, 
+            x_0, 
+            tol, 
+            niter, 
+            norm_value, 
+            tolerance_type
+        )
 
         table = {
-            "Método": [],
+            "Method": [],
             "$n_\\text{iter}$": [],
             "$E$": [],
         }
+
+        Failed_methods = []
 
         # Create a column for each value of the solution vector.
         n = len(x_0)
@@ -82,10 +37,14 @@ def generate_report(matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_t
             table[f"$x_{i+1}$"] = []
 
         for method in results:
-            X, results_table, _, _, _, _ = results[method]
+            X, results_table, _, error, _, _ = results[method]
 
+            if error:
+                Failed_methods.append(method)
+                continue
             # Respective method
-            table["Método"].append(method)
+            table["Method"].append(method)
+            
 
             # Append each value of the solution vector in general format
             # (that is, scientific notation if too big or small).
@@ -99,6 +58,77 @@ def generate_report(matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_t
             error_value = results_table.tail(1)["Error"].iloc[0]
             formatted_error = f"{error_value:g}"
             table["$E$"].append(formatted_error)
-
+                
         df = pd.DataFrame(table)
         st.table(df)
+
+        #If any method fails, we print them out
+        if Failed_methods:
+            st.markdown("## The following methods failed to converge:")
+            for method in Failed_methods:
+                st.markdown(f'### {method}')
+
+        #Find the best method
+        best_iteration = min(table["$n_\\text{iter}$"])
+        best_method_id = table["$n_\\text{iter}$"].index(min(table["$n_\\text{iter}$"])) #Position of the lowest iteration
+        st.markdown(f'# The best method is {table["Method"][best_method_id]}, which took {best_iteration} iterations to converge.')
+
+def _run_all_methods(
+        matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_type
+):
+    from linear_systems.gauss_seidel import gauss_seidel_method
+    from linear_systems.jacobi import jacobi_method
+    from linear_systems.sor import sor_method
+    return {
+        "Jacobi": jacobi_method(
+            matrix_A,
+            vector_b,
+            x_0,
+            tol,
+            niter,
+            norm_value,
+            tolerance_type,
+        ),
+        "Gauss-Seidel": gauss_seidel_method(
+            matrix_A,
+            vector_b,
+            x_0,
+            tol,
+            niter,
+            norm_value,
+            tolerance_type,
+        ),
+        # Relaxation Factor = 1
+        "SOR-1": sor_method(
+            matrix_A,
+            vector_b,
+            x_0,
+            tol,
+            niter,
+            SOR_OMEGA_1,
+            norm_value,
+            tolerance_type,
+        ),
+        # Relaxation Factor = 0.5 (Sub-Relaxation)
+        "SOR-2": sor_method(
+            matrix_A,
+            vector_b,
+            x_0,
+            tol,
+            niter,
+            SOR_OMEGA_2,
+            norm_value,
+            tolerance_type,
+        ),
+        # Relaxation Factor = 1.5 (Over-Relaxation)
+        "SOR-3": sor_method(
+            matrix_A,
+            vector_b,
+            x_0,
+            tol,
+            niter,
+            SOR_OMEGA_3,
+            norm_value,
+            tolerance_type,
+        ),
+    }

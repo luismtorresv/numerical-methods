@@ -356,12 +356,10 @@ def show_T_and_C(T, C):
     col1, col2 = st.columns(2)
 
     with col1:
-        st.write("**Matrix $T$**")
         T = sp.Matrix(np.round(T, 5))
         st.latex(f"T = {sp.latex(T)}")
 
     with col2:
-        st.write("**Vector $\\vec{C}$**")
         C = sp.Matrix(np.round(C, 5))
         st.latex("\\vec{C} = " + f"{sp.latex(C)}")
 

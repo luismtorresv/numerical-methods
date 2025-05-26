@@ -117,18 +117,18 @@ def show_Jacobi():
             matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_type
         )
 
-        st.write("Spectral Radius: ", spectral_radius_T)
         if err:
             st.error(err)
             return
 
+        show_T_and_C(T, C)
+        st.metric("Spectral radius of $T$", spectral_radius_T)
         st.success("The Jacobi method has converged successfully.")
         # Display the results
         st.write("**Solution Vector ($\\vec{x}$)**")
         show_matrix(X, deci=False)
         st.write("**Solution Table**")
         show_matrix(table)
-        show_T_and_C(T, C)
 
         generate_report(
             matrix_A,

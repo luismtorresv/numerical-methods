@@ -78,11 +78,12 @@ def show_SOR():
             matrix_A, vector_b, x_0, tol, niter, omega, norm_value, tolerance_type
         )
 
-        st.write("Spectral Radius: ", spectral_radius_T)
         if err:
             st.error(err)
             return
 
+        show_T_and_C(T, C)
+        st.metric("Spectral radius of $T$", spectral_radius_T)
         st.success("The SOR method has converged successfully.")
 
         # Mostrar los resultados
@@ -91,8 +92,6 @@ def show_SOR():
 
         st.write(f"**Solution Table**")
         show_matrix(table)
-
-        show_T_and_C(T, C)
 
         generate_report(
             matrix_A,

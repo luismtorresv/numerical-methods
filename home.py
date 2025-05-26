@@ -79,6 +79,14 @@ mathematical notation.
 # Sidebar navigation and categories with buttons for each method
 st.sidebar.title("Numerical Methods")
 
+st.sidebar.markdown(
+    """Web app to run and compare several numerical methods that solve equations
+in one variable and linear systems of equations, as well as doing interpolation.
+
+Course project for «Análisis numérico» (ST0256) taught @eafit by Julián Rendón.
+"""
+)
+
 # Sidebar.
 if st.sidebar.button("Function input guide"):
     st.session_state.page = "home"

@@ -14,6 +14,8 @@ def ui_matrix_flow(mmo):
         st.error(mmo.err)
         return False
     st.success(f":material/check: Method has converged to a solution.")
+    x = sp.Matrix(mmo.x)
+    st.latex("\\vec{x} = " + sp.latex(x))
 
     st.divider()
 
@@ -33,10 +35,6 @@ def ui_matrix_flow(mmo):
     st.write(message)
 
     st.divider()
-
-    st.header("Solution")
-    x = sp.Matrix(mmo.x)
-    st.latex("\\vec{x} = " + sp.latex(x))
 
     st.subheader("Table")
     show_matrix(mmo.table, deci=False)

@@ -78,54 +78,21 @@ def _run_all_methods(matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_
 
     return {
         "Jacobi": jacobi_method(
-            matrix_A,
-            vector_b,
-            x_0,
-            tol,
-            niter,
-            norm_value,
-            tolerance_type,
+            matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_type
         ),
         "Gauss-Seidel": gauss_seidel_method(
-            matrix_A,
-            vector_b,
-            x_0,
-            tol,
-            niter,
-            norm_value,
-            tolerance_type,
+            matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_type
         ),
         # Relaxation Factor = 1
         "SOR-1": sor_method(
-            matrix_A,
-            vector_b,
-            x_0,
-            tol,
-            niter,
-            SOR_OMEGA_1,
-            norm_value,
-            tolerance_type,
+            matrix_A, vector_b, x_0, tol, niter, SOR_OMEGA_1, norm_value, tolerance_type
         ),
         # Relaxation Factor = 0.5 (Sub-Relaxation)
         "SOR-2": sor_method(
-            matrix_A,
-            vector_b,
-            x_0,
-            tol,
-            niter,
-            SOR_OMEGA_2,
-            norm_value,
-            tolerance_type,
+            matrix_A, vector_b, x_0, tol, niter, SOR_OMEGA_2, norm_value, tolerance_type
         ),
         # Relaxation Factor = 1.5 (Over-Relaxation)
         "SOR-3": sor_method(
-            matrix_A,
-            vector_b,
-            x_0,
-            tol,
-            niter,
-            SOR_OMEGA_3,
-            norm_value,
-            tolerance_type,
+            matrix_A, vector_b, x_0, tol, niter, SOR_OMEGA_3, norm_value, tolerance_type
         ),
     }

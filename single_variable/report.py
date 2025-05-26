@@ -110,20 +110,10 @@ def _run_all_methods(
 
     return {
         "bisection": bisection(
-            a,
-            b,
-            n_iterations,
-            tolerance,
-            type_of_tolerance,
-            f_function,
+            a, b, n_iterations, tolerance, type_of_tolerance, f_function
         ),
         "false_position": regula_falsi(
-            a,
-            b,
-            n_iterations,
-            tolerance,
-            type_of_tolerance,
-            f_function,
+            a, b, n_iterations, tolerance, type_of_tolerance, f_function
         ),
         "fixed_point": fixed_point(
             a,
@@ -144,14 +134,7 @@ def _run_all_methods(
             second_derivative,
             type_of_tolerance,
         ),
-        "secant": secant(
-            a,
-            b,
-            n_iterations,
-            tolerance,
-            f_function,
-            type_of_tolerance,
-        ),
+        "secant": secant(a, b, n_iterations, tolerance, f_function, type_of_tolerance),
         "newton": newton(
             x_0,
             n_iterations,

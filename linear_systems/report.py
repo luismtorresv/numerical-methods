@@ -64,14 +64,14 @@ def generate_report(matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_t
 
         #If any method fails, we print them out
         if Failed_methods:
-            st.markdown("## The following methods failed to converge:")
+            st.write("The following methods failed to converge:")
             for method in Failed_methods:
-                st.markdown(f'### {method}')
+                st.write(method)
 
         #Find the best method
         best_iteration = min(table["$n_\\text{iter}$"])
         best_method_id = table["$n_\\text{iter}$"].index(min(table["$n_\\text{iter}$"])) #Position of the lowest iteration
-        st.markdown(f'# The best method is {table["Method"][best_method_id]}, which took {best_iteration} iterations to converge.')
+        st.write(f'The best method is {table["Method"][best_method_id]}, which took {best_iteration} iterations to converge.')
 
 def _run_all_methods(
         matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_type

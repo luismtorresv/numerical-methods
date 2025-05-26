@@ -84,15 +84,15 @@ def _run_all_methods(matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_
             matrix_A, vector_b, x_0, tol, niter, norm_value, tolerance_type
         ),
         # Relaxation Factor = 1
-        f'SOR (ω = {SOR_OMEGA_1})': sor_method(
+        f"SOR (ω = {SOR_OMEGA_1})": sor_method(
             matrix_A, vector_b, x_0, tol, niter, SOR_OMEGA_1, norm_value, tolerance_type
         ),
         # Relaxation Factor = 0.5 (Sub-Relaxation)
-        f'SOR (ω = {SOR_OMEGA_2})': sor_method(
+        f"SOR (ω = {SOR_OMEGA_2})": sor_method(
             matrix_A, vector_b, x_0, tol, niter, SOR_OMEGA_2, norm_value, tolerance_type
         ),
         # Relaxation Factor = 1.5 (Over-Relaxation)
-        f'SOR (ω = {SOR_OMEGA_3})': sor_method(
+        f"SOR (ω = {SOR_OMEGA_3})": sor_method(
             matrix_A, vector_b, x_0, tol, niter, SOR_OMEGA_3, norm_value, tolerance_type
         ),
     }

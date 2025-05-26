@@ -65,12 +65,7 @@ def generate_report(
             second_derivative,
         )
 
-        table = {
-            "Method": [], 
-            "$n_\\text{iter}$": [], 
-            "$x_\\text{sol}$": [], 
-            "$E$": []
-        }
+        table = {"Method": [], "$n_\\text{iter}$": [], "$x_\\text{sol}$": [], "$E$": []}
         failed_methods = []
 
         for method in results:
@@ -86,7 +81,7 @@ def generate_report(
             table["Method"].append(method)
 
             # Append the last iteration of each method. Add 1 to match conventional standard.
-            table["$n_\\text{iter}$"].append(method_result["table"].index[-1]+1)
+            table["$n_\\text{iter}$"].append(method_result["table"].index[-1] + 1)
 
             # Append the last X value of each method.
             table["$x_\\text{sol}$"].append(0)
@@ -98,7 +93,7 @@ def generate_report(
 
         df = pd.DataFrame(table)
         st.table(df)
-        
+
         # Find the best method
         best_iteration = min(table["$n_\\text{iter}$"])
         best_method_id = table["$n_\\text{iter}$"].index(
@@ -107,7 +102,6 @@ def generate_report(
         st.write(
             f'The best method is {table["Method"][best_method_id]}, which took {best_iteration} iterations to converge.'
         )
-
 
 
 def _run_all_methods(

@@ -4,7 +4,7 @@ import streamlit as st
 import sympy as sp
 
 from utils.general import nm_lambdify
-from utils.interface_blocks import calculate_tolerance, enter_function, graph
+from utils.interface_blocks import calculate_tolerance, graph, ui_input_function
 
 from .report import generate_report
 
@@ -228,17 +228,15 @@ def show_fixed_point():
             st.success(
                 f"Root found at x = {x_next:.{decimals}f}, f(x) = {f_value:.{decimals}f}"
             )
-
+        graph(f_input)
+        generate_report(
+            niter,
+            f,
+            tol,
+            tolerance_type,
+            x,
+            first_derivative,
+            second_derivative,
+        )
     except Exception as e:
         st.error(f"Error: Please check your inputs {e}")
-
-    graph(x, f_input)
-    generate_report(
-        niter,
-        f,
-        tol,
-        tolerance_type,
-        x,
-        first_derivative,
-        second_derivative,
-    )

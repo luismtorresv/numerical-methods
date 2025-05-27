@@ -3,7 +3,7 @@ import streamlit as st
 import sympy as sp
 
 from utils.general import nm_lambdify
-from utils.interface_blocks import calculate_tolerance, enter_function, graph
+from utils.interface_blocks import calculate_tolerance, graph, ui_input_function
 
 from .report import generate_report
 
@@ -73,9 +73,7 @@ def show_bisection():
     try:
         st.header("Bisection Method")
 
-        x, function_input = enter_function(
-            placeholder_function="x**2 - 4", placeholder_variable="x"
-        )
+        function_input = ui_input_function(placeholder_function="x**2 - 4")
 
         col1, col2 = st.columns(2)
         with col1:
@@ -96,7 +94,7 @@ def show_bisection():
         tol, niter, tolerance_type = calculate_tolerance()
         st.markdown(f"**Calculated Tolerance:** {tol:.10f}")
 
-        x = sp.symbols(f"{x}")
+        x = sp.symbols("x")
         function_sp = sp.sympify(function_input)
         first_derivative = sp.diff(function_sp, x)
         second_derivative = sp.diff(first_derivative, x)
@@ -113,7 +111,7 @@ def show_bisection():
 
         if result["status"] == "error":
             st.error(result["message"])
-            graph(x, function_input)
+            graph(function_input)
             return
         else:
             result = result["table"]
@@ -143,17 +141,15 @@ def show_bisection():
             st.warning(
                 f"Method did not converge, potentially because of a discontinuity in the function."
             )
-
+        graph(function_input)
+        generate_report(
+            niter,
+            function,
+            tol,
+            tolerance_type,
+            x,
+            first_derivative,
+            second_derivative,
+        )
     except Exception as e:
         st.error("Error: Check your inputs ")
-
-    graph(x, function_input)
-    generate_report(
-        niter,
-        function,
-        tol,
-        tolerance_type,
-        x,
-        first_derivative,
-        second_derivative,
-    )

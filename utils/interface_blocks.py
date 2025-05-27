@@ -7,27 +7,23 @@ import sympy as sp
 from utils.general import nm_lambdify
 
 
-def enter_function(placeholder_variable="x", placeholder_function="sin(x)"):
+def ui_input_function(placeholder_function="sin(x)"):
     col1, col2 = st.columns(2)
-    with col1:
-        x = st.text_input(
-            "Enter a Variable Name",
-            value=placeholder_variable,
-            help="Enter a variable name to use in the function. Default is 'x'.",
-        )
-    with col2:
-        function_input = st.text_input(
-            "Enter a function:",
-            value=placeholder_function,
-            help="Enter a function in terms of the variable chosen.",
-        )
-    if not x.isalpha():
-        st.error("Error: Variable name must be a single alphabetic character.")
-        return
+
+    function_input = col1.text_input(
+        "Function $f(x)$",
+        value=placeholder_function,
+        help="Enter a function in terms of $x$.",
+    )
+
     if not function_input:
-        st.error("Error: Please enter a function.")
-        return
-    return x, function_input
+        st.error("**Error:** Please enter a function.")
+        return None
+
+    x = sp.symbols("x")
+    function_sp = sp.sympify(function_input)
+    col2.latex(f"f({x}) = {sp.latex(function_sp)}")
+    return function_input
 
 
 def calculate_tolerance():
@@ -75,7 +71,9 @@ def calculate_tolerance():
     return tol, niter, tolerance_type
 
 
-def graph(x, function_input, min_value=-10, max_value=10):
+def graph(function_input, min_value=-10, max_value=10):
+    x = sp.symbols("x")
+
     # Create a symbolic function
     function_sp = sp.sympify(function_input)
     function = nm_lambdify(function_sp, x)
@@ -101,19 +99,6 @@ def graph(x, function_input, min_value=-10, max_value=10):
     )
 
     st.plotly_chart(fig, key=f"plotly_chart_{function_input}")
-
-    # Add value calculator
-    st.subheader("Calculate Value at Point")
-    x_calc = st.number_input(
-        "Enter x value",
-        value=float(min_value),
-        min_value=float(min_value),
-        max_value=float(max_value),
-    )
-    x_calc = float(x_calc)
-    y_calc = float(function(x_calc))
-
-    st.write(f"f( ", x_calc, f") = {y_calc:.5f}")
 
 
 def definite_matrix_interface():

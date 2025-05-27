@@ -5,9 +5,9 @@ import sympy as sp
 from utils.general import nm_lambdify
 from utils.interface_blocks import (
     calculate_tolerance,
-    enter_function,
     graph,
     show_table,
+    ui_input_function,
 )
 
 from .report import generate_report
@@ -65,7 +65,7 @@ def show_secant():
     st.header("Secant Method")
 
     try:
-        x, function_input = enter_function()
+        function_input = ui_input_function()
 
         col3, col4 = st.columns(2)
         with col3:
@@ -92,7 +92,7 @@ def show_secant():
         function = sp.sympify(function_input)
         st.latex(f"f({x}) = {sp.latex(function)}")
 
-        x = sp.symbols(f"{x}")
+        x = sp.symbols("x")
         first_derivative = sp.diff(function, x)
         second_derivative = sp.diff(first_derivative, x)
 
@@ -118,7 +118,7 @@ def show_secant():
                 f"Method did not converge, potentially because of a discontinuity in the function."
             )
 
-        graph(x, function_input)
+        graph(function_input)
         generate_report(
             niter,
             function,

@@ -58,7 +58,7 @@ def show_graph():
         st.latex(sp.sympify(function_input))  # Render the function in LaTeX
 
         # Pass the validated range to the graph function
-        graph(x, function_input, min_value, max_value)
+        graph(function_input, min_value, max_value)
 
     except Exception as e:
         st.error(f"Error: Please check your input.")

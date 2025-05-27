@@ -6,9 +6,9 @@ import sympy as sp
 from utils.general import nm_lambdify
 from utils.interface_blocks import (
     calculate_tolerance,
-    enter_function,
     graph,
     show_table,
+    ui_input_function,
 )
 
 from .report import generate_report
@@ -58,8 +58,7 @@ def show_multiple_roots():
     st.header("Multiple Roots Method")
 
     try:
-        # Entrada de función y variable
-        x, function_input = enter_function()
+        function_input = ui_input_function()
 
         x0 = st.number_input(
             "Initial Point ($x_0$)",
@@ -77,7 +76,7 @@ def show_multiple_roots():
         st.latex(f"f({x}) = {sp.latex(function_sp)}")
 
         # Preparar función, derivadas y método
-        x = sp.symbols(f"{x}")
+        x = sp.symbols("x")
         function = nm_lambdify(function_sp, x)
         first_derivative = sp.diff(function, x)
         second_derivative = sp.diff(first_derivative, x)
@@ -90,7 +89,6 @@ def show_multiple_roots():
 
         result = multiple_roots(x0, niter, tol, function, df, d2f, tolerance_type)
 
-        # Mostrar resultados o errores
         if result["status"] == "error":
             st.error(result["message"])
         else:
@@ -105,8 +103,7 @@ def show_multiple_roots():
                     f"Method did not converge, potentially because of a discontinuity in the function."
                 )
 
-        # Gráfica de la función
-        graph(x, function_input)
+        graph(function_input)
         generate_report(
             niter,
             function,
@@ -118,5 +115,4 @@ def show_multiple_roots():
         )
     except Exception as e:
         st.error("Error: Check your inputs")
-
-    graph(x, function_input)
+        print(e)

@@ -6,75 +6,42 @@ import sympy as sp
 from utils.general import nm_lambdify
 from utils.interface_blocks import calculate_tolerance, graph, ui_input_function
 
+from .common import Result, Table, calculate_error, determine_error_type
 from .report import generate_report
 
 
-def fixed_point(a, b, X0, Tol, type_of_tol, Niter, Fun, Fun_g):
-    # Check the G function
+def fixed_point(
+    x_0, tolerance, type_of_tolerance, niter, f_function, g_function
+) -> Result:
+    result = Result()
+    table = Table()
+    error_type = determine_error_type(type_of_tolerance)
 
-    x_sym = sp.symbols("x")
-    try:
-        g_expr = sp.sympify(Fun_g.replace("^", "**"))
-    except (sp.SympifyError, SyntaxError) as e:
-        raise ValueError(f"Invalid expression: {e}")
-    g_func = sp.lambdify(x_sym, g_expr, modules=["math"])
+    # First iteration
+    x = x_prev = x_0
+    f_x = f_function(x)
+    i = 0
+    error = 100  # Arbitrary initial error
 
-    # Inicialización de listas para la tabla
-    iteraciones = []
-    xn = []
-    fn = []
-    errores = []
+    table.add_row(x, f_x, error)
 
-    # Primera iteración
-    x = X0
-    f = Fun(x)
-    c = 0
-    Error = 100  # Error inicial arbitrario
+    while error > tolerance and f_x != 0 and i < niter:
+        x = g_function(x_prev)
+        f_x = f_function(x)
 
-    iteraciones.append(c)
-    xn.append(x)
-    fn.append(f)
-    errores.append(Error)
-    while Error > Tol and f != 0 and c < Niter:
-        x = g_func(x)  # Nueva aproximación usando g(x)
+        i += 1
+        error = calculate_error(x, x_prev, error_type)
+        x_prev = x
+        table.add_row(x, f_x, error)
 
-        # Validar que la nueva aproximación esté en el intervalo [a, b]
-        if x < a or x > b:
-            print(
-                f"Error: La iteración {c} generó un valor fuera del intervalo [{a}, {b}]."
-            )
-            break
-
-        f = Fun(x)  # Evaluamos f(x)
-
-        c += 1
-        if type_of_tol == "D.C":
-            Error = abs(x - xn[-1])  # Cálculo del error absoluto
-        else:
-            Error = abs((x - xn[-1]) / x)  # Cálculo del error relativo
-
-        # Guardar valores en listas
-        iteraciones.append(c)
-        xn.append(x)
-        fn.append(f)
-        errores.append(Error)
-
-    # Mostrar resultados finales
-
-    # Crear y mostrar la tabla de iteraciones
-    tabla = pd.DataFrame(
-        {"Iteración": iteraciones, "Xn": xn, "f(Xn)": fn, "Error": errores}
-    )
-
-    if f == 0:
-        # print(f"{x} es raíz de f(x)")
-        return tabla, x
-    elif Error < Tol:
-        # print(f"{x} es una aproximación de una raíz con tolerancia {Tol}")
-        return tabla, x
-    else:
-        # print(f"Fracaso en {Niter} iteraciones")
-        return None, Niter
+    df = table.as_dataframe()
+    result.table = df
+    print(len(table.x))
+    if f_x == 0 or error < tolerance:
+        result.set_success_status()
+        return result
+    result.error_message = "**Error**: Took too many iterations."
+    return result
 
 
 def validate_fixed_point_function(x_symbol, f_function, g_function):
@@ -113,56 +80,52 @@ def validate_fixed_point_function(x_symbol, f_function, g_function):
 def show_fixed_point():
     st.header("Fixed-Point Iteration Method")
 
-    try:
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            x = st.text_input(
-                "Enter a Variable Name",
-                value="x",
-                help="Enter a variable name to use in the function. Default is 'x'.",
-            )
-        with col2:
-            # Input for original function f(x)
-            f_input = st.text_input(
-                "Original Function f(x): ",
-                value="x**2 - 4",
-                help="Enter the function f(x) whose root you want to find.",
-            )
-        with col3:
-            # Input for transformed function g(x)
-            g_input = st.text_input(
-                "Transformation g(x): ",
-                value="2/x",
-                help="Enter g(x) such that g(x) = x at the root of f(x).",
-            )
-
-        # Initial guess input
-        x0 = st.number_input(
-            "Initial guess ($x_0$)",
-            format="%.4f",
-            value=2.0,
-            step=0.0001,
-            help="Provide the initial guess for the root.",
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        x = st.text_input(
+            "Variable name",
+            value="x",
+            help="Enter a variable name to use in the function. Default is $x$.",
+        )
+    with col2:
+        # Input for original function f(x)
+        f_input = st.text_input(
+            "Function $f(x)$",
+            value="x**2 - 4",
+            help="Enter the function $f(x)$ whose root you want to find.",
+        )
+    with col3:
+        # Input for transformed function g(x)
+        g_input = st.text_input(
+            "Transformation $g(x)$",
+            value="2/x",
+            help="Enter $g(x)$ such that $g(x) = x$ at the root of $f(x)$.",
         )
 
-        # Tolerance and iteration settings
-        tol, niter, tolerance_type = calculate_tolerance()
-        st.markdown(f"**Calculated Tolerance:** {tol:.10f}")
+    # Initial guess input
+    x0 = st.number_input(
+        "Initial guess ($x_0$)",
+        format="%.4f",
+        value=2.0,
+        step=0.0001,
+        help="Provide the initial guess for the root.",
+    )
 
-        # Parse functions and variable
-        x_symbol = sp.symbols(f"{x}")
+    # Tolerance and iteration settings
+    tol, niter, tolerance_type = calculate_tolerance()
+    st.markdown(f"**Calculated Tolerance:** {tol:.10f}")
 
-        f_function = sp.sympify(f_input)
-        first_derivative = sp.diff(f_function, x)
-        second_derivative = sp.diff(first_derivative, x)
-        g_function = sp.sympify(g_input)
-    except Exception as e:
-        st.error(f"Invalid function input: Please check your inputs")
-        return
+    # Parse functions and variable
+    x_symbol = sp.symbols(f"{x}")
+
+    f_function = sp.sympify(f_input)
+    first_derivative = sp.diff(f_function, x)
+    second_derivative = sp.diff(first_derivative, x)
+    g_function = sp.sympify(g_input)
 
     # Validate the functions
-    if not validate_fixed_point_function(x_symbol, f_function, g_function):
-        return
+    # if not validate_fixed_point_function(x_symbol, f_function, g_function):
+    #     return
 
     # Display the functions in LaTeX
     st.subheader("Functions")
@@ -171,72 +134,47 @@ def show_fixed_point():
 
     # Check convergence condition
     g_first_derivative = sp.diff(g_function, x_symbol)
-    st.subheader("Derivative of g(x):")
+    st.subheader("Derivative of $g(x)$")
     st.latex(g_first_derivative)
 
     # Lambdify the functions for numerical evaluations
     g = nm_lambdify(g_function, x_symbol)
     f = nm_lambdify(f_function, x_symbol)
 
-    # Fixed-Point Iteration Algorithm
+    result = fixed_point(x0, tol, tolerance_type, niter, f, g)
     st.subheader("Results")
-    table_data = {"Iteration": [], "xₙ": [], "f(xₙ)": [], "Error": []}
-    x_prev = x0
-    converged = False
+    if result.has_failed():
+        st.error(result.error_message)
+        # return
 
-    try:
-        for i in range(1, niter + 1):
-            x_next = g(x_prev)
-            f_value = f(x_next)
-            error = abs(x_next - x_prev)
+    result_display = result.table.style.format("{:.15e}")
 
-            # Append iteration data
-            table_data["Iteration"].append(i)
-            table_data["xₙ"].append(x_next)
-            table_data["f(xₙ)"].append(f_value)
-            table_data["Error"].append(error)
+    st.divider()
 
-            # Check for divergence
-            if np.isinf(x_next) or np.isnan(x_next) or abs(x_next) > 1e6:
-                st.error(
-                    "Method diverged. Try a different initial guess or transformation function g(x)."
-                )
-                break
+    st.header("Result")
+    if not result.has_failed():
+        last_x = result.table.iloc[-1]["x"]
+        st.success(":material/check: Root found.")
 
-            # Check for convergence
-            if error < tol:
-                converged = True
-                break
+        col1, col2 = st.columns(2)
+        col1.metric("$x$", f"{last_x:.10e}")
+        col2.metric("$f(x)$", f"{f(last_x):.10e}")
 
-            x_prev = x_next
+    st.subheader("Table")
+    st.table(result_display)
 
-            print(converged)
+    st.divider()
 
-        if converged:
-            # Display results table
-            result_df = pd.DataFrame(table_data)
-            decimals = st.slider(
-                "Select number of decimals to display on table",
-                min_value=1,
-                max_value=10,
-                value=4,
-                help="Adjust the number of decimal places for the result table.",
-            )
-            result_display = result_df.style.format(f"{{:.{decimals}f}}")
-            st.dataframe(result_display, use_container_width=True)
+    graph(f_input)
 
-            st.success(
-                f"Root found at x = {x_next:.{decimals}f}, f(x) = {f_value:.{decimals}f}"
-            )
-        graph(f_input)
-        generate_report(
-            niter,
-            f,
-            tol,
-            tolerance_type,
-            x,
-            first_derivative,
-            second_derivative,
-        )
-    except Exception as e:
-        st.error(f"Error: Please check your inputs {e}")
+    st.divider()
+
+    generate_report(
+        niter,
+        f,
+        tol,
+        tolerance_type,
+        x,
+        first_derivative,
+        second_derivative,
+    )

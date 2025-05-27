@@ -5,7 +5,7 @@ import sympy as sp
 from utils.general import nm_lambdify
 from utils.interface_blocks import calculate_tolerance, graph, ui_input_function
 
-from .common import Result, ResultStatus, Table, calculate_error, determine_error_type
+from .common import Result, Table, calculate_error, determine_error_type
 from .report import generate_report
 
 

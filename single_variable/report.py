@@ -137,14 +137,7 @@ def _run_all_methods(
             a, b, n_iterations, tolerance, type_of_tolerance, f_function
         ),
         "fixed_point": fixed_point(
-            a,
-            b,
-            x_0,
-            tolerance,
-            type_of_tolerance,
-            n_iterations,
-            f_function,
-            g_function,
+            x_0, tolerance, type_of_tolerance, n_iterations, f_function, g_function
         ),
         "multiple_roots": multiple_roots(
             x_0,

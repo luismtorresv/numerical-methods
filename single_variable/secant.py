@@ -10,55 +10,50 @@ from utils.interface_blocks import (
     ui_input_function,
 )
 
+from .common import Result, ResultStatus, Table, calculate_error, determine_error_type
 from .report import generate_report
 
 
-def secant(x0, x1, niter, tol, function, tolerance_type):
-    table = []
+def secant(x_0, x_1, niter, tol, function, tolerance_type) -> Result:
+    result = Result()
+    table = Table()
 
     # Initial setup
-    xn = x1 - function(x1) * (x1 - x0) / (function(x1) - function(x0))
-    x_prev = x1
-    x_prev2 = x0
+    try:
+        x_n = x_1 - function(x_1) * (x_1 - x_0) / (function(x_1) - function(x_0))
+    except ZeroDivisionError:
+        result.error_message = "Division by zero."
+        return result
+
+    x_prev = x_1
+    x_prev_2 = x_0
     err = 100
-    iterations = 0
+    iteration_counter = 0
 
-    Error = (
-        "Relative Error"
-        if tolerance_type == "Significant Figures"
-        else "Absolute Error"
-    )
+    error_type = determine_error_type(tolerance_type)
 
-    # First iteration (iteration 0)
-    row = {"x_{n-1}": x0, "x_n": x1, "f(x_n)": function(x1), "Error": None}
-    table.append(row)
+    # 0-th iteration
+    table.add_row(x_1, function(x_1), None)
 
     # Secant method iterations
-    while iterations < niter and err >= tol:
-        # Update xn
-        xn = x_prev - function(x_prev) * (x_prev - x_prev2) / (
-            function(x_prev) - function(x_prev2)
-        )
+    while iteration_counter < niter and err >= tol:
+        denominator = function(x_prev) - function(x_prev_2)
+        try:
+            x_n = x_prev - function(x_prev) * (x_prev - x_prev_2) / denominator
+        except ZeroDivisionError:
+            result.error_message = "Division by zero."
+            return result
 
-        # Calculate error based on tolerance type
-        if tolerance_type == "Significant Figures":
-            # Calculate relative error
-            err = abs((xn - x_prev) / xn)
-        elif tolerance_type == "Correct Decimals":
-            # Calculate absolute error
-            err = abs(xn - x_prev)
+        err = calculate_error(x_n, x_prev, error_type)
+        table.add_row(x_n, function(x_n), err)
+        iteration_counter += 1
+        x_prev_2 = x_prev
+        x_prev = x_n
 
-        # Append row for current iteration
-        row = {"x_{n-1}": x_prev, "x_n": xn, "f(x_n)": function(xn), "Error": err}
-        table.append(row)
-
-        iterations += 1
-        x_prev2 = x_prev
-        x_prev = xn
-
-    # Convert table to DataFrame and return
-    df = pd.DataFrame(table)
-    return {"status": "success", "table": df}
+    df = table.as_dataframe()
+    result.set_success_status()
+    result.table = df
+    return result
 
 
 def show_secant():
@@ -88,9 +83,7 @@ def show_secant():
 
         tol, niter, tolerance_type = calculate_tolerance()
         st.markdown(f"**Calculated Tolerance:** {tol:.10f}")
-        st.subheader("Function")
         function = sp.sympify(function_input)
-        st.latex(f"f({x}) = {sp.latex(function)}")
 
         x = sp.symbols("x")
         first_derivative = sp.diff(function, x)
@@ -99,26 +92,36 @@ def show_secant():
         function = nm_lambdify(function, x)
         result = secant(x0, x1, niter, tol, function, tolerance_type)
 
-        if result["status"] == "error":
-            st.error(result["message"])
+        if result.has_failed():
+            st.error(result.error_message)
             return
-        else:
-            result = result["table"]
 
-        mid = result.iloc[-1]["x_n"]
+        result_display = result.table.style.format("{:.15e}")
 
-        if function(mid) <= 0 + tol:
-            st.subheader("Results")
-            decimals = show_table(result)
-            st.success(
-                f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {function(mid):.{decimals}f}"
-            )
+        st.divider()
+
+        st.header("Result")
+        mid = result.table.iloc[-1]["x"]
+        if function(mid) < 0 + tol:
+            st.success(":material/check: Root found.")
+
+            col1, col2 = st.columns(2)
+            col1.metric("$x$", f"{mid:.10e}")
+            col2.metric("$f(x)$", f"{function(mid):.10e}")
+
         else:
             st.warning(
                 f"Method did not converge, potentially because of a discontinuity in the function."
             )
+        st.subheader("Table")
+        st.table(result_display)
+
+        st.divider()
 
         graph(function_input)
+
+        st.divider()
+
         generate_report(
             niter,
             function,

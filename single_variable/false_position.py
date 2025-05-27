@@ -57,7 +57,7 @@ def false_position(a, b, niter, tol, tolerance_type, function) -> Result:
 
     df = table.as_dataframe()
     if f_x == 0 or error < tol:
-        result.status = ResultStatus.SUCCESS
+        result.set_success_status()
         result.table = df
         return result
 
@@ -96,9 +96,6 @@ def show_false_position():
         second_derivative = sp.diff(first_derivative, x)
 
         lambda_function = nm_lambdify(function_sp, x)
-
-        # DO CHECKS ON INPUT INTEGRITY
-        # check if derivative is continuous in general
 
         result = false_position(a, b, niter, tol, tolerance_type, lambda_function)
 

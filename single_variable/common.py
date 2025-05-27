@@ -31,7 +31,10 @@ class ToleranceType(Enum):
 class Result:
     status: ResultStatus = ResultStatus.FAILURE
     error_message: str = ""
-    table: pd.DataFrame = None
+    table: pd.DataFrame = field(default_factory=pd.DataFrame)
+
+    def set_success_status(self):
+        self.status = ResultStatus.SUCCESS
 
     def has_failed(self) -> bool:
         match self.status:

@@ -1,6 +1,8 @@
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass, field
 from enum import Enum
 from typing import Any
+
+import pandas as pd
 
 
 @dataclass
@@ -39,6 +41,21 @@ class Result:
                 return False
             case _:
                 raise ValueError("Not a valid result status.")
+
+
+@dataclass
+class Table:
+    x: list[int] = field(default_factory=list)
+    f_x: list[float] = field(default_factory=list)
+    error: list[float] = field(default_factory=list)
+
+    def add_row(self, x, f_x, error):
+        self.x.append(x)
+        self.f_x.append(f_x)
+        self.error.append(error)
+
+    def as_dataframe(self):
+        return pd.DataFrame.from_dict(asdict(self))
 
 
 def determine_error_type(tolerance_type):

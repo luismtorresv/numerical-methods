@@ -5,28 +5,16 @@ import sympy as sp
 from utils.general import nm_lambdify
 from utils.interface_blocks import calculate_tolerance, graph, ui_input_function
 
-from .common import (
-    ErrorType,
-    Result,
-    ResultStatus,
-    calculate_error,
-    determine_error_type,
-)
+from .common import Result, ResultStatus, Table, calculate_error, determine_error_type
 from .report import generate_report
 
 
 def false_position(a, b, niter, tol, tolerance_type, function) -> Result:
     result = Result()
-
     error_type = determine_error_type(tolerance_type)
-
-    # Initialize dictionary for table
-    table = {
-        "i": [],
-        "x": [],
-        "f(x)": [],
-        "error": [],
-    }
+    table = Table()
+    error = 100  # Arbitrary value!
+    iteration_counter = 0
 
     # Calculate initial function values
     f_a = function(a)
@@ -40,16 +28,14 @@ def false_position(a, b, niter, tol, tolerance_type, function) -> Result:
         )
         return result
 
-    iteration_counter = 0
-    error = 100
+    table.add_row(a, f_a, error)
+
     x_intersect = (a * f_b - b * f_a) / (f_b - f_a)
     f_x = function(x_intersect)
 
     # Store initial iteration
-    table["i"].append(iteration_counter)
-    table["x"].append(x_intersect)
-    table["f(x)"].append(f_x)
-    table["error"].append(error)
+    table.add_row(x_intersect, f_x, error)
+    iteration_counter += 1
 
     # Iterate
     while error > tol != 0 and iteration_counter < niter:
@@ -67,12 +53,9 @@ def false_position(a, b, niter, tol, tolerance_type, function) -> Result:
 
         error = calculate_error(x_intersect, old_intersect, error_type)
         iteration_counter += 1
-        table["i"].append(iteration_counter)
-        table["x"].append(x_intersect)
-        table["f(x)"].append(f_x)
-        table["error"].append(error)
+        table.add_row(x_intersect, f_x, error)
 
-    df = pd.DataFrame(table)
+    df = table.as_dataframe()
     if f_x == 0 or error < tol:
         result.status = ResultStatus.SUCCESS
         result.table = df
@@ -135,9 +118,7 @@ def show_false_position():
             help="Adjust the number of decimal places for the result table.",
         )
         # Format the dataframe to display the selected number of decimals
-        result_display = result.table.style.format(
-            f"{{:.{decimals}f}}"
-        )  # Use f-string to format dynamically
+        result_display = result.table.style.format("{:g}")
 
         mid = result.table.iloc[-1]["x"]
         if lambda_function(mid) < 0 + tol:
@@ -145,7 +126,7 @@ def show_false_position():
                 f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {lambda_function(mid):.{decimals}f}"
             )
             st.subheader("Results")
-            st.dataframe(result_display, use_container_width=True)
+            st.table(result_display)
         else:
             st.warning(
                 f"Method did not converge, potentially because of a discontinuity in the function."

@@ -95,9 +95,6 @@ def show_false_position():
         first_derivative = sp.diff(function_sp, x)
         second_derivative = sp.diff(first_derivative, x)
 
-        st.subheader("Function")
-        st.latex(f"f({x}) = {sp.latex(function_sp)}")
-
         lambda_function = nm_lambdify(function_sp, x)
 
         # DO CHECKS ON INPUT INTEGRITY
@@ -109,30 +106,32 @@ def show_false_position():
             st.error(result.error_message)
             return
 
-        # Add a slider to choose the number of decimals to display
-        decimals = st.slider(
-            "Select number of decimals to display on table",
-            min_value=1,
-            max_value=10,
-            value=4,
-            help="Adjust the number of decimal places for the result table.",
-        )
-        # Format the dataframe to display the selected number of decimals
-        result_display = result.table.style.format("{:g}")
+        result_display = result.table.style.format("{:.15e}")
 
+        st.divider()
+
+        st.header("Result")
         mid = result.table.iloc[-1]["x"]
         if lambda_function(mid) < 0 + tol:
-            st.success(
-                f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {lambda_function(mid):.{decimals}f}"
-            )
-            st.subheader("Results")
+            st.success(":material/check: Root found.")
+
+            col1, col2 = st.columns(2)
+            col1.metric("$x$", f"{mid:.10e}")
+            col2.metric("$f(x)$", f"{lambda_function(mid):.10e}")
+
+            st.subheader("Table")
             st.table(result_display)
         else:
             st.warning(
                 f"Method did not converge, potentially because of a discontinuity in the function."
             )
 
+        st.divider()
+
         graph(function_input)
+
+        st.divider()
+
         generate_report(
             niter,
             lambda_function,

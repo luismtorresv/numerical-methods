@@ -69,10 +69,10 @@ Web application for running numerical methods that solve:
 >
 > —Burden & Faires (2011, p. 358)
 
-> An iterative technique to solve the $n \times n$ linear system $A\bold{x} =
-> \bold{b}$ starts with an initial approximation $\bold{x}^{(0)}$ to the
-> solution $\bold{x}$ and generates a sequence of vectors
-> ${\{\bold{x}^{(k)}}\}^{\infty}_{k=0}$ that converges to $\bold{x}$.
+> An iterative technique to solve the $n \times n$ linear system
+> $A \vec{x} = \vec{b}$ starts with an initial approximation $\vec{x}^{(0)}$
+> to the solution $\vec{x}$ and generates a sequence of vectors
+> ${\{\vec{x}^{(k)}}\}^{\infty}_{k=0}$ that converges to $\vec{x}$.
 >
 > —Burden & Faires (2011, p. 450)
 

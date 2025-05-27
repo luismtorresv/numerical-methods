@@ -36,7 +36,6 @@ def fixed_point(
 
     df = table.as_dataframe()
     result.table = df
-    print(len(table.x))
     if f_x == 0 or error < tolerance:
         result.set_success_status()
         return result
@@ -145,7 +144,6 @@ def show_fixed_point():
     st.subheader("Results")
     if result.has_failed():
         st.error(result.error_message)
-        # return
 
     result_display = result.table.style.format("{:.15e}")
 

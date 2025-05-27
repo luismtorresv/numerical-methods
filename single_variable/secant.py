@@ -59,78 +59,74 @@ def secant(x_0, x_1, niter, tol, function, tolerance_type) -> Result:
 def show_secant():
     st.header("Secant Method")
 
-    try:
-        function_input = ui_input_function()
+    function_input = ui_input_function()
 
-        col3, col4 = st.columns(2)
-        with col3:
-            x0 = st.number_input(
-                "First Point (x_0)",
-                format="%.4f",
-                value=0.1,
-                step=0.0001,
-                help="The first initial guess for the root. It is a value where the function is evaluated.",
-            )
-
-        with col4:
-            x1 = st.number_input(
-                "Second Point (x_1)",
-                format="%.4f",
-                value=0.2,
-                step=0.0001,
-                help="The second initial guess for the root. It should be close to x0 and the function should have different signs at x0 and x1.",
-            )
-
-        tol, niter, tolerance_type = calculate_tolerance()
-        st.markdown(f"**Calculated Tolerance:** {tol:.10f}")
-        function = sp.sympify(function_input)
-
-        x = sp.symbols("x")
-        first_derivative = sp.diff(function, x)
-        second_derivative = sp.diff(first_derivative, x)
-
-        function = nm_lambdify(function, x)
-        result = secant(x0, x1, niter, tol, function, tolerance_type)
-
-        if result.has_failed():
-            st.error(result.error_message)
-            return
-
-        result_display = result.table.style.format("{:.15e}")
-
-        st.divider()
-
-        st.header("Result")
-        mid = result.table.iloc[-1]["x"]
-        if function(mid) < 0 + tol:
-            st.success(":material/check: Root found.")
-
-            col1, col2 = st.columns(2)
-            col1.metric("$x$", f"{mid:.10e}")
-            col2.metric("$f(x)$", f"{function(mid):.10e}")
-
-        else:
-            st.warning(
-                f"Method did not converge, potentially because of a discontinuity in the function."
-            )
-        st.subheader("Table")
-        st.table(result_display)
-
-        st.divider()
-
-        graph(function_input)
-
-        st.divider()
-
-        generate_report(
-            niter,
-            function,
-            tol,
-            tolerance_type,
-            x,
-            first_derivative,
-            second_derivative,
+    col3, col4 = st.columns(2)
+    with col3:
+        x0 = st.number_input(
+            "First Point (x_0)",
+            format="%.4f",
+            value=0.1,
+            step=0.0001,
+            help="The first initial guess for the root. It is a value where the function is evaluated.",
         )
-    except Exception as e:
-        st.error("Error: Check your input")
-        print(e)
+
+    with col4:
+        x1 = st.number_input(
+            "Second Point (x_1)",
+            format="%.4f",
+            value=0.2,
+            step=0.0001,
+            help="The second initial guess for the root. It should be close to x0 and the function should have different signs at x0 and x1.",
+        )
+
+    tol, niter, tolerance_type = calculate_tolerance()
+    st.markdown(f"**Calculated Tolerance:** {tol:.10f}")
+    function = sp.sympify(function_input)
+
+    x = sp.symbols("x")
+    first_derivative = sp.diff(function, x)
+    second_derivative = sp.diff(first_derivative, x)
+
+    function = nm_lambdify(function, x)
+    result = secant(x0, x1, niter, tol, function, tolerance_type)
+
+    if result.has_failed():
+        st.error(result.error_message)
+        return
+
+    result_display = result.table.style.format("{:.15e}")
+
+    st.divider()
+
+    st.header("Result")
+    mid = result.table.iloc[-1]["x"]
+    if function(mid) < 0 + tol:
+        st.success(":material/check: Root found.")
+
+        col1, col2 = st.columns(2)
+        col1.metric("$x$", f"{mid:.10e}")
+        col2.metric("$f(x)$", f"{function(mid):.10e}")
+
+    else:
+        st.warning(
+            f"Method did not converge, potentially because of a discontinuity in the function."
+        )
+    st.subheader("Table")
+    st.table(result_display)
+
+    st.divider()
+
+    graph(function_input)
+
+    st.divider()
+
+    generate_report(
+        niter,
+        function,
+        tol,
+        tolerance_type,
+        x,
+        first_derivative,
+        second_derivative,
+    )

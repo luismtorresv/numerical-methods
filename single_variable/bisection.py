@@ -25,7 +25,7 @@ def bisection(a, b, niter, tol, tolerance_type, function):
 
     # initial call
     row["a"] = a
-    row["b"] = b
+    row["x_n"] = b
     row["mid"] = (a + b) / 2
     row["f(a)"] = function(a)
     row["f(mid)"] = function((a + b) / 2)
@@ -53,7 +53,7 @@ def bisection(a, b, niter, tol, tolerance_type, function):
 
             row = {}
             row["a"] = a
-            row["b"] = b
+            row["x_n"] = b
             row["mid"] = mid
             row["f(a)"] = function(a)
             row["f(mid)"] = function(mid)
@@ -153,3 +153,4 @@ def show_bisection():
         )
     except Exception as e:
         st.error("Error: Check your inputs ")
+        print(e)

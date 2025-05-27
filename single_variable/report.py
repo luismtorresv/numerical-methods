@@ -89,7 +89,8 @@ def generate_report(
             table["$n_\\text{iter}$"].append(method_result["table"].index[-1] + 1)
 
             # Append the last X value of each method.
-            table["$x_\\text{sol}$"].append(0)
+            x_n = method_result["table"].tail(1)["x_n"].iloc[0]
+            table["$x_\\text{sol}$"].append(x_n)
 
             # Append the Error of the last iteration.
             error_value = method_result["table"].tail(1)["Error"].iloc[0]

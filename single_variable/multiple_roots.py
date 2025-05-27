@@ -49,7 +49,7 @@ def multiple_roots(x0, niter, tol, function, df, d2f, tolerance_type):
         "status": "success",
         "table": pd.DataFrame(
             table,
-            columns=["Iteration", "x_i", "f(x)", "f'(x)", "f''(x)", "x_(i+1)", "Error"],
+            columns=["Iteration", "x_n", "f(x)", "f'(x)", "f''(x)", "x_(i+1)", "Error"],
         ),
     }
 

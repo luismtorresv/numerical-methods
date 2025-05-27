@@ -25,6 +25,9 @@ Web application for running numerical methods that solve:
 - [7. Internal representation](#7-internal-representation)
 - [8. User interaction](#8-user-interaction)
 - [9. Quirks](#9-quirks)
+  - [9.1. Misleading claim that matrix is invertible](#91-misleading-claim-that-matrix-is-invertible)
+  - [9.2. Incomplete report comparison feature for interpolation section](#92-incomplete-report-comparison-feature-for-interpolation-section)
+  - [9.3. Static graph bounds from -10 through 10](#93-static-graph-bounds-from--10-through-10)
 - [10. Run](#10-run)
 - [11. About this project](#11-about-this-project)
 - [12. References](#12-references)
@@ -298,12 +301,71 @@ graph TD
 
 # 9. Quirks
 
-> [!WARNING]
->
-> This section is pending.
->
-> It's meant to state any problems that we or the professor find in our project.
+This section states the problems that we, or the professor, found in our project.
 
+## 9.1. Misleading claim that matrix is invertible
+
+As of commit `dea96f`, our program (specifically, the Jacobi method
+implementation) incorrectly reports a matrix to be "non-invertible" even though
+it _might_ have an inverse.
+
+For example, the following matrix $A$ is invertible:
+
+```math
+A =
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 1 \\
+0 & 1 & 0
+\end{bmatrix} \longrightarrow A^{-1} =
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 0 & 1 \\
+0 & 1 & -1
+\end{bmatrix}
+```
+
+Our program, however, shows this error message:
+
+> Matrix A is singular (non-invertible). Please check the matrix and try again.
+
+This an implementation error where we compute the inverse of the diagonal matrix
+$D$ instead of the inverse of input matrix $A$:
+
+<https://github.com/luismtorresv/numerical-methods/blob/dea96f8864953bc803e68aebe84361915744eefe/linear_systems/jacobi.py#L55-L60>
+
+## 9.2. Incomplete report comparison feature for interpolation section
+
+Our report for the interpolation section only prints the polynomials generated
+with each method:
+
+<https://github.com/luismtorresv/numerical-methods/blob/dea96f8864953bc803e68aebe84361915744eefe/interpolation/report.py#L32-L36>
+
+It does not, however, ask for _another_ data point so that the function might
+get evaluated at _that_ point and see how far it was from the actual value in
+each method.
+
+## 9.3. Static graph bounds from -10 through 10
+
+At the end of each "Equations in one variable" method, we graphed the function
+using a common utility function that received, besides a function (as an `str`),
+two optional parameters for the `min_value` and `max_value` of the graph's
+$x$-axis.
+
+Instead of passing in the endpoints for the interval $[a, b]$, we left them set
+to the default value of $[-10, 10]$, with 1000 points in between:
+
+<https://github.com/luismtorresv/numerical-methods/blob/dea96f8864953bc803e68aebe84361915744eefe/utils/interface_blocks.py#L74-L82>
+
+This has two uncomfortable implications:
+
+1. If the $[a,b]$ interval is too far off the restricted actual interval we care
+  for, the graph (or "plot") turns out to be mostly useless.
+
+2. If we were to pass a `min_value` and `max_value` in such a way that the
+   amplitude of the interval approached, or even exceeded, that of the 1000
+   sample points we are using, the graph would resemble a scatterplot, rather
+   than a continuous function.
 
 # 10. Run
 

@@ -4,6 +4,8 @@ import sympy as sp
 from utils.interface_blocks import enter_points, graph_with_points
 
 from .utils import are_x_values_unique
+from .report import generate_report
+
 
 
 def lagrange(x, y, decimals, x_sym=sp.symbols("x")):
@@ -73,5 +75,8 @@ def show_lagrange():
         # Graph the interpolation polynomial
         st.subheader("Graph of Lagrange Interpolation")
         graph_with_points(x_values, y_values, pol_decimal)
-    except:
+
+        generate_report()
+    except Exception as e:
         st.error("Error: Please check your inputs")
+        st.write(e)

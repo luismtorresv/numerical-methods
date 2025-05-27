@@ -5,6 +5,7 @@ import sympy as sp
 from utils.general import nm_lambdify
 from utils.interface_blocks import calculate_tolerance, graph, ui_input_function
 
+from .common import Result, ResultStatus, Table, calculate_error, determine_error_type
 from .report import generate_report
 
 
@@ -14,50 +15,38 @@ def get_derivative(f):
     return f_prime
 
 
-def newton(x0, niter, tol, tolerance_type, function, derivative):
-    table = []
-    row = {}
-    Error = (
-        "Relative Error"
-        if tolerance_type == "Significant Figures"
-        else "Absolute Error"
-    )
+def newton(x_0, niter, tol, tolerance_type, function, derivative) -> Result:
+    result = Result()
+    table = Table()
+    error_type = determine_error_type(tolerance_type)
 
-    # initial call
-    if derivative(x0) == 0:
-        return {"status": "error", "message": "Derivative cannot be 0."}
-    xn = x0 - function(x0) / derivative(x0)
-    x_prev = x0
+    if derivative(x_0) == 0:
+        result.error_message = "Derivative cannot be 0."
+        return result
 
-    row["x_n"] = x0
-    row["f(x_n)"] = function(x0)
-    row["f'(x_n)"] = derivative(x0)
-    row["Error"] = None
-    table.append(row)
+    x_n = x_0 - function(x_0) / derivative(x_0)
+    x_prev = x_0
+    table.add_row(x_0, function(x_0), None)
 
-    err = 100
+    error = 100
     iterations = 0
 
-    while iterations < niter and err > tol:
+    while iterations < niter and error > tol:
         iterations += 1
-        x_prev = xn
-        xn = xn - function(xn) / derivative(xn)
+        x_prev = x_n
+        x_n = x_n - function(x_n) / derivative(x_n)
 
-        row = {}
-        row["x_n"] = xn
-        row["f(x_n)"] = function(xn)
-        row["f'(x_n)"] = derivative(xn)
-        table.append(row)
+        error = calculate_error(x_n, x_prev, error_type)
+        table.add_row(x_n, function(x_n), error)
 
-        if Error == "Relative Error":
-            row["Error"] = abs((xn - x_prev) / xn)
-        else:
-            row["Error"] = abs(xn - x_prev)
-
-        err = row["Error"]
-
-    df = pd.DataFrame(table)
-    return {"status": "success", "table": df}
+    df = table.as_dataframe()
+    result.table = df
+    if error < tol:
+        result.set_success_status()
+        return result
+    else:
+        result.error_message = "**Error:** Took too many iterations."
+        return result
 
 
 def show_newton():
@@ -93,37 +82,37 @@ def show_newton():
     derivative_lambda = nm_lambdify(first_derivative, x)
 
     result = newton(x0, niter, tol, tolerance_type, function, derivative_lambda)
-    if result["status"] == "error":
-        st.error(result["message"])
+
+    if result.has_failed():
+        st.error(result.error_message)
         return
-    else:
-        result = result["table"]
 
-        # Add a slider to choose the number of decimals to display
-    decimals = st.slider(
-        "Select number of decimals to display on table",
-        min_value=1,
-        max_value=10,
-        value=4,
-        help="Adjust the number of decimal places for the result table.",
-    )
-    # Format the dataframe to display the selected number of decimals
-    result_display = result.style.format(
-        f"{{:.{decimals}f}}"
-    )  # Use f-string to format dynamically
+    result_display = result.table.style.format("{:.15e}")
 
-    mid = result.iloc[-1]["x_n"]
+    st.divider()
+
+    st.header("Result")
+    mid = result.table.iloc[-1]["x"]
     if function(mid) < 0 + tol:
-        st.subheader("Results")
-        st.dataframe(result_display, use_container_width=True)
-        st.success(
-            f"Root found at x = {mid:.{decimals}f}: f({mid:.{decimals}f}) = {function(mid):.{decimals}f}"
-        )
+        st.success(":material/check: Root found.")
+
+        col1, col2 = st.columns(2)
+        col1.metric("$x$", f"{mid:.10e}")
+        col2.metric("$f(x)$", f"{function(mid):.10e}")
+
     else:
         st.warning(
             f"Method did not converge, potentially because of a discontinuity in the function."
         )
+    st.subheader("Table")
+    st.table(result_display)
+
+    st.divider()
+
     graph(function_input)
+
+    st.divider()
+
     generate_report(
         niter,
         function,

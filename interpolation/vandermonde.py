@@ -5,6 +5,7 @@ import sympy as sp
 from utils.interface_blocks import enter_points, graph_with_points
 
 from .utils import are_x_values_unique
+from .report import generate_report
 
 
 def vandermonde(x, y, decimals, x_sym=sp.symbols("x")):
@@ -49,5 +50,7 @@ def show_vandermonde():
 
         st.subheader("Graph of Vandermonde Interpolation")
         graph_with_points(x_values, y_values, poly)
+
+        generate_report()
     except:
         st.warning("Error: Please check your inputs.")

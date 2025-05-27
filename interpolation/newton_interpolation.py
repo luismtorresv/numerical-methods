@@ -6,6 +6,7 @@ import sympy as sp
 from utils.interface_blocks import enter_points, graph_with_points, show_table
 
 from .utils import are_x_values_unique
+from .report import generate_report
 
 
 def newton_interpolation(x, y, decimals, x_sym=sp.symbols("x")):
@@ -107,5 +108,7 @@ def show_newton_divided_diff():
         # Graph the interpolation polynomial
         st.subheader("Graph of Newton Interpolation")
         graph_with_points(x_values, y_values, newton_poly_expr_unrounded)
+
+        generate_report()
     except:
         st.error("Error: Please check your input")

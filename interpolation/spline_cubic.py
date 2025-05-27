@@ -5,6 +5,7 @@ import sympy as sp
 from utils.interface_blocks import enter_points, graph_with_points
 
 from .utils import are_x_values_unique
+from .report import generate_report
 
 
 def cubic_spline_interpolation(x, y, decimals=None, x_sym=sp.symbols("x")):
@@ -161,6 +162,8 @@ def show_cubic_spline():
                     # Graph the interpolation
                     st.subheader("Graph of Spline Interpolation")
                     graph_with_points(x_values, y_values, piecewise_function_unrounded)
+
+                    generate_report()
 
                 except Exception as e:
                     st.error(f"Error calculating function values: {str(e)}")

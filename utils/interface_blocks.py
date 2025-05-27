@@ -194,6 +194,7 @@ def enter_points(val=2):
     num_points = st.number_input(
         "Enter the number of points:",
         min_value=val,
+        max_value=8,
         value=val,
         step=1,
         help="""First, specify the number of points you want to enter.

@@ -3,8 +3,8 @@ import sympy as sp
 
 from utils.interface_blocks import enter_points, graph_with_points
 
-from .utils import are_x_values_unique
 from .report import generate_report
+from .utils import are_x_values_unique
 
 
 def lagrange(x, y, decimals, x_sym=sp.symbols("x")):

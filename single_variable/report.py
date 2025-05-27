@@ -29,10 +29,13 @@ def generate_report(
             )
 
             # Input for transformed function g(x)
-            g_input = st.text_input(
-                "Transformation g(x): ",
-                value="2/x",
-                help="Enter g(x) such that g(x) = x at the root of f(x).",
+            g_input = nm_lambdify(
+                st.text_input(
+                    "Transformation g(x): ",
+                    value="2/x",
+                    help="Enter g(x) such that g(x) = x at the root of f(x).",
+                ),
+                symbol,
             )
             a = st.number_input(
                 "Initial point of search interval (a)",
@@ -65,35 +68,35 @@ def generate_report(
             second_derivative,
         )
 
-        table = {"Method": [], "$n_\\text{iter}$": [], "$x_\\text{sol}$": [], "$E$": []}
+        table = {
+            "Method": [],
+            "$n_\\text{iter}$": [],
+            "$x_\\text{sol}$": [],
+            "$f(x_\\text{sol})$": [],
+            "$E$": [],
+        }
         failed_methods = []
 
-        for method in results:
-            # TODO: Fixed point is not currently working properly with the rest
-            # of the code.
-
-            # TODO: Make these methods compatible with the way we're doing
-            # things in the rest of the report function. Even better: make the
-            # report function more reliable.
-            if method in ["fixed_point", "false_position"]:
+        for method_name, output in results.items():
+            if output.has_failed():
+                failed_methods.append(method_name)
                 continue
-            method_result = results[method]
 
-            if method_result["status"] == "error":
-                failed_methods.append(method)
-                continue
-            # Append the method.
-            table["Method"].append(method)
+            table["Method"].append(method_name)
 
-            # Append the last iteration of each method. Add 1 to match conventional standard.
-            table["$n_\\text{iter}$"].append(method_result["table"].index[-1] + 1)
+            print(f"{output.table.shape[0] + 1}")
+            table["$n_\\text{iter}$"].append(output.table.shape[0] + 1)
 
             # Append the last X value of each method.
-            x_n = method_result["table"].tail(1)["x_n"].iloc[0]
-            table["$x_\\text{sol}$"].append(x_n)
+            x_n = output.table.tail(1)["x"].iloc[0]
+            table["$x_\\text{sol}$"].append(f"{x_n:.10e}")
+
+            # Append the last X value of each method.
+            f_x_n = output.table.tail(1)["f_x"].iloc[0]
+            table["$f(x_\\text{sol})$"].append(f"{f_x_n:.10e}")
 
             # Append the Error of the last iteration.
-            error_value = method_result["table"].tail(1)["Error"].iloc[0]
+            error_value = output.table.tail(1)["error"].iloc[0]
             formatted_error = f"{error_value:.10e}"
             table["$E$"].append(formatted_error)
 
@@ -130,16 +133,16 @@ def _run_all_methods(
     from single_variable.secant import secant
 
     return {
-        "bisection": bisection(
+        "Bisection": bisection(
             a, b, n_iterations, tolerance, type_of_tolerance, f_function
         ),
-        "false_position": false_position(
+        "False position": false_position(
             a, b, n_iterations, tolerance, type_of_tolerance, f_function
         ),
-        "fixed_point": fixed_point(
+        "Fixed point": fixed_point(
             x_0, tolerance, type_of_tolerance, n_iterations, f_function, g_function
         ),
-        "multiple_roots": multiple_roots(
+        "Multiple roots": multiple_roots(
             x_0,
             n_iterations,
             tolerance,
@@ -148,8 +151,8 @@ def _run_all_methods(
             second_derivative,
             type_of_tolerance,
         ),
-        "secant": secant(a, b, n_iterations, tolerance, f_function, type_of_tolerance),
-        "newton": newton(
+        "Secant": secant(a, b, n_iterations, tolerance, f_function, type_of_tolerance),
+        "Newton–Raphson": newton(
             x_0,
             n_iterations,
             tolerance,

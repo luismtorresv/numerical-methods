@@ -7,7 +7,6 @@ from .utils import are_x_values_unique
 from .report import generate_report
 
 
-
 def lagrange(x, y, decimals, x_sym=sp.symbols("x")):
     n = len(x)
     pol = 0
@@ -79,4 +78,3 @@ def show_lagrange():
         generate_report()
     except Exception as e:
         st.error("Error: Please check your inputs")
-        st.write(e)

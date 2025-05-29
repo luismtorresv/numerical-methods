@@ -17,25 +17,30 @@ Web application for running numerical methods that solve:
   - [2.3. Interpolation](#23-interpolation)
 - [3. Features](#3-features)
 - [4. Limitations](#4-limitations)
-- [5. Expected input and output formats](#5-expected-input-and-output-formats)
+- [5. Screenshots](#5-screenshots)
   - [5.1. Equations in one variable](#51-equations-in-one-variable)
   - [5.2. Linear systems of equations](#52-linear-systems-of-equations)
   - [5.3. Interpolation](#53-interpolation)
-- [6. Methods comparison feature](#6-methods-comparison-feature)
-- [7. Internal representation](#7-internal-representation)
-- [8. User interaction](#8-user-interaction)
-- [9. Quirks](#9-quirks)
-  - [9.1. Misleading claim that matrix is invertible](#91-misleading-claim-that-matrix-is-invertible)
-  - [9.2. Incomplete report comparison feature for interpolation section](#92-incomplete-report-comparison-feature-for-interpolation-section)
-  - [9.3. Static graph bounds from -10 through 10](#93-static-graph-bounds-from--10-through-10)
-- [10. Run](#10-run)
-- [11. About this project](#11-about-this-project)
-- [12. References](#12-references)
-- [13. Authors](#13-authors)
-- [14. Similar projects](#14-similar-projects)
-  - [14.1. Former course-takers](#141-former-course-takers)
-  - [14.2. On the Web](#142-on-the-web)
-- [15. License](#15-license)
+  - [5.4. Make it snow ☃️](#54-make-it-snow-️)
+- [6. Expected input and output formats](#6-expected-input-and-output-formats)
+  - [6.1. Equations in one variable](#61-equations-in-one-variable)
+  - [6.2. Linear systems of equations](#62-linear-systems-of-equations)
+  - [6.3. Interpolation](#63-interpolation)
+- [7. Methods comparison feature](#7-methods-comparison-feature)
+- [8. Internal representation](#8-internal-representation)
+- [9. User interaction](#9-user-interaction)
+- [10. Quirks](#10-quirks)
+  - [10.1. Misleading claim that matrix is invertible](#101-misleading-claim-that-matrix-is-invertible)
+  - [10.2. Incomplete report comparison feature for interpolation section](#102-incomplete-report-comparison-feature-for-interpolation-section)
+  - [10.3. Static graph bounds from -10 through 10](#103-static-graph-bounds-from--10-through-10)
+- [11. Run](#11-run)
+- [12. About this project](#12-about-this-project)
+- [13. References](#13-references)
+- [14. Authors](#14-authors)
+- [15. Similar projects](#15-similar-projects)
+  - [15.1. Former course-takers](#151-former-course-takers)
+  - [15.2. On the Web](#152-on-the-web)
+- [16. License](#16-license)
 
 
 # 2. Methods we support
@@ -149,7 +154,36 @@ _iterative techniques_:
   return answers that lie in the complex numbers (i.e. have an imaginary part).
 
 
-# 5. Expected input and output formats
+# 5. Screenshots
+
+## 5.1. Equations in one variable
+
+![Equations in one variable input](docs/images/1-single_variable-1.png)
+
+![Equations in one variable result](docs/images/1-single_variable-2.png)
+
+## 5.2. Linear systems of equations
+
+![Linear systems input](docs/images/2-linear_systems-1.png)
+
+![Linear systems result](docs/images/2-linear_systems-2.png)
+
+![Method comparison report](docs/images/2-linear_systems-3.png)
+
+## 5.3. Interpolation
+
+![Interpolation input](docs/images/3-interpolation-1.png)
+
+![Interpolation output for Lagrange method](docs/images/3-interpolation-2.png)
+
+![Incomplete method comparison report feature!](docs/images/3-interpolation-3.png)
+
+## 5.4. Make it snow ☃️
+
+![Make it snow! (A Streamlit easter egg)](docs/images/4-make_it_snow.gif)
+
+
+# 6. Expected input and output formats
 
 > [!WARNING]
 >
@@ -159,19 +193,19 @@ _iterative techniques_:
 > also talk about input validation (specially for the section on linear
 > systems).
 
-## 5.1. Equations in one variable
+## 6.1. Equations in one variable
 
 > [!WARNING]
 >
 > This section is pending.
 
-## 5.2. Linear systems of equations
+## 6.2. Linear systems of equations
 
 > [!WARNING]
 >
 > This section is pending.
 
-## 5.3. Interpolation
+## 6.3. Interpolation
 
 > [!WARNING]
 >
@@ -183,7 +217,7 @@ Besides the data points, the user must provide an additional data point that
 will be used to calculate the error.
 
 
-# 6. Methods comparison feature
+# 7. Methods comparison feature
 
 As mentioned above in § 3. Features, the methods comparison feature provides a
 table with relevant variables.
@@ -218,7 +252,7 @@ Where SOR has three methods that correspond to three arbitrary values, chosen by
 us, the programmers, of the $\omega$ weight for SOR methods. Ideally, these
 would be close to 1.
 
-# 7. Internal representation
+# 8. Internal representation
 
 ```mermaid
 ---
@@ -262,7 +296,7 @@ classDiagram
   Result --|> ResultStatus
 ```
 
-# 8. User interaction
+# 9. User interaction
 
 ```mermaid
 ---
@@ -299,11 +333,11 @@ graph TD
 ```
 
 
-# 9. Quirks
+# 10. Quirks
 
 This section states the problems that we, or the professor, found in our project.
 
-## 9.1. Misleading claim that matrix is invertible
+## 10.1. Misleading claim that matrix is invertible
 
 As of commit `dea96f`, our program (specifically, the Jacobi method
 implementation) incorrectly reports a matrix to be "non-invertible" even though
@@ -334,7 +368,7 @@ $D$ instead of the inverse of input matrix $A$:
 
 <https://github.com/luismtorresv/numerical-methods/blob/dea96f8864953bc803e68aebe84361915744eefe/linear_systems/jacobi.py#L55-L60>
 
-## 9.2. Incomplete report comparison feature for interpolation section
+## 10.2. Incomplete report comparison feature for interpolation section
 
 Our report for the interpolation section only prints the polynomials generated
 with each method:
@@ -345,7 +379,7 @@ It does not, however, ask for _another_ data point so that the function might
 get evaluated at _that_ point and see how far it was from the actual value in
 each method.
 
-## 9.3. Static graph bounds from -10 through 10
+## 10.3. Static graph bounds from -10 through 10
 
 At the end of each "Equations in one variable" method, we graphed the function
 using a common utility function that received, besides a function (as an `str`),
@@ -367,7 +401,7 @@ This has two uncomfortable implications:
    sample points we are using, the graph would resemble a scatterplot, rather
    than a continuous function.
 
-# 10. Run
+# 11. Run
 
 > [!WARNING]
 >
@@ -382,14 +416,14 @@ pip install -r requirements.txt
 streamlit run Main.py
 ```
 
-# 11. About this project
+# 12. About this project
 
 This is the course project for the course "Análisis numérico" (ST0256) taught by
 professor Julián Esteban Rendón-Roldán at EAFIT University in Medellín,
 Colombia.
 
 
-# 12. References
+# 13. References
 
 1. Burden, Richard L., and J. Douglas Faires. Numerical Analysis. 9. ed.,
    International ed, Brooks/Cole, 2011.
@@ -405,14 +439,14 @@ Colombia.
    the basis material for the course slides.
 
 
-# 13. Authors
+# 14. Authors
 
 Jerónimo Acosta Acevedo and Luis Miguel Torres Villegas.
 
 
-# 14. Similar projects
+# 15. Similar projects
 
-## 14.1. Former course-takers
+## 15.1. Former course-takers
 
 1. [nceballosp/Analisis-Numerico](https://github.com/nceballosp/Analisis-Numerico).
    Python + Flask and Vite + React.
@@ -425,10 +459,10 @@ Jerónimo Acosta Acevedo and Luis Miguel Torres Villegas.
 
 4. [alejoriosm04/NumeriSketch](https://github.com/alejoriosm04/NumeriSketch). Python + Django.
 
-## 14.2. On the Web
+## 15.2. On the Web
 
 1. [AtoZmath.com - Numerical methods calculators](https://atozmath.com/Menu/ConmMenu.aspx)
 
-# 15. License
+# 16. License
 
 Copyright really unclear.

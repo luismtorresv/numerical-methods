@@ -149,6 +149,35 @@ _iterative techniques_:
   return answers that lie in the complex numbers (i.e. have an imaginary part).
 
 
+# Screenshots
+
+## Equations in one variable
+
+![Equations in one variable input](docs/images/1-single_variable-1.png)
+
+![Equations in one variable result](docs/images/1-single_variable-2.png)
+
+## Linear systems of equations
+
+![Linear systems input](docs/images/2-linear_systems-1.png)
+
+![Linear systems result](docs/images/2-linear_systems-2.png)
+
+![Method comparison report](docs/images/2-linear_systems-3.png)
+
+## Interpolation
+
+![Interpolation input](docs/images/3-interpolation-1.png)
+
+![Interpolation output for Lagrange method](docs/images/3-interpolation-2.png)
+
+![Incomplete method comparison report feature!](docs/images/3-interpolation-3.png)
+
+## Make it snow ☃️
+
+![Make it snow! (A Streamlit easter egg)](docs/images/4-make_it_snow.gif)
+
+
 # 5. Expected input and output formats
 
 > [!WARNING]
